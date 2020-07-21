@@ -1,0 +1,35 @@
+% 1. Title: Simple time series prediction example
+% 
+% 2. Sources:
+%      (a) Creator: M. Thess, prudsys AG
+%      (b) Donor: M. Thess
+%      (c) Date: March, 2002
+% 
+% 3. Past Usage:
+%    -- Test of time series prediction methods.
+% 
+% 4. Relevant Information:
+%    Artificial data. 
+% 
+% 5. Number of Instances: 6
+% 
+% 6. Number of Attributes: 2, both numeric
+% 
+% 7. Attribute Information:
+%    1. serie1: first time serie
+%    2. serie2: second time serie
+% 
+% 8. Missing Attribute Values: None
+
+@RELATION time-series
+
+@ATTRIBUTE serie1	REAL
+@ATTRIBUTE serie2	REAL
+
+@DATA
+1 5
+2 5
+3 2
+4 7
+5 5
+6 9

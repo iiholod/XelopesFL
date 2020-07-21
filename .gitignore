@@ -1,0 +1,10 @@
+.gradle
+.idea
+*.iml
+*.class
+*.cld
+*.project
+*.classpath
+
+*.csv
+*.log

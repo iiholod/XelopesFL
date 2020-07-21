@@ -1,0 +1,11 @@
+@relation 'xor'  
+
+@attribute x1 real
+@attribute x2 real
+@attribute class {0, 1}
+
+@data
+0 0 0
+0 1 1
+1 0 1
+1 1 0

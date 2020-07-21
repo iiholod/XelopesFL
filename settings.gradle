@@ -1,0 +1,12 @@
+include 'CWM'
+include 'Core'
+//include 'Association'
+include 'Classification'
+include 'Clustering'
+//include 'Transformation'
+//include 'DataWrapper'
+//include 'StringConstant'
+//include 'dmcapi-rest'
+//include 'ActorCluster'
+//include 'AgentSystem'
+

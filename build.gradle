@@ -1,0 +1,31 @@
+subprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+    }
+
+    compileJava.options.encoding = 'cp1251'
+
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '4.6'
+    }
+
+    task copyRuntimeLibs(type: Copy) {
+        group 'build'
+        into "build/libs/lib"
+        from configurations.runtime
+    }
+
+    task fatJar(type: Jar) {
+        group = 'build'
+        baseName = project.name + '-all'
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+        with jar
+    }
+}

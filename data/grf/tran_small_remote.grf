@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graph author="User" created="Fri Feb 27 01:05:05 MSK 2015" guiVersion="4.0.0.M1" id="1424984794315" licenseType="Community" modified="Fri Feb 27 01:16:52 MSK 2015" modifiedBy="User" attribute="tran_small_remote" revision="1.2" showComponentDetails="true">
+<Global>
+<GraphParameters>
+<GraphParameterFile fileURL="workspace.prm"/>
+</GraphParameters>
+<Dictionary/>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="https://dl-doc.dropbox.com/s/rwlgatwl50wlw6r/apriori.xlsx" guiName="XLSDataReader" guiX="243" guiY="139" id="XLSDATA_READER" metadataRow="0" type="XLS_READER"/>
+</Phase>
+</Graph>

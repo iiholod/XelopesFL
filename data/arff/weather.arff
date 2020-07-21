@@ -1,0 +1,24 @@
+@relation weather
+
+@attribute outlook {sunny, overcast, rainy}
+@attribute temperature real
+@attribute humidity real
+@attribute windy {true, false}
+@attribute whatIdo {will_play, may_play, no_play}
+
+@data
+overcast,75,55,false,will_play
+sunny,85,85,false,will_play
+sunny,80,90,true,may_play
+overcast,83,86,false,no_play
+rainy,70,96,false,will_play
+rainy,68,80,false,will_play
+rainy,65,70,true,no_play
+overcast,64,65,true,may_play
+sunny,72,95,false,no_play
+sunny,69,70,false,will_play
+rainy,75,80,false,will_play
+sunny,75,70,true,may_play
+overcast,72,90,true,may_play
+overcast,81,75,false,will_play
+rainy,71,91,true,no_play

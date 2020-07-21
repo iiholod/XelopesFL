@@ -1,0 +1,10 @@
+@relation 'regression'  
+
+@attribute age real
+@attribute salary real
+@attribute car_location { carpark, street }
+@attribute number_of_claims real
+
+@data
+0,1,carpark,12.00
+-2,3,street,4.00

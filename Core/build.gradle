@@ -1,0 +1,15 @@
+dependencies {
+    compile project(':CWM')
+    compile group: 'com.univocity', name: 'univocity-parsers', version: '2.6.2'
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
+    //compile files('libs/jdm11.jar')
+
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+
