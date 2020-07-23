@@ -1,8 +1,5 @@
+/*
 package org.eltech.ddm.classification.naivebayes.continious;
-
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
-import org.eltech.ddm.inputdata.file.csv.CsvFileWriter;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -129,6 +126,5 @@ public class CsvFileNormalizier {
             normalizier.normilize(headers, "VDataSet" + i++);
         }
     }
-
-
 }
+*/

@@ -28,6 +28,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package org.eltech.ddm.inputdata.file;
 
+import com.opencsv.exceptions.CsvException;
+import com.opencsv.exceptions.CsvValidationException;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.miningcore.MiningDataException;
@@ -36,10 +38,7 @@ import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 
 /**
  * Mining input stream class for files.
@@ -112,7 +111,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public void open() throws MiningException {
+    public void open() throws MiningException, FileNotFoundException {
         try {
             reader = new BufferedReader(new FileReader(this.fileName));
             this.open = true;
@@ -131,7 +130,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public void close() throws MiningException {
+    public void close() throws MiningException, IOException {
         if (!this.isOpen())
             throw new MiningDataException("Stream is already closed");
 
@@ -146,12 +145,21 @@ public abstract class MiningFileStream extends MiningInputStream {
     }
 
     /**
+     * Utility method for getting  input stream of the resource;
+     *
+     * @return - reader for parser
+     */
+    protected Reader getReader() throws FileNotFoundException {
+        return new BufferedReader(new FileReader(this.fileName));
+    }
+
+    /**
      * Recognize the input stream data specification. Not implemented.
      *
      * @return the MiningDataSpecification
      * @exception MiningException always thrown
      */
-    public EPhysicalData recognize() throws MiningException {
+    public EPhysicalData recognize() throws MiningException, IOException {
         throw new MiningException(MiningErrorCode.UNSUPPORTED);
     }
 
@@ -165,7 +173,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      *
      * @throws MiningException reset error
      */
-    public void reset() throws MiningException {
+    public void reset() throws MiningException, FileNotFoundException {
         if (!this.isOpen())
             throw new MiningException(MiningErrorCode.INVALID_INPUT_DATA, "Can't reset closed stream. Call open()");
 
@@ -192,7 +200,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      */
 
     // public abstract boolean next() throws MiningException;
-    public abstract MiningVector readPhysicalRecord() throws MiningException;
+    public abstract MiningVector readPhysicalRecord() throws MiningException, IOException, CsvValidationException;
 
 
     /**
@@ -203,7 +211,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      * @throws MiningException always thrown
      */
     //protected abstract MiningVector move( int position ) throws MiningException;
-    protected abstract MiningVector movePhysicalRecord(int position) throws MiningException;
+    protected abstract MiningVector movePhysicalRecord(int position) throws MiningException, IOException, CsvException;
 
 
     // -----------------------------------------------------------------------
@@ -231,7 +239,7 @@ public abstract class MiningFileStream extends MiningInputStream {
         if (isOpen()) {
             try {
                 o.open();
-            } catch (MiningException e) {
+            } catch (MiningException | FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

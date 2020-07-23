@@ -29,6 +29,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package org.eltech.ddm.inputdata;
 
+import com.opencsv.exceptions.CsvException;
+import com.opencsv.exceptions.CsvValidationException;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.*;
@@ -39,6 +41,8 @@ import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.CategoryProper
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.ValueSelectionFunction;
 import org.omg.java.cwm.objectmodel.core.Attribute;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,6 +141,10 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
         return cursorPosition;
     }
 
+    protected void resetCurrentPosition() {
+    	cursorPosition = -1;
+	}
+
     /**
      * Returns true if stream is open.
      *
@@ -160,8 +168,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * @return number of vectors
      * @exception MiningException method reset not implemented
      */
-    public int getVectorsNumber() throws MiningException
-    {
+    public int getVectorsNumber() throws MiningException, IOException, CsvException {
         if(vectorsNumber > 0)
         	return vectorsNumber;
 
@@ -198,14 +205,14 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public abstract void open() throws MiningException;
+    public abstract void open() throws MiningException, FileNotFoundException;
 
     /**
      * Close mining data stream.
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public abstract void close() throws MiningException;
+    public abstract void close() throws MiningException, IOException;
 
     /**
      * Recognize the input stream's meta data by analyzing the input stream.
@@ -213,7 +220,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * @return     the <code>MiningDataSpecification</code>
      * @exception  MiningException  if an error occurs
      */
-    public abstract EPhysicalData recognize() throws MiningException;
+    public abstract EPhysicalData recognize() throws MiningException, IOException;
 
     // -----------------------------------------------------------------------
     //  Methods of cursor positioning
@@ -224,7 +231,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public abstract void reset() throws MiningException;
+    public abstract void reset() throws MiningException, FileNotFoundException;
 
     /**
      * Moves the cursor down one row from its current position.
@@ -237,7 +244,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * <code>false</code> if there are no more rows
      * @exception MiningException if a mining source access error occurs
      */
-    public MiningVector next() throws MiningException{
+    public MiningVector next() throws MiningException, IOException, CsvException {
 		if(attributeAssignmentType == AttributeAssignmentType.DirectAttributeAssignment){
 			return directAssignmentNext();
 		}
@@ -248,7 +255,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		return readPhysicalRecord();
     }
 
-	public abstract MiningVector readPhysicalRecord() throws MiningException;
+	public abstract MiningVector readPhysicalRecord() throws MiningException, IOException, CsvException;
 	
     /**
      * Moves the cursor to the given row number in
@@ -270,7 +277,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * occurs, or the <code>MiningInputStream</code> type is forward only
      */
    // protected abstract MiningVector move( int position ) throws MiningException;
-	protected MiningVector move( int position ) throws MiningException{
+	protected MiningVector move( int position ) throws MiningException, IOException, CsvException {
 		if(attributeAssignmentType == null ||
 				attributeAssignmentType == AttributeAssignmentType.DirectAttributeAssignment){
 			return movePhysicalRecord(position);
@@ -301,7 +308,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
     
     
 
-    protected abstract MiningVector movePhysicalRecord( int position ) throws MiningException;
+    protected abstract MiningVector movePhysicalRecord( int position ) throws MiningException, IOException, CsvException;
 
 
     public int getOffsetVectorIndex() {
@@ -319,8 +326,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * @return    <code>MiningVector</code> at specified row
      * @exception MiningException if an error occurs
      */
-    public MiningVector getVector( int rowNumber ) throws MiningException
-    {
+    public MiningVector getVector( int rowNumber ) throws MiningException, IOException, CsvException {
 
         return move( rowNumber );
     }
@@ -338,8 +344,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * @exception  MiningException  if an error occurs
      * @see        #readVectors( MiningVector[], int, int )
      */
-    public int readVectors( MiningVector b[] ) throws MiningException
-    {
+    public int readVectors( MiningVector b[] ) throws MiningException, IOException, CsvException {
        return readVectors(b, 0, b.length);
     }
 
@@ -359,8 +364,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      *             the stream has been reached
      * @exception  MiningException  if an error occurs
      */
-    public int readVectors( MiningVector[] b, int off, int len ) throws MiningException
-    {
+    public int readVectors( MiningVector[] b, int off, int len ) throws MiningException, IOException, CsvException {
            int i = 0;
            if(b == null) throw new MiningException(MiningErrorCode.INVALID_ARGUMENT, "Array b can't be null." );
            if( ( off < 0 ) || ( off > b.length ) || ( len < 0 ) || ( ( off + len ) > b.length ) || ( ( off + len ) < 0 ) )
@@ -427,7 +431,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
       try {
         description = description + getPhysicalData() + "\n";
       }
-      catch (MiningException ex) {
+      catch (MiningException | IOException ex) {
         description = description + "no metadata" + "\n";
       };
 
@@ -441,7 +445,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
         else
           open();
       }
-      catch (MiningException ex) {
+      catch (MiningException | FileNotFoundException ex) {
         description = description + "Warning: can't reset cursor. " +
                       "Start reading at current position" + "\n";
       };
@@ -462,7 +466,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
         if(!wasOpen)
           close();
       }
-      catch(MiningException ex) {
+      catch(MiningException | IOException ex) {
       }
 
       return description;
@@ -471,8 +475,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 	/**
 	 * @return the physicalData
 	 */
-	public EPhysicalData getPhysicalData() throws MiningException
-	{
+	public EPhysicalData getPhysicalData() throws MiningException, IOException {
 	      if(physicalData == null)
 	    	  physicalData = recognize();
 
@@ -598,7 +601,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		return mapAttributes;
 	}
 
-	private MiningVector directAssignmentNext() throws MiningException{
+	private MiningVector directAssignmentNext() throws MiningException, IOException, CsvException {
 		MiningVector cursorVector = readPhysicalRecord();
 		if(cursorVector == null){
 			System.out.println(" return null \n");
@@ -660,7 +663,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 	 }
 	
 	
-	private MiningVector reversePivotAssignmentNext() throws MiningException{
+	private MiningVector reversePivotAssignmentNext() throws MiningException, IOException, CsvException {
 		System.out.println("\n\nresult of NEXT() : \n");
 		boolean isEmptyRecord = true;
 		

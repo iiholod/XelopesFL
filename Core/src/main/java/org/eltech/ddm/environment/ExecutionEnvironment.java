@@ -1,5 +1,6 @@
 package org.eltech.ddm.environment;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.handlers.MiningExecutorFactory;
 import org.eltech.ddm.handlers.ParallelExecutionException;
 import org.eltech.ddm.miningcore.MiningErrorCode;
@@ -7,6 +8,7 @@ import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.*;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public abstract class ExecutionEnvironment<T extends MiningExecutor, F extends M
 
     protected abstract void initEnvironment() throws ParallelExecutionException;
 
-    protected MiningExecutor createExecutorTree(MiningSequence sequence) throws MiningException {
+    protected MiningExecutor createExecutorTree(MiningSequence sequence) throws MiningException, IOException, CsvException {
         //MiningExecutor mainHandler = getMiningExecutorFactory().create(sequence);
         List<MiningExecutor> execs = createExecutors(sequence);
         MiningExecutor mainHandler = execs.get(0);
@@ -29,7 +31,7 @@ public abstract class ExecutionEnvironment<T extends MiningExecutor, F extends M
         return mainHandler;
     }
 
-    protected void fullExecutor(MiningBlock miningBlock, MiningExecutor executor) throws MiningException {
+    protected void fullExecutor(MiningBlock miningBlock, MiningExecutor executor) throws MiningException, IOException, CsvException {
         List<MiningBlock> blockList = getChildrenMiningBlock(miningBlock);
 
         for (MiningBlock block : blockList) {
@@ -76,10 +78,10 @@ public abstract class ExecutionEnvironment<T extends MiningExecutor, F extends M
         return new ArrayList<>();
     }
 
-    public abstract void deploy(MiningAlgorithm algorithm) throws MiningException;
+    public abstract void deploy(MiningAlgorithm algorithm) throws MiningException, IOException, CsvException;
 
 
-    protected abstract List<MiningExecutor> createExecutors(MiningBlock bl) throws MiningException;
+    protected abstract List<MiningExecutor> createExecutors(MiningBlock bl) throws MiningException, IOException, CsvException;
 
 
     public EMiningModel runAlgorithm(EMiningModel initModel) throws MiningException {
