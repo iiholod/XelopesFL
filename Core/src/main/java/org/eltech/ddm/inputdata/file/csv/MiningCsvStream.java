@@ -1,5 +1,10 @@
 package org.eltech.ddm.inputdata.file.csv;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.ArrayList;
+import java.util.stream.Stream;
+
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
@@ -11,11 +16,6 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.ArrayList;
-import java.util.stream.Stream;
 
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.miningcore.miningdata.*;
