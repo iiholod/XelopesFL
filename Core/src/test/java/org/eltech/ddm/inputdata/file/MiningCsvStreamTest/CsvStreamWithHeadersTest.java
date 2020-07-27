@@ -1,5 +1,7 @@
 package org.eltech.ddm.inputdata.file.MiningCsvStreamTest;
 
+import java.io.IOException;
+
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
@@ -12,7 +14,6 @@ import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
 import org.eltech.ddm.miningcore.miningdata.EAttributeAssignmentSet;
 import org.eltech.ddm.miningcore.miningdata.EDirectAttributeAssignment;
 
-import java.io.IOException;
 
 /**
  * Inheritor of the MiningCsvStreamTest class.
