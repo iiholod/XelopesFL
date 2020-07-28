@@ -166,7 +166,26 @@ public class ELogicalData extends LogicalData implements Cloneable
       return description;
     }
 
-    public Object clone() {
+	@Override
+	public boolean equals(Object obj) {
+    	ELogicalData ld = (ELogicalData)obj;
+    	if(this.getAttributesNumber() != ld.getAttributesNumber()) return false;
+
+    	for (int i = 0; i< this.getAttributesNumber(); i++) {
+			String firstName = null, secName = null;
+			try {
+				firstName = this.getAttribute(i).getName();
+				secName = ld.getAttribute(i).getName();
+			} catch (MiningException e) {
+				e.printStackTrace();
+			}
+			if (!firstName.equals(secName)) return false;
+		}
+
+    	return true;
+	}
+
+	public Object clone() {
 		ELogicalData o = null;
 		o = (ELogicalData) super.clone();
 

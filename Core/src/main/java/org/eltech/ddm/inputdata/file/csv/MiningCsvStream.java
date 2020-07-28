@@ -23,17 +23,6 @@ import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.inputdata.file.MiningFileStream;
 import org.eltech.ddm.inputdata.file.common.CloneableStream;
 
-/**
- * This class is an adapter for CSV Parser from Univocity Team.
- * Basically, it encapsulates logic for reading CSV data effectively
- * without loading it into memory.
- * Parser could be configured in a different way such as:
- * <p>
- * 1) Read rows of the file (Horizontal Separation)
- * 2) Read columns of the file (Vertical Separation)
- * 3) Batching input in case of the large data
- * 4) Separate thread option in order not to lock the main thread
- */
 public class MiningCsvStream extends MiningFileStream implements CloneableStream {
 
     /*
@@ -333,6 +322,10 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
                                     .withCSVParser(csvParser)
                                     .build()
                                     .peek();
+    }
+
+    public CsvParsingSettings getSettings() {
+        return settings;
     }
 
     public static MiningCsvStream createWithoutInit(String file) {

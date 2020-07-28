@@ -12,8 +12,5 @@ import java.util.ArrayList;
  *  @author Holod Ivan
  */
 public abstract class LogicalData extends Class {
-
 	protected ArrayList<LogicalAttribute> feature;
-
-
 }
