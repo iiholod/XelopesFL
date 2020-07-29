@@ -50,7 +50,6 @@ public class ELogicalData extends LogicalData implements Cloneable
 	 * @param attribute - A logical attribute to be added.
 	 * @throws MiningException
 	 */
-	@Deprecated
 	public void addAttribute(ELogicalAttribute attribute) throws MiningException {
 		String name = attribute.getName();
 		ELogicalAttribute attr = getAttribute(name);

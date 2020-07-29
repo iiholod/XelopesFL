@@ -324,10 +324,6 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
                                     .peek();
     }
 
-    public CsvParsingSettings getSettings() {
-        return settings;
-    }
-
     public static MiningCsvStream createWithoutInit(String file) {
         return new MiningCsvStream(file);
     }
