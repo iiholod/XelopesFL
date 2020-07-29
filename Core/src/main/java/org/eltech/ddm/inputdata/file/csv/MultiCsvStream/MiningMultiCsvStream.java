@@ -11,6 +11,13 @@ import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.PhysicalData;
 
 import java.io.IOException;
 
+/**
+ * MiningMultiCsvStream class.
+ * A class that allows you to read multiple csv-files 'vertically' or 'horizontally'.
+ *
+ * @author Maxim Kolpashikov
+ */
+
 abstract class MiningMultiCsvStream {
     protected boolean isOpen = false;
 

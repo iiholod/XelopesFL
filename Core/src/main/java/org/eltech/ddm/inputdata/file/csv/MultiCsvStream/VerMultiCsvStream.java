@@ -16,6 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
 
+/**
+ * VerMultiCsvStream class.
+ * A class that allows you to read multiple csv-files 'vertically'.
+ *
+ * @author Maxim Kolpashikov
+ */
+
 public class VerMultiCsvStream extends MiningMultiCsvStream {
     // -----------------------------------------------------------------------
     //  Constructors

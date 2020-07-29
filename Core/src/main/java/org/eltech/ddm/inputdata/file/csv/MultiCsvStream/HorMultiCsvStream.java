@@ -11,6 +11,12 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 
+/**
+ * HorMultiCsvStream class.
+ * A class that allows you to read multiple csv-files 'horizontally'.
+ *
+ * @author Maxim Kolpashikov
+ */
 
 public class HorMultiCsvStream extends MiningMultiCsvStream {
 
