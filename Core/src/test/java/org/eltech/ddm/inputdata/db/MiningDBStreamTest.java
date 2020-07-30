@@ -5,6 +5,8 @@ import org.eltech.ddm.miningcore.MiningException;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class MiningDBStreamTest {
     private String url;
     private String user;
@@ -13,16 +15,17 @@ public class MiningDBStreamTest {
 
     @Before
     public void setUp() throws Exception {
-        url = "jdbc:postgresql://localhost:5432/kddcup";
+        url = "jdbc:postgresql://localhost:5432/iris";
         user = "postgres";
         password = "qwerty";
-        tableName = "iris2";
+        tableName = "iris";
+
     }
 
     @Test
     public void connectionTest() throws MiningException {
         MiningDBStream miningDBStream = new MiningDBStream(url, user, password, tableName);
-        MiningVector vector = miningDBStream.movePhysicalRecord(6);
-        System.out.println(vector);
+        // Проверка на колличество столбцов
+        assertEquals  (5,miningDBStream.getLogicalData().getAttributesNumber());
     }
 }

@@ -389,7 +389,7 @@ public class MiningDBStream extends MiningInputStream {
      * Получение данных тз БД
      */
     private void getData() throws MiningDataException {
-        String getDataQuery = "select * from " + tableName + " order by " + allSettings.entrySet().iterator().next().getKey();
+        String getDataQuery = "select * from " + tableName/* + " order by " + allSettings.entrySet().iterator().next().getKey()*/;
         Statement stmt;
 
         try {
@@ -404,7 +404,7 @@ public class MiningDBStream extends MiningInputStream {
      * Получение названий и типов данных всех столбцов
      * @return объект всех названий столбцов и их типов данных
      */
-    private Map<String, String> getColumnsInfo() throws MiningDataException {
+    public Map<String, String> getColumnsInfo() throws MiningDataException {
         ResultSet rs;
         Map<String, String> columnsInfo;
 
