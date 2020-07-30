@@ -246,6 +246,10 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
         }
     }
 
+    public void setParsingValuesList(List<String>[] list) {
+        this.parsingValues = list;
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -18,7 +18,7 @@ import java.io.IOException;
  * @author Maxim Kolpashikov
  */
 
-abstract class MiningMultiCsvStream {
+public abstract class MiningMultiCsvStream {
     protected boolean isOpen = false;
 
     protected int vectorsNumber = 0;
@@ -31,17 +31,17 @@ abstract class MiningMultiCsvStream {
     //  Abstract methods
     // -----------------------------------------------------------------------
 
-    abstract void close() throws IOException;
+    public abstract void close() throws IOException;
 
-    abstract void open() throws IOException, MiningException, CsvException;
+    public abstract void open() throws IOException, MiningException, CsvException;
 
-    abstract void reset() throws IOException, CsvException, MiningException;
+    public abstract void reset() throws IOException, CsvException, MiningException;
 
-    abstract MiningMultiCsvStream getCopy() throws MiningException, IOException, CsvException;
+    public abstract MiningMultiCsvStream getCopy() throws MiningException, IOException, CsvException;
 
-    abstract MiningVector next() throws CsvException, IOException, MiningException ;
+    public abstract MiningVector next() throws CsvException, IOException, MiningException ;
 
-    abstract MiningVector getVector(int pos) throws CsvException, IOException, MiningException ;
+    public abstract MiningVector getVector(int pos) throws CsvException, IOException, MiningException ;
 
     // -----------------------------------------------------------------------
     //  Converting the files to stream
@@ -104,7 +104,7 @@ abstract class MiningMultiCsvStream {
      * Returns a physical data.
      * @return physical data
      */
-    public PhysicalData getPhysicalData() throws CsvException, IOException, MiningException {
+    public EPhysicalData getPhysicalData() throws CsvException, IOException, MiningException {
         open();
         return physicalData;
     }

@@ -1,7 +1,6 @@
 package org.eltech.ddm.inputdata.file.csv.MultiCsvStream;
 
 import com.opencsv.exceptions.CsvException;
-import com.sun.istack.internal.NotNull;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
@@ -24,6 +23,9 @@ import java.util.MissingResourceException;
  */
 
 public class VerMultiCsvStream extends MiningMultiCsvStream {
+
+    private List<String>[] parsingValues;
+
     // -----------------------------------------------------------------------
     //  Constructors
     // -----------------------------------------------------------------------
@@ -33,7 +35,8 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * At this stage, an array of threads with standard settings is created.
      * @param files - array of csv-file names
      */
-    public VerMultiCsvStream(@NotNull String[] files) throws MiningException, IOException, CsvException {
+    public VerMultiCsvStream(String[] files) throws MiningException, IOException, CsvException {
+        if (files == null) throw  new NullPointerException("The file array is empty.");
         init(getStreams(files));
     }
 
@@ -43,8 +46,10 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * @param files    - array of csv-file names
      * @param settings - settings for reading files
      */
-    public VerMultiCsvStream(@NotNull String[] files, @NotNull CsvParsingSettings settings)
+    public VerMultiCsvStream(String[] files, CsvParsingSettings settings)
             throws MiningException, IOException, CsvException {
+        if (files == null) throw  new NullPointerException("The file array is empty.");
+        if(settings == null) settings = new CsvParsingSettings();
         init(getStreams(files, settings));
     }
 
@@ -53,7 +58,8 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * At this stage, the logical data of the csv-files that must match is checked.
      * @param streams - array of streams
      */
-    public VerMultiCsvStream(@NotNull MiningCsvStream[] streams) throws MiningException, IOException, CsvException {
+    public VerMultiCsvStream(MiningCsvStream[] streams) throws MiningException, IOException, CsvException {
+        if (streams == null) throw  new NullPointerException("The stream array is empty.");
         init(streams);
     }
 
@@ -62,11 +68,12 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * @param streams - array of streams
      */
     private void init(MiningCsvStream[] streams) throws MiningException, IOException, CsvException {
-        if (vectorsNumberChecked()) {
+        if (vectorsNumberChecked(streams)) {
             super.streams = streams;
-            super.vectorsNumber = streams[0].getVectorsNumber();
             super.logicalData = collectLogicalData();
             super.physicalData = collectPhysicalData();
+            super.vectorsNumber = streams[0].getVectorsNumber();
+            this.parsingValues = new ArrayList[logicalData.getAttributes().size()];
         } else {
             throw new InvalidObjectException("There are different number of vectors in the files.");
         }
@@ -76,7 +83,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * checks that the number of vectors in the files is the same
      * @return <b>true</b> if the number of vectors matches, <b>false</b> if the number of vectors does not match
      */
-    private boolean vectorsNumberChecked() throws MiningException, IOException, CsvException {
+    private boolean vectorsNumberChecked(MiningCsvStream[] streams) throws MiningException, IOException, CsvException {
         int number = streams[0].getVectorsNumber();
         for (int i = 1; i < streams.length; i++) {
             if (streams[i].getVectorsNumber() != number) return false;
@@ -212,6 +219,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
         isOpen = true;
         for (MiningCsvStream stream : streams) {
             stream.open();
+            stream.setParsingValuesList(parsingValues);
         }
     }
 
