@@ -1,6 +1,7 @@
 package org.eltech.ddm.miningcore.miningtask;
 
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.environment.ExecutionEnvironment;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.MiningAlgorithm;
@@ -11,6 +12,8 @@ import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningmodel.MiningModel;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningtask.MiningBuildTask;
+
+import java.io.IOException;
 
 /**
  * CWM Class
@@ -226,7 +229,7 @@ public class EMiningBuildTask extends MiningBuildTask // implements BuildTask
 		return true;
 	}
 
-	public MiningModel execute() throws MiningException {
+	public MiningModel execute() throws MiningException, IOException, CsvException {
 		
 		verify();
 

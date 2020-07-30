@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package org.eltech.ddm.inputdata;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
@@ -35,6 +36,8 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.CategoryProperty;
+
+import java.io.IOException;
 
 /**
  * Extension of MiningInputStreams for arrays. Can only be
@@ -148,13 +151,11 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
      * @exception IllegalArgumentException empty input stream
      * @exception MiningException could not create array stream
      */
-    public MiningArrayStream( MiningInputStream inputStream ) throws IllegalArgumentException, MiningException
-    {
+    public MiningArrayStream( MiningInputStream inputStream ) throws IllegalArgumentException, MiningException, IOException, CsvException {
     	defConstructor(inputStream);
     }
 
-    public MiningArrayStream( MiningArrayStream inputStream ) throws IllegalArgumentException, MiningException
-    {
+    public MiningArrayStream( MiningArrayStream inputStream ) throws IllegalArgumentException, MiningException, IOException {
         // No input stream => exception:
         if( inputStream == null )
             throw new IllegalArgumentException( "MiningInputStream can't be null." );
@@ -347,9 +348,7 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
 
     // changing in MiningUnputStream heirs
     //synchronized public boolean next() throws MiningException
-    synchronized public MiningVector readPhysicalRecord() throws MiningException
-
-    {
+    synchronized public MiningVector readPhysicalRecord() throws MiningException, IOException, CsvException {
         if (!open)
           throw new MiningException(MiningErrorCode.INVALID_INPUT_DATA,"Can't perform operation on closed stream. Call open()");
 
@@ -492,7 +491,7 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
 		return o;
 	}
 
-    private void defConstructor(MiningInputStream inputStream) throws MiningException {
+    private void defConstructor(MiningInputStream inputStream) throws MiningException, IOException, CsvException {
 
         // No input stream => exception:
         if( inputStream == null )

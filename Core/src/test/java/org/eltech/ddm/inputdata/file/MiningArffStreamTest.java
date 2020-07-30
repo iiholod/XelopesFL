@@ -1,5 +1,6 @@
 package org.eltech.ddm.inputdata.file;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.AttributeDataType;
@@ -10,6 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -122,7 +125,11 @@ public class MiningArffStreamTest {
 		} catch (MiningException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} catch (IOException exception) {
+			 exception.printStackTrace();
+		 } catch (CsvException e) {
+			 e.printStackTrace();
+		 }
 	}
 
 }

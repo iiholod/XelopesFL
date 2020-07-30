@@ -1,15 +1,15 @@
 package org.eltech.ddm.environment;
 
-
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.handlers.MiningExecutorFactory;
 import org.eltech.ddm.handlers.ParallelExecutionException;
 import org.eltech.ddm.handlers.thread.ConcurrencyExecutorFactory;
 import org.eltech.ddm.inputdata.file.common.FileSeparator;
-import org.eltech.ddm.inputdata.file.csv.CsvFileSeparator;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +32,6 @@ public class ConcurrentCSVExecutionEnvironment extends ExecutionEnvironment {
     private int threadNumber = 1;
     private static final int START_POSITION = 0;
     private String mainDataFile;
-    private FileSeparator<MiningCsvStream> separator = new CsvFileSeparator();
     private static List<MiningCsvStream> streams = new ArrayList<>();
 
     /**
@@ -42,13 +41,11 @@ public class ConcurrentCSVExecutionEnvironment extends ExecutionEnvironment {
      * @param threadNumber - count of threads to use
      * @throws ParallelExecutionException - in case of the parallel exec error
      */
-    public ConcurrentCSVExecutionEnvironment(String file, int threadNumber) throws MiningException {
+    public ConcurrentCSVExecutionEnvironment(String file, int threadNumber) throws MiningException, IOException {
         LOGGER.info(String.format("[INITIATING ENVIRONMENT FOR THE NEXT TARGET FILE: %s] [HANDLERS: %d]", file, threadNumber));
         this.mainDataFile = file;
         this.threadNumber = threadNumber;
-        streams = threadNumber == 1
-                ? Collections.singletonList(new MiningCsvStream(mainDataFile, null, false))
-                : separator.separate(mainDataFile, threadNumber);
+        streams = Collections.singletonList(new MiningCsvStream(mainDataFile));
         initEnvironment();
     }
 
@@ -64,7 +61,7 @@ public class ConcurrentCSVExecutionEnvironment extends ExecutionEnvironment {
      * {@inheritDoc}
      */
     @Override
-    protected List<MiningExecutor> createExecutors(MiningBlock block) throws MiningException {
+    protected List<MiningExecutor> createExecutors(MiningBlock block) throws MiningException, IOException, CsvException {
         List<MiningExecutor> execs = new ArrayList<>();
         if (block instanceof MiningLoopVectors) {
             MiningLoopVectors bl = (MiningLoopVectors) block;
@@ -92,7 +89,7 @@ public class ConcurrentCSVExecutionEnvironment extends ExecutionEnvironment {
     /**
      * {@inheritDoc}
      */
-    public void deploy(MiningAlgorithm algorithm) throws MiningException {
+    public void deploy(MiningAlgorithm algorithm) throws MiningException, IOException, CsvException {
         mainExecutor = createExecutorTree(algorithm.getCentralizedParallelAlgorithm());
     }
 

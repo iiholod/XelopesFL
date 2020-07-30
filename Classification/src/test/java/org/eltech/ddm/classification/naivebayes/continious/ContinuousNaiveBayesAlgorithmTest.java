@@ -1,10 +1,10 @@
 package org.eltech.ddm.classification.naivebayes.continious;
 
-import com.univocity.parsers.csv.CsvParserSettings;
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.environment.ConcurrentCSVExecutionEnvironment;
 import org.eltech.ddm.inputdata.file.common.FileSeparator;
-import org.eltech.ddm.inputdata.file.csv.CsvFileSeparator;
+import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.MiningAlgorithm;
@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -38,27 +39,11 @@ public class ContinuousNaiveBayesAlgorithmTest {
 
     @Before
     public void setUp() throws Exception {
-        CsvParserSettings settings = getCsvParserSettings();
-        this.inputData = new MiningCsvStream("E:\\data\\data\\test.csv", settings, true);
-    }
-
-    private CsvParserSettings getCsvParserSettings() {
-        CsvParserSettings settings = new CsvParserSettings();
-        settings.setDelimiterDetectionEnabled(true);
-        settings.setHeaderExtractionEnabled(true);
-        return settings;
-    }
-
-
-    @Test
-    public void testSeparation() throws FileNotFoundException {
-        FileSeparator<MiningCsvStream> separator = new CsvFileSeparator();
-        List<MiningCsvStream> separate = separator.separate("diabet-data.csv", 2);
-        Assert.assertEquals(separate.size(), 2);
+        this.inputData = new MiningCsvStream("E:\\data\\data\\test.csv", new CsvParsingSettings());
     }
 
     @Test
-    public void test() throws MiningException {
+    public void test() throws MiningException, IOException, CsvException {
         createMiningSettings();
         for (String fileName : TEST_FILES) {
             ContinuousBayesModel resultModel = (ContinuousBayesModel) createBuidTask(fileName).execute();
@@ -67,7 +52,7 @@ public class ContinuousNaiveBayesAlgorithmTest {
 
     }
 
-    private EMiningBuildTask createBuidTask(String targetFile) throws MiningException {
+    private EMiningBuildTask createBuidTask(String targetFile) throws MiningException, IOException {
         MiningAlgorithm algorithm = new ContinuousNaiveBayesAlgorithm(miningSettings);
         ConcurrentCSVExecutionEnvironment environment = new ConcurrentCSVExecutionEnvironment(targetFile, HANDLERS_NUMBER);
 

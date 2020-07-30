@@ -27,6 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package org.eltech.ddm.inputdata.file;
 
+import com.opencsv.exceptions.CsvException;
+import com.opencsv.exceptions.CsvValidationException;
 import org.eltech.ddm.inputdata.MiningSparseVector;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.miningcore.MiningDataException;
@@ -71,8 +73,7 @@ public class MiningArffStream extends MiningFileStream
      * @param logicalData meta data of file data
      * @throws MiningException invalid file path or format error
      */
-    public MiningArffStream( String dataFileName, ELogicalData logicalData ) throws MiningException
-    {
+    public MiningArffStream( String dataFileName, ELogicalData logicalData ) throws MiningException, IOException {
         super( dataFileName, logicalData );
         fileName = dataFileName;
         if( logicalData == null )
@@ -80,7 +81,6 @@ public class MiningArffStream extends MiningFileStream
         	physicalData = recognize();
         }
         open();
-//        reset();
     }
 
     /**
@@ -91,8 +91,7 @@ public class MiningArffStream extends MiningFileStream
      * @param dataFileName path of ARFF file to access
      * @throws MiningException invalid file path or format error
      */
-    public MiningArffStream( String dataFileName ) throws MiningException
-    {
+    public MiningArffStream( String dataFileName ) throws MiningException, IOException {
         super( dataFileName );
         fileName = dataFileName;
         physicalData = recognize();
@@ -110,8 +109,7 @@ public class MiningArffStream extends MiningFileStream
      * @exception MiningException if the information is not read
      * successfully
     */
-    synchronized public EPhysicalData recognize() throws MiningException
-    {
+    synchronized public EPhysicalData recognize() throws MiningException, IOException {
         boolean wasOpen = this.isOpen();
         if(!this.isOpen())
           this.open();
@@ -226,13 +224,9 @@ public class MiningArffStream extends MiningFileStream
                     else
                     if (token.equalsIgnoreCase("string"))
                     {
-
                     	la.setAttributeType(AttributeType.categorical);
                     	pa.setAttributeType(AttributeType.categorical);
                     	pa.setDataType( AttributeDataType.stringType);
-//                    	CategoricalAttribute stringAttribute = new CategoricalAttribute( attributeName );
-//                        stringAttribute.setUnboundedCategories(true);
-//                        metaData.addMiningAttribute( stringAttribute );
                     }
                     else
                     {
@@ -241,9 +235,9 @@ public class MiningArffStream extends MiningFileStream
                 }
                 logicalData.addAttribute( la );
                 physicalData.addAttribute(pa);
-                da.addLogicalAttribute(la);   				// ������ ����������� ��������
-                da.setAttribute(pa);       					// ������ ����������� ��������
-                attributeAssignmentSet.addAssignment(da);   	// ���������� ������������ � �����
+                da.addLogicalAttribute(la);
+                da.setAttribute(pa);
+                attributeAssignmentSet.addAssignment(da);
                 token = getNextToken();
                 if( !token.equalsIgnoreCase( "endofline" ) )
                 {
@@ -280,8 +274,7 @@ public class MiningArffStream extends MiningFileStream
      *
      * @throws MiningException reset error
      */
-    synchronized public void reset() throws MiningException
-    {
+    synchronized public void reset() throws MiningException, FileNotFoundException {
         if(!isOpen())
           throw new MiningDataException("Can't reset closed stream. Call open()");
 
@@ -295,161 +288,6 @@ public class MiningArffStream extends MiningFileStream
         cursorPosition = -1;
     }
 
-//    /**
-//     * Advance cursor by one position.
-//     *
-//     * @return true if next vector exists, else false
-//     * @throws MiningException can't advance cursor
-//     */
-//    synchronized public boolean next() throws MiningException
-//    {
-//        if(!isOpen())
-//          throw new MiningDataException("Can't perform operation on closed stream. Call open()");
-//
-//        // Check if end of file reached.
-//        String token = getNextToken();
-//        while( token.equalsIgnoreCase( "endofline" ) )
-//        {
-//            token = getNextToken();
-//        }
-//        if( token.equalsIgnoreCase( "endoffile" ) )
-//        {
-//            return false;
-//        }
-//        if( !token.equals( "{" ) )
-//        {
-//            double[] instance = new double[ logicalData.getAttributesNumber() ];
-//            // Get values for all attributes.
-//            for (int i = 0; i < physicalData.getAttributeCount(); i++)
-//            {
-//                // Get next token
-//                if (i > 0)
-//                {
-//                    token = getNextToken();
-//                }
-//                ELogicalAttribute la = logicalData.getAttribute( i );
-//                PhysicalAttribute pa = physicalData.getAttribute( i );
-//                if (la.getAttributeType() == AttributeType.categorical)
-//                {
-//                	if(token.equals("?")) {// missing
-//                		instance[i] = la.getCategoricalProperties().addCategory(token, CategoryProperty.missing);
-//                		missingValues = true;
-//                	}
-//                	else{
-//                		Integer indexCategory = la.getCategoricalProperties().getIndex(token);
-//                		if(indexCategory == null)
-//                			instance[i] = la.getCategoricalProperties().addCategory(token, CategoryProperty.invalid);
-//                		else
-//                			instance[i] = indexCategory.doubleValue();
-//                	}
-//                }
-//                else
-//                {
-//                  try {
-//                    instance[i] = Double.parseDouble(token);
-//                  }
-//                  catch(NumberFormatException ex) {
-//                    instance[i] = Double.NaN;
-//                    missingValues = true;
-//                  }
-//                }
-//            }
-//            token = getNextToken();
-//            if( !token.equalsIgnoreCase( "endofline" ) )
-//            {
-//                if( !token.equalsIgnoreCase( "endoffile" ) )
-//                {
-//                    tokenizerException( "end of line expected" );
-//                }
-//            }
-//            // Add instance to dataset
-//            cursorVector = new MiningVector(instance);
-//            cursorVector.setLogicalData( logicalData );
-//            cursorPosition++;
-//            return true;
-//        }
-//        else
-//        {
-//            double[] m_ValueBuffer = new double[ logicalData.getAttributesNumber()];
-//            int[] m_IndicesBuffer = new int[ logicalData.getAttributesNumber()];
-//            int valIndex, numValues = 0, maxIndex = -1;
-//            do
-//            {
-//                token = getNextToken();
-//                if (tokenizer.ttype == '}')
-//                {
-//                    break;
-//                }
-//                // Is index valid?
-//                try
-//                {
-//                    m_IndicesBuffer[numValues] = Integer.valueOf( token ).intValue();
-//                }
-//                catch(NumberFormatException e)
-//                {
-//                    tokenizerException( "index number expected" );
-//                }
-//                if( m_IndicesBuffer[numValues] <= maxIndex )
-//                {
-//                    tokenizerException( "indices have to be ordered" );
-//                }
-//                if( ( m_IndicesBuffer[numValues] < 0 ) || ( m_IndicesBuffer[numValues] >= logicalData.getAttributesNumber()  ) )
-//                {
-//                    tokenizerException( "index out of bounds" );
-//                }
-//                maxIndex = m_IndicesBuffer[numValues];
-//                // Get value;
-//                token = getNextToken();
-//                ELogicalAttribute la = logicalData.getAttribute( m_IndicesBuffer[numValues] );
-//            	if(token.equals("?")) {// missing
-//            		m_ValueBuffer[numValues] = la.getCategoricalProperties().addCategory(token, CategoryProperty.missing);
-//            		missingValues = true;
-//            	}
-//            	else if(la.getAttributeType() == AttributeType.categorical)
-//                {
-//                	m_ValueBuffer[numValues] = la.getCategoricalProperties().addCategory(token, CategoryProperty.invalid);
-//                }
-//                else m_ValueBuffer[numValues] = Double.parseDouble( token );
-//                numValues++;
-//            }
-//            while( true );
-//            token = getNextToken();
-//            if( !token.equalsIgnoreCase( "endofline" ) )
-//            {
-//                if( !token.equalsIgnoreCase( "endoffile" ) )
-//                {
-//                    tokenizerException( "end of line expected" );
-//                }
-//            }
-//            // Add instance to dataset
-//            double[] tempValues = new double[numValues];
-//            int[] tempIndices = new int[numValues];
-//            System.arraycopy(m_ValueBuffer, 0, tempValues, 0, numValues);
-//            System.arraycopy(m_IndicesBuffer, 0, tempIndices, 0, numValues);
-//            // Add instance to dataset
-//            cursorVector = new MiningSparseVector( 1, tempValues, tempIndices );
-//            cursorVector.setLogicalData( logicalData );
-//            cursorPosition++;
-//            return true;
-//        }
-//    }
-
-    // -----------------------------------------------------------------------
-    //  Methods of reading from the stream
-    // -----------------------------------------------------------------------
-    /**
-     * Reads current data vector.
-     *
-     * @return data vector at current cursor position
-     * @throws MiningException read error
-     */
-//    synchronized protected MiningVector readVector() throws MiningException
-//    {
-//      if(!isOpen())
-//        throw new MiningDataException("Can't perform operation on closed stream. Call open()");
-//
-//        return cursorVector;
-//    }
 
     // -----------------------------------------------------------------------
     //  Methods of writing into the stream
@@ -497,29 +335,6 @@ public class MiningArffStream extends MiningFileStream
 
         }
 
-
-        /**
-         * Removes all mining vectors from this stream. Note that metadata is not
-         * affected by this operation since it is fixed for any stream.
-         *
-         * @exception MiningException if an error occurs
-         */
-//        public void updateRemoveAllVectors() throws MiningException
-//        {
-//          try {
-//            if (writer != null) writer.close();
-//            writer = new PrintWriter( new FileWriter( fileName ) );
-//            writer.println( logicalData.createArffDescription() );
-////            writer.println();
-//            writer.println("@data");
-//          }
-//          catch (Exception ex) {
-//            throw new MiningDataException("Can't write to file: "+fileName);
-//          };
-//        };
-
-
-
         /**
          * Appends new mining vector to this stream. Only for updateble
          * input streams. Before using this method the first time,
@@ -555,8 +370,7 @@ public class MiningArffStream extends MiningFileStream
          *
          * @exception MiningException if a mining source access error occurs
          */
-        public void close() throws MiningException
-        {
+        public void close() throws MiningException, IOException {
           super.close();
           try
           {
@@ -632,43 +446,8 @@ public class MiningArffStream extends MiningFileStream
         throw new MiningDataException( message + ", read " + tokenizer.toString() );
     }
 
-    /**
-     * Representation as string in Arff format. Attention: changes cursor position.
-     *
-     * @return representation of mining input stream as string
-     */
-//    public String createArffDescription() {
-//
-//      // Meta data:
-//      String description = logicalData.createArffDescription() + "\n";
-//
-//      // Data:
-//      description = description + "@data" + "\n";
-//      // Try to reset stream:
-//      try {
-//        reset();
-//      }
-//      catch (MiningException ex) {
-//        description = description + "Warning: can't reset cursor. " +
-//                      "Start reading at current position" + "\n";
-//      };
-//      // Read data:
-//      int i = 0;
-//      try {
-//        while( next() )
-//          description = description + read() + "\n";
-//        i++;
-//      }
-//      catch (Exception ex) {
-//        description = description + "Error: can't read vector " + i;
-//      };
-//
-//      return description;
-//    }
-
-
 	@Override
-	synchronized protected MiningVector movePhysicalRecord(int position) throws MiningException {
+	synchronized protected MiningVector movePhysicalRecord(int position) throws MiningException, IOException, CsvException {
 		MiningVector mv = null;
 		if(getCurrentPosition() < position)
 		{
@@ -681,44 +460,13 @@ public class MiningArffStream extends MiningFileStream
 			do{mv = next();}
 			while((mv != null) && (getCurrentPosition() < position));
 		};
-	//		if(getCurrentPosition() == position)
-	//			return mv;
-	//		else
-	//			return null;
+
 		return mv;
 	}
-    
 
-//	@Override
-//	synchronized protected MiningVector move(int position) throws MiningException {
-		//old
-//		MiningVector mv = null;
-//		if(getCurrentPosition() < position)
-//		{
-//			do{mv = next();}
-//			while((mv!= null) && (getCurrentPosition() < position));
-//		}
-//		else
-//		{
-//			reset();
-//			do{mv = next();}
-//			while((mv != null) && (getCurrentPosition() < position));
-//		};
-////		if(getCurrentPosition() == position)
-////			return mv;
-////		else
-////			return null;
-//		return mv;
-//	}
-	
-	
 	@Override
 	public Object clone() {
 		MiningArffStream o = (MiningArffStream)super.clone();	    
-		
-//		if(isOpen())
-//			o.initTokenizer(o.reader);
-
 		return o;
 	}
 	

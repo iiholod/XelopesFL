@@ -1,5 +1,6 @@
 package org.eltech.ddm.environment;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.handlers.MiningExecutorFactory;
 import org.eltech.ddm.handlers.ParallelExecutionException;
 import org.eltech.ddm.handlers.thread.ConcurrencyExecutorFactory;
@@ -8,6 +9,7 @@ import org.eltech.ddm.inputdata.file.common.CloneableStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class ConcurrencyExecutionEnvironment extends ExecutionEnvironment {
     }
 
     @Override
-    protected List<MiningExecutor> createExecutors(MiningBlock block) throws MiningException {
+    protected List<MiningExecutor> createExecutors(MiningBlock block) throws MiningException, IOException, CsvException {
         List<MiningExecutor> execs = new ArrayList<>();
         if (block instanceof MiningLoopVectors) {
             MiningLoopVectors bl = (MiningLoopVectors) block;
@@ -62,7 +64,7 @@ public class ConcurrencyExecutionEnvironment extends ExecutionEnvironment {
         return execs;
     }
 
-    public void deploy(MiningAlgorithm algorithm) throws MiningException {
+    public void deploy(MiningAlgorithm algorithm) throws MiningException, IOException, CsvException {
 //		if(numberThreads > 1) {
         mainExecutor = createExecutorTree(algorithm.getCentralizedParallelAlgorithm());
         //fullExecutorsByData(mainExecutor);
