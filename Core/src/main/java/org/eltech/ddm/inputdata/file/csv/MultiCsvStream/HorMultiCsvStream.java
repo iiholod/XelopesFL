@@ -4,6 +4,7 @@ import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
+import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 
@@ -23,7 +24,7 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
 
     private int activeStreamIndex;
     private MiningCsvStream activeStream;
-    private List<String>[] parsingValues;
+    private List<ParsingValues> parsingValues;
 
     // -----------------------------------------------------------------------
     //  Constructors
@@ -78,7 +79,7 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
     private void thisInit(MiningCsvStream[] streams) throws MiningException {
         this.activeStreamIndex = 0;
         this.activeStream = streams[0];
-        this.parsingValues = new ArrayList[activeStream.getAttributeAssignmentSet().getSize()];
+        this.parsingValues = new ArrayList();
     }
 
     private void superInit(MiningCsvStream[] streams) throws CsvException, IOException, MiningException {
@@ -176,7 +177,7 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
         isOpen = true;
         for (MiningCsvStream stream : streams) {
             stream.open();
-            stream.setParsingValuesList(parsingValues);
+            stream.setParsingValues(parsingValues);
         }
     }
 

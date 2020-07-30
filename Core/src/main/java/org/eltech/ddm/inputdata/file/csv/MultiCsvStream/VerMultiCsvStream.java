@@ -4,6 +4,7 @@ import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
+import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
@@ -24,7 +25,7 @@ import java.util.MissingResourceException;
 
 public class VerMultiCsvStream extends MiningMultiCsvStream {
 
-    private List<String>[] parsingValues;
+    private List<ParsingValues> parsingValues;
 
     // -----------------------------------------------------------------------
     //  Constructors
@@ -73,7 +74,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
             super.logicalData = collectLogicalData();
             super.physicalData = collectPhysicalData();
             super.vectorsNumber = streams[0].getVectorsNumber();
-            this.parsingValues = new ArrayList[logicalData.getAttributes().size()];
+            this.parsingValues = new ArrayList();
         } else {
             throw new InvalidObjectException("There are different number of vectors in the files.");
         }
@@ -219,7 +220,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
         isOpen = true;
         for (MiningCsvStream stream : streams) {
             stream.open();
-            stream.setParsingValuesList(parsingValues);
+            stream.setParsingValues(parsingValues);
         }
     }
 

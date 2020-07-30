@@ -29,13 +29,11 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
      * Required fields for using parser
      */
     private boolean delayed;
-    private List<String>[] parsingValues;
+    private List<String>[] pv;
+    private List<ParsingValues> parsingValues;
 
     private transient CSVReader parser;
     private transient CsvParsingSettings settings;
-
-/*    private transient CsvParser parser;
-    private transient CsvParserSettings settings;*/
 
     /**
      * Default constructor with configuration provider. If configuration is {@code null}
@@ -86,7 +84,7 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
      * {@inheritDoc}
      */
     @Override
-    public MiningVector readPhysicalRecord() throws IOException, CsvValidationException {
+    public MiningVector readPhysicalRecord() throws IOException, CsvValidationException, MiningException {
         open();
         String[] row = getRow(parser.readNext());
         if (row != null) {
@@ -103,11 +101,11 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
      * Finds columns of rows and assigns them an ordinal number.
      * @param row - array of column values
      */
-    private String[] getRow(String[] row) {
+    private String[] getRow(String[] row) throws MiningException {
         if (row != null) {
             for (int i = 0; i < row.length; i++) {
                 if (!isDigit(row[i]))
-                    row[i] = getIndex(i, row[i]);
+                    row[i] = getIndex(row[i], logicalData.getAttribute(i).getName());
             }
             return row;
         }
@@ -116,22 +114,30 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
 
     /**
      * Sets the index for the string.
-     * @param pos - column number
      * @param value - string to convert
+     * @param attrName - name of attribute
      */
-    private String getIndex(int pos, String value) {
-        if (parsingValues[pos] == null) {
-            parsingValues[pos] = new ArrayList<>();
-            parsingValues[pos].add(value);
+    private String getIndex(String value, String attrName) {
+        if (parsingValues == null) {
+            parsingValues = new ArrayList<>();
+            parsingValues.add(new ParsingValues(attrName));
+            parsingValues.get(0).add(value);
             return "1";
         }
 
-        if (parsingValues[pos].contains(value)) {
-            return Double.toString(parsingValues[pos].indexOf(value) + 1);
-        } else {
-            parsingValues[pos].add(value);
-            return Double.toString(parsingValues[pos].size());
+        for(ParsingValues values : parsingValues) {
+            if (values.getAttributeName().equals(attrName)) {
+                if(values.contains(value)) {
+                    return Double.toString(values.indexOf(value) + 1);
+                } else {
+                    values.add(value);
+                    return Double.toString(values.size());
+                }
+            }
         }
+
+        parsingValues.add(new ParsingValues(attrName, value));
+        return "1";
     }
 
     private boolean isDigit(String value) {
@@ -214,7 +220,8 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
 
     private void initWithContext() throws MiningException, IOException {
         String[] headers = getContext();
-        for (String attrName : headers) {
+        for(int i=0;i<headers.length;i++) {
+            String attrName = headers[i];
             if (Objects.nonNull(attrName)) {
                 ELogicalAttribute la = new ELogicalAttribute(attrName, AttributeType.numerical);
                 PhysicalAttribute pa = new PhysicalAttribute(attrName, AttributeType.numerical, AttributeDataType.doubleType);
@@ -224,7 +231,6 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
                 da.addLogicalAttribute(la);
                 da.setAttribute(pa);
                 attributeAssignmentSet.addAssignment(da);
-                parsingValues = new ArrayList[this.getAttributeAssignmentSet().getSize()];
             }
         }
     }
@@ -242,12 +248,11 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
             da.addLogicalAttribute(la);
             da.setAttribute(pa);
             attributeAssignmentSet.addAssignment(da);
-            parsingValues = new ArrayList[this.getAttributeAssignmentSet().getSize()];
         }
     }
 
-    public void setParsingValuesList(List<String>[] list) {
-        this.parsingValues = list;
+    public void setParsingValues(List<ParsingValues> parsingValues) {
+        this.parsingValues = parsingValues;
     }
 
     /**
