@@ -1,9 +1,12 @@
 package org.eltech.ddm.inputdata.db;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.miningcore.MiningException;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -177,7 +180,7 @@ double[][] values = {
     }
 
     @Test
-    public void vectorTest() throws MiningException, InterruptedException {
+    public void vectorTest() throws MiningException, InterruptedException, IOException, CsvException {
         MiningDBStream miningDBStream = new MiningDBStream(url, user, password, tableName);
         int i,j;
         boolean fra[] = new boolean[150];
