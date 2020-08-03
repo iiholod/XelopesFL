@@ -198,7 +198,6 @@ double[][] values = {
 
              assertEquals(true,Math.abs(values[i][j]-miningDBStream.getVector(i).getValue(j))<threshold);
             }
-
         }
 
     }
