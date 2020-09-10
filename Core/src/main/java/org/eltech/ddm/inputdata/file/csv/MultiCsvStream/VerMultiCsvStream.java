@@ -35,7 +35,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * At this stage, an array of threads with standard settings is created.
      * @param files - array of csv-file names
      */
-    public VerMultiCsvStream(String[] files) throws MiningException, IOException, CsvException {
+    public VerMultiCsvStream(String[] files) throws MiningException {
         if (files == null) throw  new NullPointerException("The file array is empty.");
         init(getStreams(files));
     }
@@ -46,8 +46,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * @param files    - array of csv-file names
      * @param settings - settings for reading files
      */
-    public VerMultiCsvStream(String[] files, CsvParsingSettings settings)
-            throws MiningException, IOException, CsvException {
+    public VerMultiCsvStream(String[] files, CsvParsingSettings settings) throws MiningException {
         if (files == null) throw  new NullPointerException("The file array is empty.");
         if(settings == null) settings = new CsvParsingSettings();
         init(getStreams(files, settings));
@@ -58,7 +57,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * At this stage, the logical data of the csv-files that must match is checked.
      * @param streams - array of streams
      */
-    public VerMultiCsvStream(MiningCsvStream[] streams) throws MiningException, IOException, CsvException {
+    public VerMultiCsvStream(MiningCsvStream[] streams) throws MiningException {
         if (streams == null) throw  new NullPointerException("The stream array is empty.");
         init(streams);
     }
@@ -67,7 +66,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Initializes the class with input data, if the logical data is correct.
      * @param streams - array of streams
      */
-    private void init(MiningCsvStream[] streams) throws MiningException, IOException, CsvException {
+    private void init(MiningCsvStream[] streams) throws MiningException {
         if (vectorsNumberChecked(streams)) {
             super.streams = streams;
             super.logicalData = collectLogicalData();
@@ -75,7 +74,11 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
             super.vectorsNumber = streams[0].getVectorsNumber();
             this.parsingValues = new ArrayList();
         } else {
-            throw new InvalidObjectException("There are different number of vectors in the files.");
+            try {
+                throw new InvalidObjectException("There are different number of vectors in the files.");
+            } catch (InvalidObjectException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -83,7 +86,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * checks that the number of vectors in the files is the same
      * @return <b>true</b> if the number of vectors matches, <b>false</b> if the number of vectors does not match
      */
-    private boolean vectorsNumberChecked(MiningCsvStream[] streams) throws MiningException, IOException, CsvException {
+    private boolean vectorsNumberChecked(MiningCsvStream[] streams) throws MiningException {
         int number = streams[0].getVectorsNumber();
         for (int i = 1; i < streams.length; i++) {
             if (streams[i].getVectorsNumber() != number) return false;
@@ -99,7 +102,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Collects logical data together.
      * @return ELogicalData
      */
-    private ELogicalData collectLogicalData() throws MiningException, IOException, CsvException {
+    private ELogicalData collectLogicalData() throws MiningException {
         ELogicalData logicalData = new ELogicalData();
         for (MiningCsvStream stream : streams) {
             ELogicalData ld = stream.getLogicalData();
@@ -114,7 +117,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Collects physical data together.
      * @return EPhysicalData
      */
-    private EPhysicalData collectPhysicalData() throws MiningException, IOException, CsvException {
+    private EPhysicalData collectPhysicalData() throws MiningException {
         EPhysicalData physicalData = new EPhysicalData();
         for (MiningCsvStream stream : streams) {
             EPhysicalData pa = stream.getPhysicalData();
@@ -134,7 +137,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * @return MiningVector
      */
     @Override
-    public MiningVector next() throws IOException {
+    public MiningVector next() {
 
         open();
         int pos = -1;
@@ -168,7 +171,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * @return MiningVector
      */
     @Override
-    public MiningVector getVector(int pos) throws IOException {
+    public MiningVector getVector(int pos) {
 
         open();
         if (pos < 0) throw new OutOfMemoryError("Invalid index.");
@@ -220,7 +223,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Opens the stream.
      */
     @Override
-    public void open() throws IOException {
+    public void open() {
         if (isOpen) return;
 
         isOpen = true;
@@ -234,7 +237,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Closes the stream.
      */
     @Override
-    public void close() throws IOException {
+    public void close()  {
         if (!isOpen) return;
 
         for (MiningCsvStream stream : streams) {
@@ -247,7 +250,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Updates all streams.
      */
     @Override
-    public void reset() throws IOException {
+    public void reset() {
         open();
 
         for (MiningCsvStream stream : streams) {
@@ -270,7 +273,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * @return HorMultiCsvStream
      */
     @Override
-    public MiningMultiCsvStream getCopy() throws MiningException, IOException, CsvException {
+    public MiningMultiCsvStream getCopy() throws MiningException {
         return new VerMultiCsvStream(streams);
     }
 

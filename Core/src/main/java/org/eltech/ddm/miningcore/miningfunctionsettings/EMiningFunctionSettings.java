@@ -149,7 +149,6 @@ public abstract class EMiningFunctionSettings extends MiningFunctionSettings imp
 
 	/**
 	 * Returns the type of mining function specified for the build settings.
-	 * @return
 	 */
 	public abstract MiningFunction getMiningFunction();
 

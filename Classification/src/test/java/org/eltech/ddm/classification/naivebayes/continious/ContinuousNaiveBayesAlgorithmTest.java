@@ -63,7 +63,7 @@ public class ContinuousNaiveBayesAlgorithmTest {
         return buildTask;
     }
 
-    protected void verifyModel(ContinuousBayesModel model) throws MiningException {
+    protected void verifyModel(ContinuousBayesModel model) {
 //        MiningCsvStream stream = new MiningCsvStream("diabet-data.csv", getCsvParserSettings());
 //        MiningVector current = stream.next();
 //        while (current != null) {
@@ -78,7 +78,7 @@ public class ContinuousNaiveBayesAlgorithmTest {
         return probabilityList.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
     }
 
-    private void createMiningSettings() throws MiningException, IOException, CsvException {
+    private void createMiningSettings() throws MiningException, IOException {
         ELogicalData logicalData = inputData.getLogicalData();
         ELogicalAttribute targetAttribute = logicalData.getAttribute("res");
 

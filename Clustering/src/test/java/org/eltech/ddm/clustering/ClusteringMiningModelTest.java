@@ -1,6 +1,5 @@
 package org.eltech.ddm.clustering;
 
-import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.clustering.cdbase.CDBasedClusteringMiningModel;
 import org.eltech.ddm.inputdata.MiningArrayStream;
 import org.eltech.ddm.inputdata.MiningInputStream;
@@ -14,7 +13,6 @@ import org.eltech.ddm.miningcore.miningdata.assignment.AttributeAssignmentType;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +25,7 @@ public class ClusteringMiningModelTest {
 	protected ClusteringMiningModel  model;
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4Iris() throws MiningException, IOException, CsvException {
+	protected void setInputData4Iris() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\iris.arff");
 
@@ -58,7 +56,7 @@ public class ClusteringMiningModelTest {
 		ELogicalAttribute attribute_l_3 = new ELogicalAttribute("petallength", AttributeType.numerical);
 		ELogicalAttribute attribute_l_4 = new ELogicalAttribute("petalwidth", AttributeType.numerical);
 
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);
@@ -72,7 +70,7 @@ public class ClusteringMiningModelTest {
 	}
 
 
-	protected void setMiningSettings4Iris(EMiningAlgorithmSettings algorithmSettings) throws MiningException, IOException, CsvException {
+	protected void setMiningSettings4Iris(EMiningAlgorithmSettings algorithmSettings) throws MiningException {
 
 		ELogicalData logicalData = inputData.getLogicalData();
 
@@ -85,7 +83,7 @@ public class ClusteringMiningModelTest {
 
 
 	// ==== Methods for data attributes Azure Iris ===============
-	protected void setInputData4AzureIris() throws MiningException, IOException, CsvException {
+	protected void setInputData4AzureIris() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Iris Two Class Data(V100A5).arff");
 
@@ -116,7 +114,7 @@ public class ClusteringMiningModelTest {
 		ELogicalAttribute attribute_l_3 = new ELogicalAttribute("petallength", AttributeType.numerical);
 		ELogicalAttribute attribute_l_4 = new ELogicalAttribute("petalwidth", AttributeType.numerical);
 
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);
@@ -130,7 +128,7 @@ public class ClusteringMiningModelTest {
 	}
 
 	// ==== Methods for data attributes Azure Weather ===============
-	protected void setInputData4AzureWeather() throws MiningException, IOException, CsvException {
+	protected void setInputData4AzureWeather() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Weather Dataset(V406516A26).arff");
 
@@ -177,7 +175,7 @@ public class ClusteringMiningModelTest {
 
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4TimeSeries() throws MiningException, IOException, CsvException {
+	protected void setInputData4TimeSeries() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Time series(V126A1).arff");
 
@@ -194,7 +192,7 @@ public class ClusteringMiningModelTest {
 
 		ELogicalAttribute attribute_l_1 = new ELogicalAttribute("N1725", AttributeType.numerical);
 
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 
 		//assignmentManager.putLogicalAttributes(new_user_map_attributes);
@@ -206,7 +204,7 @@ public class ClusteringMiningModelTest {
 
 
 	// ==== Methods for data attributes Telescope Data ===============
-	protected void setInputData4TelescopeData() throws MiningException, IOException, CsvException {
+	protected void setInputData4TelescopeData() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Telescope data(V19020A11).arff");
 
@@ -268,7 +266,7 @@ public class ClusteringMiningModelTest {
 		ELogicalAttribute attribute_l_10 = new ELogicalAttribute("fDist", AttributeType.numerical);
 
 		
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);
@@ -288,7 +286,7 @@ public class ClusteringMiningModelTest {
 	}
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4BreastCancerInfo() throws MiningException, IOException, CsvException {
+	protected void setInputData4BreastCancerInfo() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Breast Cancer Info (V102294A12).arff");
 
@@ -325,7 +323,7 @@ public class ClusteringMiningModelTest {
 		ELogicalAttribute attribute_l_4 = new ELogicalAttribute("Col10", AttributeType.numerical);
 		ELogicalAttribute attribute_l_5 = new ELogicalAttribute("Col11", AttributeType.numerical);
 		
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);
@@ -340,7 +338,7 @@ public class ClusteringMiningModelTest {
 	}
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4BreastCancerFeatures() throws MiningException, IOException, CsvException {
+	protected void setInputData4BreastCancerFeatures() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Breast Cancer Features (V102294A118).arff");
 
@@ -348,7 +346,7 @@ public class ClusteringMiningModelTest {
 	}
 	
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4MovieRatings() throws MiningException, IOException, CsvException {
+	protected void setInputData4MovieRatings() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Movie Ratings(V227472A4).arff");
 
@@ -394,7 +392,7 @@ public class ClusteringMiningModelTest {
 
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4FlightDelaysData() throws MiningException, IOException, CsvException {
+	protected void setInputData4FlightDelaysData() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Flight Delays Data(V2719418A14).arff");
 
@@ -430,7 +428,7 @@ public class ClusteringMiningModelTest {
 //		ELogicalAttribute attribute_l_4 = new ELogicalAttribute("DepDelay", AttributeType.numerical);
 		ELogicalAttribute attribute_l_5 = new ELogicalAttribute("CRSArrTime", AttributeType.numerical);
 
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);
@@ -445,7 +443,7 @@ public class ClusteringMiningModelTest {
 	}
 
 	
-	protected void setInputData4FlightOnTimePerformance() throws MiningException, IOException, CsvException {
+	protected void setInputData4FlightOnTimePerformance() throws MiningException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Flight on-time performance (Raw)(V504397A18).arff");
 

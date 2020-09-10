@@ -9,8 +9,6 @@ import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
 
-import java.io.IOException;
-
 /**
  * MiningMultiCsvStream class.
  * A class that allows you to read multiple csv-files 'vertically' or 'horizontally'.
@@ -31,17 +29,17 @@ public abstract class MiningMultiCsvStream extends MiningFileStream {
     //  Abstract methods
     // -----------------------------------------------------------------------
 
-    public abstract void close() throws IOException;
+    public abstract void close();
 
-    public abstract void open() throws IOException, MiningException, CsvException;
+    public abstract void open() throws MiningException;
 
-    public abstract void reset() throws IOException, CsvException, MiningException;
+    public abstract void reset() throws MiningException;
 
-    public abstract MiningMultiCsvStream getCopy() throws MiningException, IOException, CsvException;
+    public abstract MiningMultiCsvStream getCopy() throws CsvException, MiningException;
 
-    public abstract MiningVector next() throws CsvException, IOException, MiningException ;
+    public abstract MiningVector next() throws MiningException ;
 
-    public abstract MiningVector getVector(int pos) throws CsvException, IOException, MiningException ;
+    public abstract MiningVector getVector(int pos) throws MiningException ;
 
     // -----------------------------------------------------------------------
     //  Converting the files to stream
@@ -53,7 +51,7 @@ public abstract class MiningMultiCsvStream extends MiningFileStream {
      * @param files - array of csv-file names
      * @return array of csv-streams
      */
-    protected MiningCsvStream[] getStreams(String[] files) throws MiningException, IOException {
+    protected MiningCsvStream[] getStreams(String[] files) throws MiningException {
         MiningCsvStream[] streams = new MiningCsvStream[files.length];
         for (int i = 0; i < streams.length; i++) {
             streams[i] = new MiningCsvStream(files[i], new CsvParsingSettings());
@@ -69,7 +67,7 @@ public abstract class MiningMultiCsvStream extends MiningFileStream {
      * @return array of csv-streams
      */
     protected MiningCsvStream[] getStreams(String[] files, CsvParsingSettings settings)
-            throws MiningException, IOException {
+            throws MiningException {
         MiningCsvStream[] streams = new MiningCsvStream[files.length];
         for (int i = 0; i < streams.length; i++) {
             streams[i] = new MiningCsvStream(files[i], settings);
@@ -86,7 +84,7 @@ public abstract class MiningMultiCsvStream extends MiningFileStream {
      *
      * @return the number of vectors
      */
-    public int getVectorsNumber() throws CsvException, IOException, MiningException {
+    public int getVectorsNumber() throws MiningException {
         open();
         return vectorsNumber;
     }
@@ -95,7 +93,7 @@ public abstract class MiningMultiCsvStream extends MiningFileStream {
      * Returns a logical data.
      * @return logical data
      */
-    public ELogicalData getLogicalData() throws CsvException, IOException, MiningException {
+    public ELogicalData getLogicalData() throws MiningException {
         open();
         return logicalData;
     }
@@ -104,7 +102,7 @@ public abstract class MiningMultiCsvStream extends MiningFileStream {
      * Returns a physical data.
      * @return physical data
      */
-    public EPhysicalData getPhysicalData() throws CsvException, IOException, MiningException {
+    public EPhysicalData getPhysicalData() throws MiningException {
         open();
         return physicalData;
     }

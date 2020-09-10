@@ -23,7 +23,7 @@ public class InitClusterByRandom extends DataMiningBlock {
 	}
 
 	@Override
-	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException, IOException, CsvException {
+	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException {
 		int iAttr = model.getCurrentAttributeIndex();
 		int iCluster = ((ClusteringMiningModel)model).getCurrentClusterIndex();
 

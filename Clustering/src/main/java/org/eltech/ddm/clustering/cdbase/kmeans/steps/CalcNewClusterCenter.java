@@ -24,7 +24,7 @@ public class CalcNewClusterCenter extends DataMiningBlock {
 	}
 
 	@Override
-	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException, IOException, CsvException {
+	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException {
 		int iAttr = model.getCurrentAttributeIndex();
 		int iVec = model.getCurrentVectorIndex();
 		MiningVector mv = data.getVector(iVec);

@@ -28,7 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package org.eltech.ddm.inputdata;
 
-import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
@@ -36,8 +35,6 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.CategoryProperty;
-
-import java.io.IOException;
 
 /**
  * Extension of MiningInputStreams for arrays. Can only be
@@ -88,7 +85,7 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
         int numbAtt         = miningArray[0].length;
         for (int i = 0; i < numbAtt; i++){
         	ELogicalAttribute la = new  ELogicalAttribute();
-        	la.setName("numAtt"+String.valueOf(i));
+        	la.setName("numAtt"+ i);
         	la.setAttributeType(AttributeType.numerical);
         	logicalData.addAttribute(la);
         }
@@ -105,10 +102,8 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
      *
      * @param miningArray array of double values
      * @param logicalData meta data of attributes
-     * @exception MiningException could not create array stream
      */
-    public MiningArrayStream( double[][] miningArray, ELogicalData logicalData ) throws MiningException
-    {
+    public MiningArrayStream( double[][] miningArray, ELogicalData logicalData ) {
         this.useObjectArray = false;
         this.miningArray    = miningArray;
         this.logicalData       = logicalData;
@@ -127,18 +122,16 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
      *
      * @param miningObjectArray array of objects
      * @param logicalData meta data of attributes
-     * @exception MiningException could not create array stream
      */
-    public MiningArrayStream( Object[][] miningObjectArray, ELogicalData logicalData ) throws MiningException
-    {
-      this.useObjectArray    = true;
-      this.miningObjectArray = miningObjectArray;
-      this.logicalData          = logicalData;
+    public MiningArrayStream( Object[][] miningObjectArray, ELogicalData logicalData ) {
+        this.useObjectArray = true;
+        this.miningObjectArray = miningObjectArray;
+        this.logicalData = logicalData;
 
-      miningArrayLength   = getMiningArrayLength();
-      cursorPosition = -1;
+        miningArrayLength = getMiningArrayLength();
+        cursorPosition = -1;
 
-      this.open           = true;
+        this.open = true;
     }
 
     /**
@@ -151,11 +144,11 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
      * @exception IllegalArgumentException empty input stream
      * @exception MiningException could not create array stream
      */
-    public MiningArrayStream( MiningInputStream inputStream ) throws IllegalArgumentException, MiningException, IOException, CsvException {
+    public MiningArrayStream( MiningInputStream inputStream ) throws IllegalArgumentException, MiningException {
     	defConstructor(inputStream);
     }
 
-    public MiningArrayStream( MiningArrayStream inputStream ) throws IllegalArgumentException, MiningException, IOException, CsvException {
+    public MiningArrayStream( MiningArrayStream inputStream ) throws IllegalArgumentException, MiningException {
         // No input stream => exception:
         if( inputStream == null )
             throw new IllegalArgumentException( "MiningInputStream can't be null." );
@@ -199,13 +192,7 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
     //  Getter and setter methods
     // -----------------------------------------------------------------------
 
-    /**
-     * Finds physical array model (CWM Resource Package "Object").
-     * This is just the meta data wrapped in a Package.
-     *
-     * @exception MiningException couldn't obtain physical model
-     */
-//     public void findPhysicalModel() throws MiningException {
+    //     public void findPhysicalModel() throws MiningException {
 //
 //       org.omg.cwm.objectmodel.core.CorePackage cp = com.prudsys.pdm.Cwm.CWMCompletePackage.getCWMCompletePackage().getCore();
 //       org.omg.cwm.objectmodel.core.Package dataPackage = cp.getPackage().createPackage("StoredData package", null);
@@ -213,14 +200,7 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
 //       physicalModel = dataPackage;
 //     }
 
-    /**
-     * Returns the CWM mapping from the physical to the logical data model.
-     * This is the identical transformation.
-     *
-     * @return transformation of physical to logical data model
-     * @throws MiningException couldn't getElement transformation
-     */
-//    public org.omg.cwm.analysis.transformation.TransformationMap getPhysicalToLogicalModelTransformation()
+    //    public org.omg.cwm.analysis.transformation.TransformationMap getPhysicalToLogicalModelTransformation()
 //        throws MiningException {
 //
 //      com.prudsys.pdm.Cwm.CWMCompletePackage cwmFactory =
@@ -322,10 +302,8 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
      * Recognizes meta data of array.
      *
      * @return meta data of array
-     * @throws MiningException could not recognize meta data
      */
-    synchronized public EPhysicalData recognize() throws MiningException
-    {
+    synchronized public EPhysicalData recognize() {
         return physicalData;
     }
 
@@ -348,7 +326,7 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
 
     // changing in MiningUnputStream heirs
     //synchronized public boolean next() throws MiningException
-    synchronized public MiningVector readPhysicalRecord() throws MiningException, IOException, CsvException {
+    synchronized public MiningVector readPhysicalRecord() throws MiningException {
         if (!open)
           throw new MiningException(MiningErrorCode.INVALID_INPUT_DATA,"Can't perform operation on closed stream. Call open()");
 
@@ -395,7 +373,7 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
         if (!open)
           throw new MiningException(MiningErrorCode.INVALID_INPUT_DATA, "Can't perform operation on closed stream. Call open()");
 
-        MiningVector vector = null;
+        MiningVector vector;
         double[] values;
 
         // Use array of objects:
@@ -470,7 +448,7 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
 //    }
 
     public Object clone() {
-		MiningArrayStream o = null;
+		MiningArrayStream o;
 		o = (MiningArrayStream) super.clone();
 
 		if (miningArray != null) {
@@ -491,17 +469,16 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
 		return o;
 	}
 
-    private void defConstructor(MiningInputStream inputStream) throws MiningException, IOException, CsvException {
+    private void defConstructor(MiningInputStream inputStream) throws MiningException {
 
         // No input stream => exception:
-        if( inputStream == null )
-        {
-            throw new IllegalArgumentException( "MiningInputStream can't be null." );
+        if (inputStream == null) {
+            throw new IllegalArgumentException("MiningInputStream can't be null.");
         }
 
         this.useObjectArray = false;
-        this.logicalData    = inputStream.getLogicalData();
-        this.physicalData   = inputStream.getPhysicalData();
+        this.logicalData = inputStream.getLogicalData();
+        this.physicalData = inputStream.getPhysicalData();
 
         // Determine length of input stream and allocate array:
         //inputStream.reset();
@@ -510,21 +487,21 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
 //        {
 //          miningArrayLength = miningArrayLength + 1;
 //        }
-        miningArray = new double[ miningArrayLength] [ logicalData.getAttributesNumber()];
+        miningArray = new double[miningArrayLength][logicalData.getAttributesNumber()];
 
         // Copy data to mining array:
         //inputStream.reset();
         //while (inputStream.next()) {
-        for(int iRow = 0; iRow < miningArrayLength; iRow++){
-          MiningVector vec = inputStream.getVector(iRow);
-          for (int i = 0; i < logicalData.getAttributesNumber(); i++)
-            miningArray[iRow][i] = vec.getValue(i);
- //         iRow = iRow + 1;
+        for (int iRow = 0; iRow < miningArrayLength; iRow++) {
+            MiningVector vec = inputStream.getVector(iRow);
+            for (int i = 0; i < logicalData.getAttributesNumber(); i++)
+                miningArray[iRow][i] = vec.getValue(i);
+            //         iRow = iRow + 1;
         }
 
         //cursorPosition      = -1;
 
-        this.open           = true;
+        this.open = true;
     }
 	@Override
 	public MiningVector getVector(int rowNumber) throws MiningException {

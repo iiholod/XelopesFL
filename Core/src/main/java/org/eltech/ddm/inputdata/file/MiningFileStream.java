@@ -101,7 +101,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public void open() throws MiningException, IOException, CsvException {
+    public void open() throws MiningException {
         try {
             reader = new BufferedReader(new FileReader(this.fileName));
             this.open = true;
@@ -120,7 +120,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public void close() throws MiningException, IOException {
+    public void close() throws MiningException {
         if (!this.isOpen())
             throw new MiningDataException("Stream is already closed");
 
@@ -139,8 +139,13 @@ public abstract class MiningFileStream extends MiningInputStream {
      *
      * @return - reader for parser
      */
-    protected Reader getReader() throws FileNotFoundException {
-        return new BufferedReader(new FileReader(this.fileName));
+    protected Reader getReader() {
+        try {
+            return new BufferedReader(new FileReader(this.fileName));
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -149,7 +154,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      * @return the MiningDataSpecification
      * @exception MiningException always thrown
      */
-    public EPhysicalData recognize() throws MiningException, IOException, CsvException {
+    public EPhysicalData recognize() throws MiningException {
         throw new MiningException(MiningErrorCode.UNSUPPORTED);
     }
 
@@ -163,7 +168,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      *
      * @throws MiningException reset error
      */
-    public void reset() throws MiningException, IOException, CsvException {
+    public void reset() throws MiningException {
         if (!this.isOpen())
             throw new MiningException(MiningErrorCode.INVALID_INPUT_DATA, "Can't reset closed stream. Call open()");
 
@@ -190,7 +195,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      */
 
     // public abstract boolean next() throws MiningException;
-    public abstract MiningVector readPhysicalRecord() throws MiningException, IOException, CsvValidationException;
+    public abstract MiningVector readPhysicalRecord() throws MiningException;
 
 
     /**
@@ -201,7 +206,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      * @throws MiningException always thrown
      */
     //protected abstract MiningVector move( int position ) throws MiningException;
-    protected abstract MiningVector movePhysicalRecord(int position) throws MiningException, IOException, CsvException;
+    protected abstract MiningVector movePhysicalRecord(int position) throws MiningException;
 
 
     // -----------------------------------------------------------------------
@@ -226,7 +231,7 @@ public abstract class MiningFileStream extends MiningInputStream {
         if (isOpen()) {
             try {
                 o.open();
-            } catch (MiningException | IOException | CsvException e) {
+            } catch (MiningException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

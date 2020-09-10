@@ -1,6 +1,5 @@
 package org.eltech.ddm.classification.naivebayes.category.steps;
 
-import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.classification.naivebayes.category.NaiveBayesModel;
 import org.eltech.ddm.classification.naivebayes.category.TargetValueCount;
@@ -11,8 +10,6 @@ import org.eltech.ddm.miningcore.algorithms.DataMiningBlock;
 import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
-
-import java.io.IOException;
 
 public class FindProbabilityOfTargetValue extends DataMiningBlock {
 	private final ELogicalAttribute targetAttr;
@@ -25,16 +22,16 @@ public class FindProbabilityOfTargetValue extends DataMiningBlock {
 	}
 
 
-	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException, IOException, CsvException {
+	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException {
 
 		MiningVector mv = data.getVector(model.getCurrentVectorIndex());
 
 		//System.out.println("Thread-" + Thread.currentThread().getName() + " id vectror = " + mv.getIndex() + " vector " + mv);
 
-		int indexValueTarg = (int)mv.getValue(targetAttr.getName());
+		int indexValueTarg = (int) mv.getValue(targetAttr.getName());
 
 
-		TargetValueCount tvc = ((NaiveBayesModel)model).getOutputTargetValueCount(indexValueTarg);
+		TargetValueCount tvc = ((NaiveBayesModel) model).getOutputTargetValueCount(indexValueTarg);
 		tvc.incCount();
 
 		System.out.println("Thread-" + Thread.currentThread().getName() + " id vectror = " + mv.getIndex() + " =" + tvc);

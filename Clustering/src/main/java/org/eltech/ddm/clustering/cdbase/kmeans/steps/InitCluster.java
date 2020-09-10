@@ -11,7 +11,7 @@ import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
  * Created by iihol on 16.02.2018.
  */
 public class InitCluster extends MiningBlock {
-    public InitCluster(EMiningFunctionSettings miningSettings) throws MiningException {
+    public InitCluster(EMiningFunctionSettings miningSettings) {
         super(miningSettings);
     }
 

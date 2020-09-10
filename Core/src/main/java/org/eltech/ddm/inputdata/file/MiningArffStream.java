@@ -73,7 +73,7 @@ public class MiningArffStream extends MiningFileStream
      * @param logicalData meta data of file data
      * @throws MiningException invalid file path or format error
      */
-    public MiningArffStream( String dataFileName, ELogicalData logicalData ) throws MiningException, IOException, CsvException {
+    public MiningArffStream( String dataFileName, ELogicalData logicalData ) throws MiningException {
         super( dataFileName, logicalData );
         fileName = dataFileName;
         if( logicalData == null )
@@ -91,7 +91,7 @@ public class MiningArffStream extends MiningFileStream
      * @param dataFileName path of ARFF file to access
      * @throws MiningException invalid file path or format error
      */
-    public MiningArffStream( String dataFileName ) throws MiningException, IOException, CsvException {
+    public MiningArffStream( String dataFileName ) throws MiningException {
         super( dataFileName );
         fileName = dataFileName;
         physicalData = recognize();
@@ -109,7 +109,7 @@ public class MiningArffStream extends MiningFileStream
      * @exception MiningException if the information is not read
      * successfully
     */
-    synchronized public EPhysicalData recognize() throws MiningException, IOException, CsvException {
+    synchronized public EPhysicalData recognize() throws MiningException {
         boolean wasOpen = this.isOpen();
         if(!this.isOpen())
           this.open();
@@ -274,7 +274,7 @@ public class MiningArffStream extends MiningFileStream
      *
      * @throws MiningException reset error
      */
-    synchronized public void reset() throws MiningException, IOException, CsvException {
+    synchronized public void reset() throws MiningException {
         if(!isOpen())
           throw new MiningDataException("Can't reset closed stream. Call open()");
 
@@ -304,17 +304,15 @@ public class MiningArffStream extends MiningFileStream
         {
           this.logicalData = logicalData;
           updateRemoveAllVectors();
-        };
+        }
 
 
-        /**
+    /**
          * Removes the specified LogicalAttribute instance from the logical data and appropriate attributes
          * from AttributeAssignmentSet.
          *
          * @param attName
-         * @throws MiningException
          */
-
         public void updateRemoveAttLogicalData(String attName) throws MiningException
         {
         	logicalData.removeAttribute(attName);
@@ -345,22 +343,22 @@ public class MiningArffStream extends MiningFileStream
          */
         public void updateAppendVector(MiningVector vector) throws MiningException
         {
-            String line = "";
+            StringBuilder line = new StringBuilder();
             ELogicalData ld = vector.getLogicalData();
             int nVec = vector.getValues().length;
             for (int i = 0; i < nVec; i++) {
               double value = vector.getValue(i);
-              String stVal = "";
+              String stVal;
               if (ld == null || ld.getAttribute(i).getAttributeType() == AttributeType.numerical)
                 stVal = String.valueOf(value);
               else
                 stVal = "" + vector.getValueCategory(i);
               if (vector.isMissing(i))
                 stVal = "?";
-              line = line + stVal;
+              line.append(stVal);
               if (i < nVec - 1)
-                line = line + ",";
-            };
+                line.append(",");
+            }
 
             writer.println(line);
         }
@@ -370,7 +368,7 @@ public class MiningArffStream extends MiningFileStream
          *
          * @exception MiningException if a mining source access error occurs
          */
-        public void close() throws MiningException, IOException {
+        public void close() throws MiningException {
           super.close();
           try
           {
@@ -379,7 +377,7 @@ public class MiningArffStream extends MiningFileStream
           catch( Exception ex)
           {
             throw new MiningDataException( "Can't close ARFF stream from file: "+fileName );
-          };
+          }
         }
 
     /**
@@ -390,7 +388,7 @@ public class MiningArffStream extends MiningFileStream
      */
     protected String getNextToken() throws MiningException
     {
-        String token = "";
+        String token;
         int c;
         try
         {
@@ -407,8 +405,9 @@ public class MiningArffStream extends MiningFileStream
             case '{'  : token="{"; break;
             case '}'  : token="}"; break;
             case '?'  : tokenizer.ttype = StreamTokenizer.TT_WORD; token = "?"; break;
-            case '\'' : tokenizer.ttype = StreamTokenizer.TT_WORD; token = tokenizer.sval; break;
-            case '"'  : tokenizer.ttype = StreamTokenizer.TT_WORD; token = tokenizer.sval; break;
+            case '\'' :
+            case '"'  :
+                tokenizer.ttype = StreamTokenizer.TT_WORD; token = tokenizer.sval; break;
             default   : token = tokenizer.sval;break;
         }
         return token;
@@ -447,8 +446,8 @@ public class MiningArffStream extends MiningFileStream
     }
 
 	@Override
-	synchronized protected MiningVector movePhysicalRecord(int position) throws MiningException, IOException, CsvException {
-		MiningVector mv = null;
+	synchronized protected MiningVector movePhysicalRecord(int position) throws MiningException {
+		MiningVector mv;
 		if(getCurrentPosition() < position)
 		{
 			do{mv = next();}
@@ -459,15 +458,14 @@ public class MiningArffStream extends MiningFileStream
 			reset();
 			do{mv = next();}
 			while((mv != null) && (getCurrentPosition() < position));
-		};
+		}
 
-		return mv;
+        return mv;
 	}
 
 	@Override
 	public Object clone() {
-		MiningArffStream o = (MiningArffStream)super.clone();	    
-		return o;
+        return super.clone();
 	}
 	
 	@Override
@@ -542,7 +540,7 @@ public class MiningArffStream extends MiningFileStream
         {
             double[] m_ValueBuffer = new double[ logicalData.getAttributesNumber()];
             int[] m_IndicesBuffer = new int[ logicalData.getAttributesNumber()];
-            int valIndex, numValues = 0, maxIndex = -1;
+            int numValues = 0, maxIndex = -1;
             do
             {
                 token = getNextToken();
@@ -553,7 +551,7 @@ public class MiningArffStream extends MiningFileStream
                 // Is index valid?
                 try
                 {
-                    m_IndicesBuffer[numValues] = Integer.valueOf( token ).intValue();
+                    m_IndicesBuffer[numValues] = Integer.parseInt(token);
                 }
                 catch(NumberFormatException e)
                 {
