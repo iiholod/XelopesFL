@@ -1,6 +1,7 @@
 package org.eltech.ddm.inputdata.file.csv.MultiCsvStream;
 
 import com.opencsv.exceptions.CsvException;
+import com.opencsv.exceptions.CsvValidationException;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
@@ -76,7 +77,7 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
         }
     }
 
-    private void thisInit(MiningCsvStream[] streams) throws MiningException {
+    private void thisInit(MiningCsvStream[] streams) {
         this.activeStreamIndex = 0;
         this.activeStream = streams[0];
         this.parsingValues = new ArrayList();
@@ -94,7 +95,7 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      * @param streams - array of streams
      * @return <b>true</b> if the logical data is correct, <b>false</b> if the logical data is incorrect
      */
-    private boolean logicalDataChecked(MiningCsvStream[] streams) throws MiningException {
+    private boolean logicalDataChecked(MiningCsvStream[] streams) throws MiningException, IOException, CsvException {
         ELogicalData logicalData = streams[0].getLogicalData();
         for (int i = 1; i < streams.length; i++) {
             ELogicalData ld = streams[i].getLogicalData();
@@ -117,7 +118,9 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
         open();
 
         try {
-            return activeStream.next();
+            MiningVector vector = activeStream.next();
+            vector.setIndex(getVectorPos(vector.getIndex()));
+            return vector;
         } catch (Exception e) {
             if (activeStreamIndex == streams.length - 1)
                 throw new NullPointerException("Files run out.");
@@ -125,7 +128,10 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
             activeStreamIndex++;
             activeStream = streams[activeStreamIndex];
             activeStream.reset();
-            return activeStream.next();
+
+            MiningVector vector = activeStream.next();
+            vector.setIndex(getVectorPos(vector.getIndex()));
+            return vector;
         }
     }
 
@@ -136,11 +142,13 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      */
     @Override
     public MiningVector getVector(int pos) throws CsvException, IOException, MiningException {
-        open();
 
+        open();
         if (pos < 0) throw new OutOfMemoryError("Invalid index.");
-        pos = findVector(pos);
-        return activeStream.getVector(pos);
+
+        MiningVector vector = getVectorOfStream(pos);
+        vector.setIndex(pos);
+        return vector;
     }
 
     /**
@@ -149,18 +157,28 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      * @param pos - index of the vector
      * @return vector number in the found file
      */
-    private int findVector(int pos) throws MiningException, IOException, CsvException {
+    private MiningVector getVectorOfStream(int pos) throws MiningException, IOException, CsvException {
+
         int vectorsNumber = 0;
         for (int i = 0; i < streams.length; i++) {
             vectorsNumber += streams[i].getVectorsNumber();
             if (pos <= vectorsNumber - 1) {
-                int prevValue = vectorsNumber - streams[i].getVectorsNumber();
                 activeStreamIndex = i;
                 activeStream = streams[i];
-                return (pos - prevValue);
+                int prevValue = vectorsNumber - streams[i].getVectorsNumber();
+                return activeStream.getVector(pos - prevValue);
             }
         }
         throw new OutOfMemoryError("Invalid index.");
+    }
+
+    private int getVectorPos(int posOfStream) throws MiningException, IOException, CsvException {
+
+        int vectorsNumber = 0;
+        for (int i = 0; i < activeStreamIndex; i++) {
+            vectorsNumber += streams[i].getVectorsNumber();
+        }
+        return vectorsNumber + posOfStream;
     }
 
     // -----------------------------------------------------------------------
@@ -215,9 +233,19 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
 
         activeStreamIndex = 0;
         activeStream = streams[0];
-        for (int i = 0; i < streams.length; i++) {
-            streams[i].reset();
+        for (MiningCsvStream stream : streams) {
+            stream.reset();
         }
+    }
+
+    @Override
+    public MiningVector readPhysicalRecord() throws MiningException, IOException, CsvValidationException {
+        return null;
+    }
+
+    @Override
+    protected MiningVector movePhysicalRecord(int position) throws MiningException, IOException, CsvException {
+        return null;
     }
 
     /**

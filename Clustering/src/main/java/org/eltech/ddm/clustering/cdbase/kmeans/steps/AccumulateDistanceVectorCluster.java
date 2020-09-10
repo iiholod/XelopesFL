@@ -1,5 +1,6 @@
 package org.eltech.ddm.clustering.cdbase.kmeans.steps;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.clustering.ClusteringMiningModel;
 import org.eltech.ddm.clustering.cdbase.kmeans.KMeansMiningModel;
 import org.eltech.ddm.clustering.cdbase.kmeans.VectorAssignment;
@@ -10,6 +11,8 @@ import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.DataMiningBlock;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
+
+import java.io.IOException;
 
 /**
  * @author iholod
@@ -22,7 +25,7 @@ public class AccumulateDistanceVectorCluster extends DataMiningBlock {
     }
 
     @Override
-    protected EMiningModel execute(MiningInputStream inputData, EMiningModel model) throws MiningException {
+    protected EMiningModel execute(MiningInputStream inputData, EMiningModel model) throws MiningException, IOException, CsvException {
         int iCurrentVector = model.getCurrentVectorIndex();
         int iAttr = model.getCurrentAttributeIndex();
         int iCurrentCluster = ((ClusteringMiningModel)model).getCurrentClusterIndex();

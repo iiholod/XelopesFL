@@ -16,16 +16,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/**
-  * Title: XELOPES Data Mining Library
-  * Description: The XELOPES library is an open platform-independent and data-source-independent library for Embedded Data Mining.
-  * Copyright: Copyright (c) 2002-2005 prudsys AG. All Rights Reserved.
-  * License: Use is subject to XELOPES license terms.
-  * @author Valentine Stepanenko (valentine.stepanenko@zsoft.ru)
-  * @author Michael Thess
-  * @version 1.0
-  */
-
 package org.eltech.ddm.inputdata;
 
 import org.eltech.ddm.miningcore.MiningErrorCode;
@@ -171,10 +161,7 @@ public class MiningVector implements   Serializable //Cloneable, extends com.pru
     public double[] getValues()
     {
       double[] v = new double[ values.length ];
-      for( int i = 0; i < values.length; i++ )
-      {
-          v[i] = values[i];
-      }
+        System.arraycopy(values, 0, v, 0, values.length);
       return v;
     }
 
@@ -332,7 +319,7 @@ public class MiningVector implements   Serializable //Cloneable, extends com.pru
             }
             else
             {
-                vector.add( new Double(values[i]) );
+                vector.add(values[i]);
             }
         }
         return vector;

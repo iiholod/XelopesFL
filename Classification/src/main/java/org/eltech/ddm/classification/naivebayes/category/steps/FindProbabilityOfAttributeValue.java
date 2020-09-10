@@ -1,5 +1,6 @@
 package org.eltech.ddm.classification.naivebayes.category.steps;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.classification.naivebayes.category.NaiveBayesModel;
 import org.eltech.ddm.classification.naivebayes.category.TargetValueCount;
@@ -11,6 +12,8 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
+import java.io.IOException;
+
 public class FindProbabilityOfAttributeValue extends DataMiningBlock {
 	private final ELogicalAttribute targetAttr;
 
@@ -21,7 +24,7 @@ public class FindProbabilityOfAttributeValue extends DataMiningBlock {
 		targetAttr = ((ClassificationFunctionSettings)settings).getTarget();
 	}
 
-	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException {
+	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException, IOException, CsvException {
 		MiningVector mv = data.getVector(model.getCurrentVectorIndex());
 
 		if(mv != null){

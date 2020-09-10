@@ -89,8 +89,7 @@ public abstract class ExecutionEnvironment<T extends MiningExecutor, F extends M
             throw new MiningException(MiningErrorCode.PARALLEL_EXECUTION_ERROR, "An algorithm is not deployed to the environment!");
 
         mainExecutor.start(initModel);
-        EMiningModel resultModel = mainExecutor.getModel();
-        return resultModel;
+        return mainExecutor.getModel();
     }
 
     public F getMiningExecutorFactory() {

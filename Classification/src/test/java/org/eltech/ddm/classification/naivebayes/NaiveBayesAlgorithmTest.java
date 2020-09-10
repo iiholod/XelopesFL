@@ -31,10 +31,11 @@ public class NaiveBayesAlgorithmTest extends NaiveBayesModelTest {
 	@org.junit.Test
 	public void test4WeatherNominal() {
 		try {
+
 			setInputData4WeatherNominal();
 			setMiningSettings4WeatherNominal(algorithmSettings);
 
-			EMiningBuildTask buildTask = createBuidTask();
+			EMiningBuildTask buildTask = createBuildTask();
 
 			model = (ClassificationMiningModel) buildTask.execute();
 
@@ -47,7 +48,27 @@ public class NaiveBayesAlgorithmTest extends NaiveBayesModelTest {
 
 	}
 
-	private EMiningBuildTask createBuidTask() throws MiningException {
+	@org.junit.Test
+	public void test4Iris() {
+		try {
+
+			setInputData4Iris();
+			setMiningSettings4Iris(algorithmSettings);
+
+			EMiningBuildTask buildTask = createBuildTask();
+
+			model = (ClassificationMiningModel) buildTask.execute();
+
+			verifyModel4Iris();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+
+	}
+
+	private EMiningBuildTask createBuildTask() throws MiningException {
 		MiningAlgorithm algorithm = new NaiveBayesAlgorithm(miningSettings);
 		ConcurrencyExecutionEnvironment environment = new ConcurrencyExecutionEnvironment(inputData);
 

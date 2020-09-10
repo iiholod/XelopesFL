@@ -2,12 +2,12 @@ package org.eltech.ddm.inputdata.file.csv.MultiCsvStream;
 
 import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.inputdata.MiningVector;
+import org.eltech.ddm.inputdata.file.MiningFileStream;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
-import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.PhysicalData;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ import java.io.IOException;
  * @author Maxim Kolpashikov
  */
 
-public abstract class MiningMultiCsvStream {
+public abstract class MiningMultiCsvStream extends MiningFileStream {
     protected boolean isOpen = false;
 
     protected int vectorsNumber = 0;

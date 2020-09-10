@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.MissingResourceException;
 
 /**
  * VerMultiCsvStream class.
@@ -25,7 +24,7 @@ import java.util.MissingResourceException;
 
 public class VerMultiCsvStream extends MiningMultiCsvStream {
 
-    private List<ParsingValues> parsingValues;
+    private ArrayList parsingValues;
 
     // -----------------------------------------------------------------------
     //  Constructors
@@ -100,7 +99,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Collects logical data together.
      * @return ELogicalData
      */
-    private ELogicalData collectLogicalData() throws MiningException {
+    private ELogicalData collectLogicalData() throws MiningException, IOException, CsvException {
         ELogicalData logicalData = new ELogicalData();
         for (MiningCsvStream stream : streams) {
             ELogicalData ld = stream.getLogicalData();
@@ -115,7 +114,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Collects physical data together.
      * @return EPhysicalData
      */
-    private EPhysicalData collectPhysicalData() throws MiningException, IOException {
+    private EPhysicalData collectPhysicalData() throws MiningException, IOException, CsvException {
         EPhysicalData physicalData = new EPhysicalData();
         for (MiningCsvStream stream : streams) {
             EPhysicalData pa = stream.getPhysicalData();
@@ -136,13 +135,17 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      */
     @Override
     public MiningVector next() throws IOException {
-        open();
 
+        open();
+        int pos = -1;
         int valuesNumber = 0;
         List<double[]> values = new ArrayList<>();
+
         try {
-            for (MiningCsvStream stream: streams) {
+            for (MiningCsvStream stream : streams) {
+
                 MiningVector mv = stream.next();
+                if (pos == -1) pos = mv.getIndex();
                 double[] vectorValues = mv.getValues();
 
                 valuesNumber += vectorValues.length;
@@ -153,8 +156,9 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
         }
 
         double[] allValues = collectValues(values, valuesNumber);
-        MiningVector miningVector =  new MiningVector(allValues);
+        MiningVector miningVector = new MiningVector(allValues);
         miningVector.setLogicalData(logicalData);
+        miningVector.setIndex(pos);
         return miningVector;
     }
 
@@ -165,6 +169,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      */
     @Override
     public MiningVector getVector(int pos) throws IOException {
+
         open();
         if (pos < 0) throw new OutOfMemoryError("Invalid index.");
 
@@ -185,6 +190,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
         double[] allValues = collectValues(values, valuesNumber);
         MiningVector miningVector =  new MiningVector(allValues);
         miningVector.setLogicalData(logicalData);
+        miningVector.setIndex(pos);
         return miningVector;
     }
 
@@ -247,6 +253,16 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
         for (MiningCsvStream stream : streams) {
             stream.reset();
         }
+    }
+
+    @Override
+    public MiningVector readPhysicalRecord() {
+        return null;
+    }
+
+    @Override
+    protected MiningVector movePhysicalRecord(int position) {
+        return null;
     }
 
     /**

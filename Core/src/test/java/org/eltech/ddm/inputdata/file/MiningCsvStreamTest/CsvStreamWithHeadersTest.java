@@ -26,7 +26,7 @@ import org.eltech.ddm.miningcore.miningdata.EDirectAttributeAssignment;
 public class CsvStreamWithHeadersTest extends MiningCsvStreamTest {
 
     @Before
-    public void setup() throws MiningException, IOException {
+    public void setup() throws MiningException, IOException, CsvException {
         CsvParsingSettings settings = new CsvParsingSettings();
 
         settings.setHeaderAvailability(true);

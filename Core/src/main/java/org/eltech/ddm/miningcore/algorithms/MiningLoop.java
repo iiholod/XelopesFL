@@ -1,9 +1,11 @@
 package org.eltech.ddm.miningcore.algorithms;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -51,7 +53,7 @@ public abstract class MiningLoop extends MiningBlock implements Cloneable, Seria
 	abstract protected EMiningModel afterIteration(EMiningModel model) throws MiningException;//TODO
 
 	@Override
-	public EMiningModel execute( EMiningModel model) throws MiningException {
+	public EMiningModel execute( EMiningModel model) throws MiningException, IOException, CsvException {
 		boolean cond;
 
 		EMiningModel result = initLoop(model);

@@ -1,5 +1,6 @@
 package org.eltech.ddm.classification.ruleset.onerule.steps;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.classification.ruleset.onerule.OneRuleCountMiningModel;
 import org.eltech.ddm.classification.ruleset.onerule.VectorsCount4TargetValue;
@@ -11,6 +12,8 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 import org.eltech.ddm.miningcore.miningmodel.LogicalAttributeElement;
+
+import java.io.IOException;
 
 /**
  * @author iholod
@@ -28,7 +31,7 @@ public class IncrementCorrectVectorsCount extends DataMiningBlock {
 
     }
 
-    protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException {
+    protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException, IOException, CsvException {
         LogicalAttributeElement la = model.getCurrentAttribute();
         int iAttr = la.getIndex();
         MiningVector mv = data.getVector(model.getCurrentVectorIndex());

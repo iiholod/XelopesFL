@@ -1,10 +1,12 @@
 package org.eltech.ddm.miningcore.algorithms;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.handlers.ParallelExecutionException;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public abstract class MiningExecutor implements Cloneable, Serializable {//, Ser
 	 *
 	 * @throws MiningException
 	 */
-	protected EMiningModel call(EMiningModel model) throws MiningException{
+	protected EMiningModel call(EMiningModel model) throws MiningException, IOException, CsvException {
 		return getBlock().run(model);
 	}
 

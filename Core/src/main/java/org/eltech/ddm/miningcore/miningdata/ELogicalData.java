@@ -66,7 +66,6 @@ public class ELogicalData extends LogicalData implements Cloneable
 	 * @return - logical attribute with this name
 	 * @throws MiningException
 	 */
-	@Deprecated
 	public ELogicalAttribute getAttribute(String name) {
 		for (LogicalAttribute attr : feature) {
 			if(attr.getName().equals(name))

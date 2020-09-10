@@ -25,7 +25,7 @@ import java.io.IOException;
 public class CsvStreamWithoutHeadersTest extends MiningCsvStreamTest {
 
     @Before
-    public void setup() throws MiningException, IOException {
+    public void setup() throws MiningException, IOException, CsvException {
         CsvParsingSettings settings = new CsvParsingSettings();
 
         settings.setHeaderAvailability(false);

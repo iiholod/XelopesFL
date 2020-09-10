@@ -78,7 +78,7 @@ public class ContinuousNaiveBayesAlgorithmTest {
         return probabilityList.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
     }
 
-    private void createMiningSettings() throws MiningException {
+    private void createMiningSettings() throws MiningException, IOException, CsvException {
         ELogicalData logicalData = inputData.getLogicalData();
         ELogicalAttribute targetAttribute = logicalData.getAttribute("res");
 

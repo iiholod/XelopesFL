@@ -1,5 +1,6 @@
 package org.eltech.ddm.clustering;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.clustering.cdbase.CDBasedClusteringMiningModel;
 import org.eltech.ddm.inputdata.MiningArrayStream;
 import org.eltech.ddm.inputdata.MiningInputStream;
@@ -13,6 +14,7 @@ import org.eltech.ddm.miningcore.miningdata.assignment.AttributeAssignmentType;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,7 @@ public class ClusteringMiningModelTest {
 	protected ClusteringMiningModel  model;
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4Iris() throws MiningException {
+	protected void setInputData4Iris() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\iris.arff");
 
@@ -70,7 +72,7 @@ public class ClusteringMiningModelTest {
 	}
 
 
-	protected void setMiningSettings4Iris(EMiningAlgorithmSettings algorithmSettings) throws MiningException {
+	protected void setMiningSettings4Iris(EMiningAlgorithmSettings algorithmSettings) throws MiningException, IOException, CsvException {
 
 		ELogicalData logicalData = inputData.getLogicalData();
 
@@ -83,7 +85,7 @@ public class ClusteringMiningModelTest {
 
 
 	// ==== Methods for data attributes Azure Iris ===============
-	protected void setInputData4AzureIris() throws MiningException {
+	protected void setInputData4AzureIris() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Iris Two Class Data(V100A5).arff");
 
@@ -128,7 +130,7 @@ public class ClusteringMiningModelTest {
 	}
 
 	// ==== Methods for data attributes Azure Weather ===============
-	protected void setInputData4AzureWeather() throws MiningException {
+	protected void setInputData4AzureWeather() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Weather Dataset(V406516A26).arff");
 
@@ -175,7 +177,7 @@ public class ClusteringMiningModelTest {
 
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4TimeSeries() throws MiningException {
+	protected void setInputData4TimeSeries() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Time series(V126A1).arff");
 
@@ -204,7 +206,7 @@ public class ClusteringMiningModelTest {
 
 
 	// ==== Methods for data attributes Telescope Data ===============
-	protected void setInputData4TelescopeData() throws MiningException {
+	protected void setInputData4TelescopeData() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Telescope data(V19020A11).arff");
 
@@ -286,7 +288,7 @@ public class ClusteringMiningModelTest {
 	}
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4BreastCancerInfo() throws MiningException {
+	protected void setInputData4BreastCancerInfo() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Breast Cancer Info (V102294A12).arff");
 
@@ -338,7 +340,7 @@ public class ClusteringMiningModelTest {
 	}
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4BreastCancerFeatures() throws MiningException {
+	protected void setInputData4BreastCancerFeatures() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Breast Cancer Features (V102294A118).arff");
 
@@ -346,7 +348,7 @@ public class ClusteringMiningModelTest {
 	}
 	
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4MovieRatings() throws MiningException {
+	protected void setInputData4MovieRatings() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Movie Ratings(V227472A4).arff");
 
@@ -392,7 +394,7 @@ public class ClusteringMiningModelTest {
 
 
 	// ==== Methods for data attributes Iris ===============
-	protected void setInputData4FlightDelaysData() throws MiningException {
+	protected void setInputData4FlightDelaysData() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Flight Delays Data(V2719418A14).arff");
 
@@ -443,7 +445,7 @@ public class ClusteringMiningModelTest {
 	}
 
 	
-	protected void setInputData4FlightOnTimePerformance() throws MiningException {
+	protected void setInputData4FlightOnTimePerformance() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\Azure\\Flight on-time performance (Raw)(V504397A18).arff");
 

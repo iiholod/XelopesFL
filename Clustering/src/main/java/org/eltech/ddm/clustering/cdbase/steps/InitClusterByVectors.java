@@ -1,5 +1,6 @@
 package org.eltech.ddm.clustering.cdbase.steps;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.clustering.ClusteringMiningModel;
 import org.eltech.ddm.clustering.cdbase.Coordinate;
 import org.eltech.ddm.inputdata.MiningInputStream;
@@ -9,6 +10,8 @@ import org.eltech.ddm.miningcore.algorithms.DataMiningBlock;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
+import java.io.IOException;
+
 public class InitClusterByVectors extends DataMiningBlock{
 
 	public InitClusterByVectors(EMiningFunctionSettings settings)
@@ -17,7 +20,7 @@ public class InitClusterByVectors extends DataMiningBlock{
 	}
 
 	@Override
-	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException {
+	protected EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException, IOException, CsvException {
 		int iAttr = model.getCurrentAttributeIndex();
 		int iCluster = ((ClusteringMiningModel)model).getCurrentClusterIndex();
 

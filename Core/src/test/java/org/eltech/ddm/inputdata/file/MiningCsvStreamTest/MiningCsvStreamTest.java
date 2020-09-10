@@ -24,7 +24,7 @@ abstract class MiningCsvStreamTest {
     protected ELogicalData logicalData;
     protected MiningCsvStream csvStream;
 
-    public void setup(String path, CsvParsingSettings settings) throws MiningException, IOException {
+    public void setup(String path, CsvParsingSettings settings) throws MiningException, IOException, CsvException {
         csvStream = new MiningCsvStream(path, settings);
         csvStream.open();
         logicalData = csvStream.getLogicalData();

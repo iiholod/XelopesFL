@@ -1,10 +1,12 @@
 package org.eltech.ddm.miningcore.algorithms;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -33,7 +35,7 @@ public abstract class MiningBlock implements Cloneable, Serializable {
 	/**
 	 * Method execute step of algorithm
 	 */
-	public EMiningModel run(EMiningModel model) throws MiningException{
+	public EMiningModel run(EMiningModel model) throws MiningException, IOException, CsvException {
 
 		this.notifyBeforeExecute();
 		EMiningModel result = this.execute(model);
@@ -45,7 +47,7 @@ public abstract class MiningBlock implements Cloneable, Serializable {
 	/**
 	 * Method execute  mining calculator of algorithm
 	 */
-	protected abstract EMiningModel execute(EMiningModel model) throws MiningException;
+	protected abstract EMiningModel execute(EMiningModel model) throws MiningException, IOException, CsvException;
 
 	public boolean isDataBlock(){
 		return false;

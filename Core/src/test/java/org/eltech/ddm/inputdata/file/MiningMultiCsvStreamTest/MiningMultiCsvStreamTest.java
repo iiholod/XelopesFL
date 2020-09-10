@@ -51,14 +51,16 @@ abstract class MiningMultiCsvStreamTest {
 
         // values of the first vector Test (method 'next()')
         MiningVector miningVector = multiCsvStream.next();
+        assertEquals(0, miningVector.getIndex());
         assertEquals(5.1, miningVector.getValue(0), 0);
         assertEquals(3.5, miningVector.getValue(1), 0);
         assertEquals(1.4, miningVector.getValue(2), 0);
         assertEquals(0.2, miningVector.getValue(3), 0);
         assertEquals(1.0, miningVector.getValue(4), 0);
 
-        //values of the second vector Test (method 'next()')
+        // values of the second vector Test (method 'next()')
         miningVector = multiCsvStream.next();
+        assertEquals(1, miningVector.getIndex());
         assertEquals(4.9, miningVector.getValue(0), 0);
         assertEquals(3.0, miningVector.getValue(1), 0);
         assertEquals(1.4, miningVector.getValue(2), 0);
@@ -67,6 +69,7 @@ abstract class MiningMultiCsvStreamTest {
 
         // values of the fiftieth vector Test by getVector() (method 'getVector()')
         miningVector = multiCsvStream.getVector(50);
+        assertEquals(50, miningVector.getIndex());
         assertEquals(7.0, miningVector.getValue(0), 0);
         assertEquals(3.2, miningVector.getValue(1), 0);
         assertEquals(4.7, miningVector.getValue(2), 0);
@@ -75,6 +78,7 @@ abstract class MiningMultiCsvStreamTest {
 
         // values of the last vector Test
         miningVector = multiCsvStream.getVector(multiCsvStream.getVectorsNumber() - 1);
+        assertEquals(149, miningVector.getIndex());
         assertEquals(5.9, miningVector.getValue(0), 0);
         assertEquals(3.0, miningVector.getValue(1), 0);
         assertEquals(5.1, miningVector.getValue(2), 0);

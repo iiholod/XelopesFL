@@ -1,5 +1,6 @@
 package org.eltech.ddm.handlers.thread;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.handlers.ParallelExecutionException;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.MemoryType;
@@ -7,6 +8,7 @@ import org.eltech.ddm.miningcore.algorithms.MiningBlock;
 import org.eltech.ddm.miningcore.algorithms.MiningExecutor;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -45,10 +47,12 @@ public class ConcurrencyMiningExecutor extends MiningExecutor implements Cloneab
 		future = service.submit(() -> {
 			try {
 				resultModel = call(model);
-			} catch (MiningException e) {
+			} catch (MiningException | IOException | CsvException e) {
 				e.printStackTrace();
 			}
 		});
+
+
 	}
 
 	@Override

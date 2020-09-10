@@ -73,7 +73,7 @@ public class MiningArffStream extends MiningFileStream
      * @param logicalData meta data of file data
      * @throws MiningException invalid file path or format error
      */
-    public MiningArffStream( String dataFileName, ELogicalData logicalData ) throws MiningException, IOException {
+    public MiningArffStream( String dataFileName, ELogicalData logicalData ) throws MiningException, IOException, CsvException {
         super( dataFileName, logicalData );
         fileName = dataFileName;
         if( logicalData == null )
@@ -91,7 +91,7 @@ public class MiningArffStream extends MiningFileStream
      * @param dataFileName path of ARFF file to access
      * @throws MiningException invalid file path or format error
      */
-    public MiningArffStream( String dataFileName ) throws MiningException, IOException {
+    public MiningArffStream( String dataFileName ) throws MiningException, IOException, CsvException {
         super( dataFileName );
         fileName = dataFileName;
         physicalData = recognize();
@@ -109,7 +109,7 @@ public class MiningArffStream extends MiningFileStream
      * @exception MiningException if the information is not read
      * successfully
     */
-    synchronized public EPhysicalData recognize() throws MiningException, IOException {
+    synchronized public EPhysicalData recognize() throws MiningException, IOException, CsvException {
         boolean wasOpen = this.isOpen();
         if(!this.isOpen())
           this.open();
@@ -274,7 +274,7 @@ public class MiningArffStream extends MiningFileStream
      *
      * @throws MiningException reset error
      */
-    synchronized public void reset() throws MiningException, FileNotFoundException {
+    synchronized public void reset() throws MiningException, IOException, CsvException {
         if(!isOpen())
           throw new MiningDataException("Can't reset closed stream. Call open()");
 

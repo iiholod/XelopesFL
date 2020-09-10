@@ -1,9 +1,11 @@
 package org.eltech.ddm.miningcore.algorithms;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class MiningDecision extends MiningBlock {
@@ -45,7 +47,7 @@ public abstract class MiningDecision extends MiningBlock {
 	abstract protected boolean condition(EMiningModel model) throws MiningException;
 
 	@Override
-	public EMiningModel execute(EMiningModel model) throws MiningException {
+	public EMiningModel execute(EMiningModel model) throws MiningException, IOException, CsvException {
 		boolean cond;
 
 		this.notifyBeforeCondition();

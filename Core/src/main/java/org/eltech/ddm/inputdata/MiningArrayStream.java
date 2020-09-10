@@ -155,7 +155,7 @@ public class MiningArrayStream extends MiningInputStream implements Cloneable
     	defConstructor(inputStream);
     }
 
-    public MiningArrayStream( MiningArrayStream inputStream ) throws IllegalArgumentException, MiningException, IOException {
+    public MiningArrayStream( MiningArrayStream inputStream ) throws IllegalArgumentException, MiningException, IOException, CsvException {
         // No input stream => exception:
         if( inputStream == null )
             throw new IllegalArgumentException( "MiningInputStream can't be null." );

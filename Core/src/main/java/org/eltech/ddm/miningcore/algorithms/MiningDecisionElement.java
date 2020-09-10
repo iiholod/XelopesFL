@@ -1,10 +1,13 @@
 package org.eltech.ddm.miningcore.algorithms;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 import org.eltech.ddm.miningcore.miningmodel.MiningModelElement;
 import org.eltech.ddm.miningcore.miningmodel.MiningModelElementRule;
+
+import java.io.IOException;
 
 /**
  * Created by Ivan on 20.11.2016.
@@ -50,7 +53,7 @@ public class MiningDecisionElement extends MiningDecision {
     }
 
     @Override
-    public EMiningModel execute(EMiningModel model) throws MiningException {
+    public EMiningModel execute(EMiningModel model) throws MiningException, IOException, CsvException {
 
         EMiningModel result = model;
         if (rule.verify(model.getElement(indexSet))){

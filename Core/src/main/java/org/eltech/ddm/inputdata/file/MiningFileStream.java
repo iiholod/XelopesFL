@@ -16,16 +16,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/**
- * Title: XELOPES Data Mining Library
- * Description: The XELOPES library is an open platform-independent and data-source-independent library for Embedded Data Mining.
- * Copyright: Copyright (c) 2002-2005 prudsys AG. All Rights Reserved.
- * License: Use is subject to XELOPES license terms.
- *
- * @author Valentine Stepanenko (valentine.stepanenko@zsoft.ru)
- * @version 1.0
- */
-
 package org.eltech.ddm.inputdata.file;
 
 import com.opencsv.exceptions.CsvException;
@@ -111,7 +101,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public void open() throws MiningException, FileNotFoundException {
+    public void open() throws MiningException, IOException, CsvException {
         try {
             reader = new BufferedReader(new FileReader(this.fileName));
             this.open = true;
@@ -159,7 +149,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      * @return the MiningDataSpecification
      * @exception MiningException always thrown
      */
-    public EPhysicalData recognize() throws MiningException, IOException {
+    public EPhysicalData recognize() throws MiningException, IOException, CsvException {
         throw new MiningException(MiningErrorCode.UNSUPPORTED);
     }
 
@@ -173,7 +163,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      *
      * @throws MiningException reset error
      */
-    public void reset() throws MiningException, FileNotFoundException {
+    public void reset() throws MiningException, IOException, CsvException {
         if (!this.isOpen())
             throw new MiningException(MiningErrorCode.INVALID_INPUT_DATA, "Can't reset closed stream. Call open()");
 
@@ -230,16 +220,13 @@ public abstract class MiningFileStream extends MiningInputStream {
 
 
     public Object clone() {
-        MiningFileStream o = null;
-
-        o = (MiningFileStream) super.clone();
-
+        MiningFileStream o = (MiningFileStream) super.clone();
         o.fileName = fileName;
 
         if (isOpen()) {
             try {
                 o.open();
-            } catch (MiningException | FileNotFoundException e) {
+            } catch (MiningException | IOException | CsvException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
