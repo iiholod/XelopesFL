@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 package org.eltech.ddm.inputdata;
 
 import com.opencsv.exceptions.CsvException;
+import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.*;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -62,7 +64,9 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 
     protected int vectorsNumber = 0;
 
-    private int offsetVectorIndex = 0;
+	protected List<ParsingValues> parsingValues;
+
+	private int offsetVectorIndex = 0;
 
 	private transient AttributeAssignmentType attributeAssignmentType;
     
@@ -114,8 +118,6 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
     {
     	return attributeAssignmentSet;
     }
-
-
 
     /**
      * Return the current cursor position.
@@ -292,10 +294,11 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		return null;
 	}
     
-    
-
     protected abstract MiningVector movePhysicalRecord( int position ) throws MiningException;
 
+	public void setParsingValues(List<ParsingValues> parsingValues) {
+		this.parsingValues = parsingValues;
+	}
 
     public int getOffsetVectorIndex() {
 		return offsetVectorIndex;

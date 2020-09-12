@@ -26,7 +26,6 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
      */
     private boolean delayed;
     private List<String>[] pv;
-    private List<ParsingValues> parsingValues;
 
     private transient CSVReader parser;
     private transient CsvParsingSettings settings;
@@ -264,10 +263,6 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
             da.setAttribute(pa);
             attributeAssignmentSet.addAssignment(da);
         }
-    }
-
-    public void setParsingValues(List<ParsingValues> parsingValues) {
-        this.parsingValues = parsingValues;
     }
 
     /**

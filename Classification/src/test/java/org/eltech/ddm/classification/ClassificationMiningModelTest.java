@@ -5,7 +5,6 @@ import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.inputdata.file.MiningArffStream;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
-import org.eltech.ddm.inputdata.file.csv.MultiCsvStream.VerMultiCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ECategory;
 import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
@@ -13,7 +12,6 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static org.junit.Assert.fail;
 

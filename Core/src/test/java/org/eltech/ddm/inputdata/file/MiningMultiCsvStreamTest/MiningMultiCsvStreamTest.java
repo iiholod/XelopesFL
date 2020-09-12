@@ -1,8 +1,9 @@
 package org.eltech.ddm.inputdata.file.MiningMultiCsvStreamTest;
 
 import com.opencsv.exceptions.CsvException;
+import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
-import org.eltech.ddm.inputdata.file.csv.MultiCsvStream.MiningMultiCsvStream;
+import org.eltech.ddm.inputdata.file.MultiInputStream.MiningMultiStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
@@ -22,9 +23,9 @@ import static org.junit.Assert.assertEquals;
 abstract class MiningMultiCsvStreamTest {
     protected ELogicalData logicalData;
     protected EPhysicalData physicalData;
-    protected MiningMultiCsvStream multiCsvStream;
+    protected MiningMultiStream multiCsvStream;
 
-    public void setup(MiningMultiCsvStream stream) throws MiningException, IOException, CsvException {
+    public void setup(MiningMultiStream stream) throws MiningException {
         multiCsvStream = stream;
         logicalData = multiCsvStream.getLogicalData();
         physicalData = multiCsvStream.getPhysicalData();
@@ -45,7 +46,7 @@ abstract class MiningMultiCsvStreamTest {
         assertEquals(0, logicalData.getAttributes(AttributeType.notSpecified).size());
     }
 
-    protected void vecTest() throws MiningException, IOException, CsvException {
+    protected void vecTest() throws MiningException {
         // number of mining vectors test
         assertEquals(150, multiCsvStream.getVectorsNumber());
 
@@ -86,7 +87,7 @@ abstract class MiningMultiCsvStreamTest {
         assertEquals(3.0, miningVector.getValue(4), 0);
     }
 
-    protected void close() throws IOException {
+    protected void close() throws MiningException {
         multiCsvStream.close();
     }
 }

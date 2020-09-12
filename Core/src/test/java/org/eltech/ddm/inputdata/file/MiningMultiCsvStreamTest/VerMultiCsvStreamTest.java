@@ -1,8 +1,10 @@
 package org.eltech.ddm.inputdata.file.MiningMultiCsvStreamTest;
 
 import com.opencsv.exceptions.CsvException;
+import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
-import org.eltech.ddm.inputdata.file.csv.MultiCsvStream.VerMultiCsvStream;
+import org.eltech.ddm.inputdata.file.MultiInputStream.VerMultiStream;
+import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.junit.After;
@@ -15,21 +17,23 @@ import static org.junit.Assert.assertEquals;
 
 public class VerMultiCsvStreamTest extends MiningMultiCsvStreamTest{
     @Before
-    public void setup() throws MiningException, IOException, CsvException {
-        String[] files = new String[]{"../data/csv/iris_ver1.csv",
-                                      "../data/csv/iris_ver2.csv",
-                                      "../data/csv/iris_ver3.csv"};
+    public void setup() throws MiningException {
 
         CsvParsingSettings settings = new CsvParsingSettings();
         settings.setSeparator(',');
         settings.setHeaderAvailability(true);
 
-        setup(new VerMultiCsvStream(files, settings));
+        MiningInputStream[] streams = new MiningCsvStream[]{
+                new MiningCsvStream("../data/csv/iris_ver1.csv", settings),
+                new MiningCsvStream("../data/csv/iris_ver2.csv", settings),
+                new MiningCsvStream("../data/csv/iris_ver3.csv", settings)};
+
+        setup(new VerMultiStream(streams));
     }
 
 
     @Test
-    public void vectorsTest() throws MiningException, IOException, CsvException {
+    public void vectorsTest() throws MiningException {
         vecTest();
     }
 
@@ -58,7 +62,7 @@ public class VerMultiCsvStreamTest extends MiningMultiCsvStreamTest{
     }
 
     @After
-    public void closeStream() throws IOException {
+    public void closeStream() throws MiningException {
         close();
     }
 }

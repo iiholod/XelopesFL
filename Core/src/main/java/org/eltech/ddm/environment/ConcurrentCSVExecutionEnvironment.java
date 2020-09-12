@@ -4,7 +4,6 @@ import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.handlers.MiningExecutorFactory;
 import org.eltech.ddm.handlers.ParallelExecutionException;
 import org.eltech.ddm.handlers.thread.ConcurrencyExecutorFactory;
-import org.eltech.ddm.inputdata.file.common.FileSeparator;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.*;

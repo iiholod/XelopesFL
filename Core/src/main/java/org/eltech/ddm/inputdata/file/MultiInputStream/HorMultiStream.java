@@ -1,61 +1,35 @@
-package org.eltech.ddm.inputdata.file.csv.MultiCsvStream;
+package org.eltech.ddm.inputdata.file.MultiInputStream;
 
+import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
-import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
-import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
-import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * HorMultiCsvStream class.
- * A class that allows you to read multiple csv-files 'horizontally'.
+ * HorMultiStream class.
+ * A class that allows you to read multiple files 'horizontally'.
  *
  * @author Maxim Kolpashikov
  */
 
-public class HorMultiCsvStream extends MiningMultiCsvStream {
+public class HorMultiStream extends MiningMultiStream {
 
     private int activeStreamIndex;
-    private MiningCsvStream activeStream;
-    private List<ParsingValues> parsingValues;
+    private MiningInputStream activeStream;
 
     // -----------------------------------------------------------------------
-    //  Constructors
+    //  Constructor
     // -----------------------------------------------------------------------
-
-    /**
-     * Accepts an array of csv file names without settings.
-     * At this stage, an array of threads with standard settings is created.
-     * @param files - array of csv-file names
-     */
-    public HorMultiCsvStream(String[] files) throws MiningException {
-        if (files == null) throw  new NullPointerException("The file array is empty.");
-        init(getStreams(files));
-    }
-
-    /**
-     * Accepts an array of csv file names with settings.
-     * At this stage, an array of threads with custom settings is created.
-     * @param files    - array of csv-file names
-     * @param settings - settings for reading files
-     */
-    public HorMultiCsvStream(String[] files, CsvParsingSettings settings) throws MiningException {
-        if (files == null) throw  new NullPointerException("The file array is empty.");
-        if (settings == null) settings = new CsvParsingSettings();
-        init(getStreams(files, settings));
-    }
 
     /**
      * Constructor that accepts an array of csv-file streams.
      * At this stage, the logical data of the csv-files that must match is checked.
      * @param streams - array of streams
      */
-    public HorMultiCsvStream(MiningCsvStream[] streams) throws MiningException {
+    public HorMultiStream(MiningInputStream[] streams) throws MiningException {
         if (streams == null) throw  new NullPointerException("The stream array is empty.");
         init(streams);
     }
@@ -64,7 +38,7 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      * Initializes the class with input data, if the logical data is correct.
      * @param streams - array of streams
      */
-    private void init(MiningCsvStream[] streams) throws MiningException {
+    private void init(MiningInputStream[] streams) throws MiningException {
         if (logicalDataChecked(streams)) {
             thisInit(streams);
             superInit(streams);
@@ -77,13 +51,13 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
         }
     }
 
-    private void thisInit(MiningCsvStream[] streams) {
+    private void thisInit(MiningInputStream[] streams) {
         this.activeStreamIndex = 0;
         this.activeStream = streams[0];
         this.parsingValues = new ArrayList();
     }
 
-    private void superInit(MiningCsvStream[] streams) throws MiningException {
+    private void superInit(MiningInputStream[] streams) throws MiningException {
         super.streams = streams;
         super.vectorsNumber = calculateVecNumber();
         super.logicalData = activeStream.getLogicalData();
@@ -95,7 +69,7 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      * @param streams - array of streams
      * @return <b>true</b> if the logical data is correct, <b>false</b> if the logical data is incorrect
      */
-    private boolean logicalDataChecked(MiningCsvStream[] streams) throws MiningException {
+    private boolean logicalDataChecked(MiningInputStream[] streams) throws MiningException {
         ELogicalData logicalData = streams[0].getLogicalData();
         for (int i = 1; i < streams.length; i++) {
             ELogicalData ld = streams[i].getLogicalData();
@@ -189,11 +163,11 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      * Opens the stream.
      */
     @Override
-    public void open() {
+    public void open() throws MiningException {
         if (isOpen) return;
 
         isOpen = true;
-        for (MiningCsvStream stream : streams) {
+        for (MiningInputStream stream : streams) {
             stream.open();
             stream.setParsingValues(parsingValues);
         }
@@ -205,7 +179,7 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      */
     private int calculateVecNumber() throws MiningException {
         int number = 0;
-        for (MiningCsvStream stream : streams) {
+        for (MiningInputStream stream : streams) {
             number += stream.getVectorsNumber();
         }
         return number;
@@ -215,10 +189,10 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      * Closes the stream.
      */
     @Override
-    public void close() {
+    public void close() throws MiningException {
         if (!isOpen) return;
 
-        for (MiningCsvStream stream : streams) {
+        for (MiningInputStream stream : streams) {
             stream.close();
         }
         isOpen = false;
@@ -228,24 +202,35 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      * Updates all streams.
      */
     @Override
-    public void reset() {
+    public void reset() throws MiningException {
         open();
 
         activeStreamIndex = 0;
         activeStream = streams[0];
-        for (MiningCsvStream stream : streams) {
+        for (MiningInputStream stream : streams) {
             stream.reset();
         }
     }
 
     @Override
-    public MiningVector readPhysicalRecord() {
-        return null;
+    public MiningVector readPhysicalRecord()  {
+        try {
+            return next();
+        } catch (MiningException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    protected MiningVector movePhysicalRecord(int position) {
-        return null;
+    protected MiningVector movePhysicalRecord(int position)  {
+
+        try {
+            return getVector(position);
+        } catch (MiningException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -253,7 +238,7 @@ public class HorMultiCsvStream extends MiningMultiCsvStream {
      * @return HorMultiCsvStream
      */
     @Override
-    public MiningMultiCsvStream getCopy() throws MiningException {
-        return new HorMultiCsvStream(streams);
+    public MiningMultiStream getCopy() throws MiningException {
+        return new HorMultiStream(streams);
     }
 }

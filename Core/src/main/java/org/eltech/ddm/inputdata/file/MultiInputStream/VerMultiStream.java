@@ -1,63 +1,35 @@
-package org.eltech.ddm.inputdata.file.csv.MultiCsvStream;
+package org.eltech.ddm.inputdata.file.MultiInputStream;
 
-import com.opencsv.exceptions.CsvException;
+import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
-import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
-import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
-import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
 
-import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * VerMultiCsvStream class.
- * A class that allows you to read multiple csv-files 'vertically'.
+ * VerMultiStream class.
+ * A class that allows you to read multiple files 'vertically'.
  *
  * @author Maxim Kolpashikov
  */
 
-public class VerMultiCsvStream extends MiningMultiCsvStream {
-
-    private ArrayList parsingValues;
+public class VerMultiStream extends MiningMultiStream {
 
     // -----------------------------------------------------------------------
-    //  Constructors
+    //  Constructor
     // -----------------------------------------------------------------------
-
-    /**
-     * Accepts an array of csv file names without settings.
-     * At this stage, an array of threads with standard settings is created.
-     * @param files - array of csv-file names
-     */
-    public VerMultiCsvStream(String[] files) throws MiningException {
-        if (files == null) throw  new NullPointerException("The file array is empty.");
-        init(getStreams(files));
-    }
-
-    /**
-     * Accepts an array of csv file names with settings.
-     * At this stage, an array of threads with custom settings is created.
-     * @param files    - array of csv-file names
-     * @param settings - settings for reading files
-     */
-    public VerMultiCsvStream(String[] files, CsvParsingSettings settings) throws MiningException {
-        if (files == null) throw  new NullPointerException("The file array is empty.");
-        if(settings == null) settings = new CsvParsingSettings();
-        init(getStreams(files, settings));
-    }
 
     /**
      * Constructor that accepts an array of csv-file streams.
      * At this stage, the logical data of the csv-files that must match is checked.
      * @param streams - array of streams
      */
-    public VerMultiCsvStream(MiningCsvStream[] streams) throws MiningException {
+    public VerMultiStream(MiningInputStream[] streams) throws MiningException {
         if (streams == null) throw  new NullPointerException("The stream array is empty.");
         init(streams);
     }
@@ -66,7 +38,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Initializes the class with input data, if the logical data is correct.
      * @param streams - array of streams
      */
-    private void init(MiningCsvStream[] streams) throws MiningException {
+    private void init(MiningInputStream[] streams) throws MiningException {
         if (vectorsNumberChecked(streams)) {
             super.streams = streams;
             super.logicalData = collectLogicalData();
@@ -86,7 +58,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * checks that the number of vectors in the files is the same
      * @return <b>true</b> if the number of vectors matches, <b>false</b> if the number of vectors does not match
      */
-    private boolean vectorsNumberChecked(MiningCsvStream[] streams) throws MiningException {
+    private boolean vectorsNumberChecked(MiningInputStream[] streams) throws MiningException {
         int number = streams[0].getVectorsNumber();
         for (int i = 1; i < streams.length; i++) {
             if (streams[i].getVectorsNumber() != number) return false;
@@ -104,7 +76,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      */
     private ELogicalData collectLogicalData() throws MiningException {
         ELogicalData logicalData = new ELogicalData();
-        for (MiningCsvStream stream : streams) {
+        for (MiningInputStream stream : streams) {
             ELogicalData ld = stream.getLogicalData();
             for(ELogicalAttribute la : ld.getAttributes()) {
                 logicalData.addAttribute(la);
@@ -119,7 +91,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      */
     private EPhysicalData collectPhysicalData() throws MiningException {
         EPhysicalData physicalData = new EPhysicalData();
-        for (MiningCsvStream stream : streams) {
+        for (MiningInputStream stream : streams) {
             EPhysicalData pa = stream.getPhysicalData();
             for(int i = 0; i < pa.getAttributeCount(); i++) {
                 physicalData.addAttribute(pa.getAttribute(i));
@@ -137,7 +109,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * @return MiningVector
      */
     @Override
-    public MiningVector next() {
+    public MiningVector next() throws MiningException {
 
         open();
         int pos = -1;
@@ -145,7 +117,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
         List<double[]> values = new ArrayList<>();
 
         try {
-            for (MiningCsvStream stream : streams) {
+            for (MiningInputStream stream : streams) {
 
                 MiningVector mv = stream.next();
                 if (pos == -1) pos = mv.getIndex();
@@ -171,7 +143,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * @return MiningVector
      */
     @Override
-    public MiningVector getVector(int pos) {
+    public MiningVector getVector(int pos) throws MiningException {
 
         open();
         if (pos < 0) throw new OutOfMemoryError("Invalid index.");
@@ -179,7 +151,7 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
         int valuesNumber = 0;
         List<double[]> values = new ArrayList<>();
         try {
-            for (MiningCsvStream stream: streams) {
+            for (MiningInputStream stream: streams) {
                 MiningVector mv = stream.getVector(pos);
                 double[] vectorValues = mv.getValues();
 
@@ -223,11 +195,11 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Opens the stream.
      */
     @Override
-    public void open() {
+    public void open() throws MiningException {
         if (isOpen) return;
 
         isOpen = true;
-        for (MiningCsvStream stream : streams) {
+        for (MiningInputStream stream : streams) {
             stream.open();
             stream.setParsingValues(parsingValues);
         }
@@ -237,10 +209,10 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Closes the stream.
      */
     @Override
-    public void close()  {
+    public void close() throws MiningException {
         if (!isOpen) return;
 
-        for (MiningCsvStream stream : streams) {
+        for (MiningInputStream stream : streams) {
             stream.close();
         }
         isOpen = false;
@@ -250,22 +222,12 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * Updates all streams.
      */
     @Override
-    public void reset() {
+    public void reset() throws MiningException {
         open();
 
-        for (MiningCsvStream stream : streams) {
+        for (MiningInputStream stream : streams) {
             stream.reset();
         }
-    }
-
-    @Override
-    public MiningVector readPhysicalRecord() {
-        return null;
-    }
-
-    @Override
-    protected MiningVector movePhysicalRecord(int position) {
-        return null;
     }
 
     /**
@@ -273,8 +235,28 @@ public class VerMultiCsvStream extends MiningMultiCsvStream {
      * @return HorMultiCsvStream
      */
     @Override
-    public MiningMultiCsvStream getCopy() throws MiningException {
-        return new VerMultiCsvStream(streams);
+    public MiningMultiStream getCopy() throws MiningException {
+        return new VerMultiStream(streams);
     }
 
+    @Override
+    public MiningVector readPhysicalRecord()  {
+        try {
+            return next();
+        } catch (MiningException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    protected MiningVector movePhysicalRecord(int position)  {
+
+        try {
+            return getVector(position);
+        } catch (MiningException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }
