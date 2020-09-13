@@ -1,8 +1,7 @@
-package org.eltech.ddm.inputdata.multi;
+package org.eltech.ddm.inputdata.multistreams;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
-import org.eltech.ddm.inputdata.multistreams.VerMultiStream;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
@@ -50,7 +49,7 @@ public class VerMultiStreamTest extends MiningMultiStreamTest {
     }
 
     @Test
-    public void physicalDataTest() throws MiningException {
+    public void physicalDataTest()  {
         assertEquals("sepallength numerical", physicalData.getAttribute(0).toString());
         assertEquals("sepalwidth numerical", physicalData.getAttribute(1).toString());
         assertEquals("petallength numerical", physicalData.getAttribute(2).toString());

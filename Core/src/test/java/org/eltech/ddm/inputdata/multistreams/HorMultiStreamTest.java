@@ -1,8 +1,7 @@
-package org.eltech.ddm.inputdata.multi;
+package org.eltech.ddm.inputdata.multistreams;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
-import org.eltech.ddm.inputdata.multistreams.HorMultiStream;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;

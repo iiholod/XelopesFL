@@ -1,7 +1,6 @@
-package org.eltech.ddm.inputdata.multi;
+package org.eltech.ddm.inputdata.multistreams;
 
 import org.eltech.ddm.inputdata.MiningVector;
-import org.eltech.ddm.inputdata.multistreams.MiningMultiStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
