@@ -1,6 +1,5 @@
 package org.eltech.ddm.clustering.cdbase.kmeans.steps;
 
-import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.clustering.ClusteringMiningModel;
 import org.eltech.ddm.clustering.cdbase.Coordinate;
 import org.eltech.ddm.clustering.cdbase.kmeans.KMeansMiningModel;
@@ -11,8 +10,6 @@ import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.algorithms.DataMiningBlock;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
-
-import java.io.IOException;
 
 public class CalcNewClusterCenter extends DataMiningBlock {
 

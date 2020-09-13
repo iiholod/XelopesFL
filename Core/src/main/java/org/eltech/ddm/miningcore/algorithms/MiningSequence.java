@@ -1,11 +1,9 @@
 package org.eltech.ddm.miningcore.algorithms;
 
-import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,7 @@ public class MiningSequence extends MiningBlock implements Serializable {
 
 
     @Override
-    protected EMiningModel execute(EMiningModel model) throws MiningException, IOException, CsvException {
+    protected EMiningModel execute(EMiningModel model) throws MiningException {
         EMiningModel result = model;
         int l = sequence.size();
         for (int i = 0; i < l; i++) {

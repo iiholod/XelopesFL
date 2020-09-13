@@ -1,13 +1,10 @@
 package org.eltech.ddm.miningcore.algorithms;
 
-import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
-
-import java.io.IOException;
 
 /**
  * Created by iihol on 02.03.2018.
@@ -25,14 +22,14 @@ public abstract class DataMiningBlock extends MiningBlock {
     }
 
     @Override
-    protected EMiningModel execute(EMiningModel model) throws MiningException, IOException, CsvException {
+    protected EMiningModel execute(EMiningModel model) throws MiningException {
         if(data == null)
             throw new MiningException(MiningErrorCode.INVALID_INPUT_DATA, "Data set for the mining block "+ this +" is not initialized!");
 
         return execute(data, model);
     }
 
-    protected abstract EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException, IOException, CsvException;
+    protected abstract EMiningModel execute(MiningInputStream data, EMiningModel model) throws MiningException;
 
     public boolean isDataBlock(){
         return true;
