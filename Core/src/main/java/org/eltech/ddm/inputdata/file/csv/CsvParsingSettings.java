@@ -2,7 +2,9 @@ package org.eltech.ddm.inputdata.file.csv;
 
 /**
  * Class of csv-parser setting.
+ *
  * The settings include the type of separator and the presence of a header.
+ *
  * @author Maxim Kolpashikov
  */
 

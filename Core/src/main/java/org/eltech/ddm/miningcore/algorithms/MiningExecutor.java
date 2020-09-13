@@ -39,7 +39,7 @@ public abstract class MiningExecutor implements Cloneable, Serializable {//, Ser
 	 *
 	 * @throws MiningException
 	 */
-	protected EMiningModel call(EMiningModel model) throws MiningException{
+	protected EMiningModel call(EMiningModel model) throws MiningException {
 		return getBlock().run(model);
 	}
 

@@ -56,7 +56,7 @@ public class ClusteringMiningModelTest {
 		ELogicalAttribute attribute_l_3 = new ELogicalAttribute("petallength", AttributeType.numerical);
 		ELogicalAttribute attribute_l_4 = new ELogicalAttribute("petalwidth", AttributeType.numerical);
 
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);
@@ -114,7 +114,7 @@ public class ClusteringMiningModelTest {
 		ELogicalAttribute attribute_l_3 = new ELogicalAttribute("petallength", AttributeType.numerical);
 		ELogicalAttribute attribute_l_4 = new ELogicalAttribute("petalwidth", AttributeType.numerical);
 
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);
@@ -192,7 +192,7 @@ public class ClusteringMiningModelTest {
 
 		ELogicalAttribute attribute_l_1 = new ELogicalAttribute("N1725", AttributeType.numerical);
 
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 
 		//assignmentManager.putLogicalAttributes(new_user_map_attributes);
@@ -266,7 +266,7 @@ public class ClusteringMiningModelTest {
 		ELogicalAttribute attribute_l_10 = new ELogicalAttribute("fDist", AttributeType.numerical);
 
 		
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);
@@ -323,7 +323,7 @@ public class ClusteringMiningModelTest {
 		ELogicalAttribute attribute_l_4 = new ELogicalAttribute("Col10", AttributeType.numerical);
 		ELogicalAttribute attribute_l_5 = new ELogicalAttribute("Col11", AttributeType.numerical);
 		
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);
@@ -428,7 +428,7 @@ public class ClusteringMiningModelTest {
 //		ELogicalAttribute attribute_l_4 = new ELogicalAttribute("DepDelay", AttributeType.numerical);
 		ELogicalAttribute attribute_l_5 = new ELogicalAttribute("CRSArrTime", AttributeType.numerical);
 
-		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
+		Map<PhysicalAttribute, ELogicalAttribute> new_user_map_attributes = new HashMap<>();
 		new_user_map_attributes.put(physatt_1, attribute_l_1);
 		new_user_map_attributes.put(physatt_2, attribute_l_2);
 		new_user_map_attributes.put(physatt_3, attribute_l_3);

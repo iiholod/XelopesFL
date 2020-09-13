@@ -18,7 +18,7 @@ public abstract class ClusteringMiningModel extends EMiningModel//ClusteringMode
 		super(settings);
 		sets.add(CLUSTERS, new ClusterSet("Clusters") {
 			@Override
-			public void merge(List<MiningModelElement> elements) throws MiningException {
+			public void merge(List<MiningModelElement> elements) {
 
 			}
 		}) ;

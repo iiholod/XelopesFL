@@ -53,7 +53,7 @@ public abstract class ClassificationMiningModel extends EMiningModel implements 
     }
 
     public Object clone() {
-        ClassificationMiningModel o = null;
+        ClassificationMiningModel o;
         o = (ClassificationMiningModel) super.clone();
 
         o.target = target;

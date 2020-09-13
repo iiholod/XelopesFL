@@ -42,7 +42,7 @@ public class NaiveBayesModel extends ClassificationMiningModel implements Clonea
 			}
 
 			@Override
-			public void merge(List<MiningModelElement> elements) throws MiningException {
+			public void merge(List<MiningModelElement> elements) {
 
 			}
 		});
@@ -53,7 +53,7 @@ public class NaiveBayesModel extends ClassificationMiningModel implements Clonea
 			}
 
 			@Override
-			public void merge(List<MiningModelElement> elements) throws MiningException {
+			public void merge(List<MiningModelElement> elements) {
 
 			}
 		});
@@ -74,44 +74,50 @@ public class NaiveBayesModel extends ClassificationMiningModel implements Clonea
 				}
 
 				@Override
-				public void merge(List<MiningModelElement> elements) throws MiningException {}
+				public void merge(List<MiningModelElement> elements) {}
 			};
 			addElement(index(BAYES_INPUT), attrElem);
 
-			for(int j = 0; j < lattr.size(); j++) { // loop for value of independet attribute
-				LogicalAttributeValueElement lattrv = (LogicalAttributeValueElement)lattr.getElement(j);
-				String catName = lattrv.getValue().getName();
-				MiningModelElement attrValElem = new MiningModelElement(catName) {
-					@Override
-					protected String propertiesToString() {
-						return "";
+			try {
+				for (int j = 0; j < lattr.size(); j++) { // loop for value of independet attribute
+					LogicalAttributeValueElement lattrv = (LogicalAttributeValueElement) lattr.getElement(j);
+					String catName = lattrv.getValue().getName();
+					MiningModelElement attrValElem = new MiningModelElement(catName) {
+						@Override
+						protected String propertiesToString() {
+							return "";
+						}
+
+						@Override
+						public void merge(List<MiningModelElement> elements) {
+						}
+					};
+
+					addElement(index(BAYES_INPUT, i), attrValElem);
+
+					for (int t = 0; t < tlattr.size(); t++) { // loop for value of target attribute
+						LogicalAttributeValueElement tlattrv = (LogicalAttributeValueElement) tlattr.getElement(t);
+						String catTrName = tlattrv.getValue().getName();
+						TargetValueCount tvc = new TargetValueCount(attrName + "=" + catName + ";" + catTrName);
+						addElement(index(BAYES_INPUT, i, j), tvc);
 					}
-
-					@Override
-					public void merge(List<MiningModelElement> elements) throws MiningException {}
-				};
-				addElement(index(BAYES_INPUT, i), attrValElem);
-
-				for(int t = 0; t < tlattr.size(); t++) { // loop for value of target attribute
-					LogicalAttributeValueElement tlattrv = (LogicalAttributeValueElement)tlattr.getElement(t);
-					String catTrName = tlattrv.getValue().getName();
-					TargetValueCount tvc = new TargetValueCount(attrName + "=" + catName + ";" + catTrName);
-					addElement(index(BAYES_INPUT, i, j), tvc);
 				}
-			}
+			} catch (Exception ignored) {}
 		}
 
-		for(int t = 0; t < tlattr.size(); t++) { // loop for value of target attribute
-			LogicalAttributeValueElement tlattrv = (LogicalAttributeValueElement)tlattr.getElement(t);
-			String catTrName = tlattrv.getValue().getName();
-			TargetValueCount tvc = new TargetValueCount(catTrName);
-			addElement(index(BAYES_OUTPUT), tvc);
-		}
+		try {
+			for (int t = 0; t < tlattr.size(); t++) { // loop for value of target attribute
+				LogicalAttributeValueElement tlattrv = (LogicalAttributeValueElement) tlattr.getElement(t);
+				String catTrName = tlattrv.getValue().getName();
+				TargetValueCount tvc = new TargetValueCount(catTrName);
+				addElement(index(BAYES_OUTPUT), tvc);
+			}
+		} catch (Exception ignored) {}
 	}
 
 	@Override
-	public double apply(MiningVector miningVector) throws MiningException {
-		double probabilities[] = getProbabilities(miningVector);
+	public double apply(MiningVector miningVector) {
+		double[] probabilities = getProbabilities(miningVector);
 
 		double maxP = 0;
 		int maxIndex = 0;
@@ -125,10 +131,9 @@ public class NaiveBayesModel extends ClassificationMiningModel implements Clonea
 		return maxIndex;
 	}
 
-	public double[] getProbabilities(MiningVector miningVector) throws MiningException {
+	public double[] getProbabilities(MiningVector miningVector) {
 		//int numberAttr = miningVector.getValues().length;
 		int numberTargetValues = target.getCategoricalProperties().getSize();
-		double probabilities[] = new double[numberTargetValues];
 
 		// calculate probabilities for all target categories
 //		double summP = 0;
@@ -154,7 +159,7 @@ public class NaiveBayesModel extends ClassificationMiningModel implements Clonea
 //		for(int i = 0; i < numberTargetValues; i++)
 //			probabilities[i] /= summP;
 
-		return probabilities;
+		return new double[numberTargetValues];
 	}
 
 	public TargetValueCount getInputTargetValueCount(int iCurrAttr, int indexValueAttr, int indexValueTarg) throws MiningException {

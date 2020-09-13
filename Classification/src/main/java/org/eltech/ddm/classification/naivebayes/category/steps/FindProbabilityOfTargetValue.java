@@ -28,10 +28,10 @@ public class FindProbabilityOfTargetValue extends DataMiningBlock {
 
 		//System.out.println("Thread-" + Thread.currentThread().getName() + " id vectror = " + mv.getIndex() + " vector " + mv);
 
-		int indexValueTarg = (int)mv.getValue(targetAttr.getName());
+		int indexValueTarg = (int) mv.getValue(targetAttr.getName());
 
 
-		TargetValueCount tvc = ((NaiveBayesModel)model).getOutputTargetValueCount(indexValueTarg);
+		TargetValueCount tvc = ((NaiveBayesModel) model).getOutputTargetValueCount(indexValueTarg);
 		tvc.incCount();
 
 		System.out.println("Thread-" + Thread.currentThread().getName() + " id vectror = " + mv.getIndex() + " =" + tvc);

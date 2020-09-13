@@ -1,13 +1,17 @@
 package org.eltech.ddm.classification;
 
+import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.inputdata.file.MiningArffStream;
+import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ECategory;
 import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
+
+import java.io.IOException;
 
 import static org.junit.Assert.fail;
 
@@ -18,13 +22,12 @@ public class ClassificationMiningModelTest {
 	protected ClassificationMiningModel  model;
 
 	// ==== Methods for data attributes Weather Nominal ===============
-	protected void setInputData4WeatherNominal() throws MiningException {
+	protected void setInputData4WeatherNominal() throws MiningException, IOException, CsvException {
 		// Load input data
 		inputData = new MiningArffStream("..\\data\\arff\\weather-nominal.arff");
 	}
 	
-	
-	protected void setMiningSettings4WeatherNominal(EMiningAlgorithmSettings algorithmSettings) throws MiningException {
+	protected void setMiningSettings4WeatherNominal(EMiningAlgorithmSettings algorithmSettings) throws MiningException, IOException, CsvException {
 		ELogicalData logicalData = inputData.getLogicalData();
 		ELogicalAttribute targetAttribute = logicalData.getAttribute("play");
 		
@@ -36,6 +39,24 @@ public class ClassificationMiningModelTest {
 		
 	}
 
+	// ==== Methods for data attributes Iris Nominal ===============
+	protected void setInputData4Iris() throws MiningException, IOException, CsvException {
+		// Load input data
+		inputData = new MiningCsvStream("..\\data\\csv\\iris.csv");
+		inputData.open();
+	}
+
+	protected void setMiningSettings4Iris(EMiningAlgorithmSettings algorithmSettings) throws MiningException, IOException, CsvException {
+		ELogicalData logicalData = inputData.getLogicalData();
+		ELogicalAttribute targetAttribute = logicalData.getAttribute("iris-class");
+
+		//Create settings for classification
+		miningSettings = new ClassificationFunctionSettings(logicalData);
+		miningSettings.setTarget(targetAttribute);
+		miningSettings.setAlgorithmSettings(algorithmSettings);
+		miningSettings.verify();
+
+	}
 
 	
 	// ==== Methods for data attributes Weather Nominal ===============

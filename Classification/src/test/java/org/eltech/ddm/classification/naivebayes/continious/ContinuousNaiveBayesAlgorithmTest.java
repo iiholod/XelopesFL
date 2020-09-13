@@ -3,7 +3,6 @@ package org.eltech.ddm.classification.naivebayes.continious;
 import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.classification.ClassificationFunctionSettings;
 import org.eltech.ddm.environment.ConcurrentCSVExecutionEnvironment;
-import org.eltech.ddm.inputdata.file.common.FileSeparator;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
@@ -12,15 +11,12 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalAttribute;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
 import org.eltech.ddm.miningcore.miningtask.EMiningBuildTask;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 
 public class ContinuousNaiveBayesAlgorithmTest {
@@ -63,7 +59,7 @@ public class ContinuousNaiveBayesAlgorithmTest {
         return buildTask;
     }
 
-    protected void verifyModel(ContinuousBayesModel model) throws MiningException {
+    protected void verifyModel(ContinuousBayesModel model) {
 //        MiningCsvStream stream = new MiningCsvStream("diabet-data.csv", getCsvParserSettings());
 //        MiningVector current = stream.next();
 //        while (current != null) {
@@ -78,7 +74,7 @@ public class ContinuousNaiveBayesAlgorithmTest {
         return probabilityList.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
     }
 
-    private void createMiningSettings() throws MiningException {
+    private void createMiningSettings() throws MiningException, IOException {
         ELogicalData logicalData = inputData.getLogicalData();
         ELogicalAttribute targetAttribute = logicalData.getAttribute("res");
 

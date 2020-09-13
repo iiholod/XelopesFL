@@ -16,21 +16,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/**
-  * Title: XELOPES Data Mining Library
-  * Description: The XELOPES library is an open platform-independent and data-source-independent library for Embedded Data Mining.
-  * Copyright: Copyright (c) 2002-2005 prudsys AG. All Rights Reserved.
-  * License: Use is subject to XELOPES license terms.
-  * @author Valentine Stepanenko (valentine.stepanenko@zsoft.ru)
-  * @author Michael Thess
-  * @author Toni Volkmer
-  * @version 1.2
-  */
-
 package org.eltech.ddm.inputdata;
 
-import com.opencsv.exceptions.CsvException;
-import com.opencsv.exceptions.CsvValidationException;
+import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.*;
@@ -41,11 +29,10 @@ import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.CategoryProper
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.ValueSelectionFunction;
 import org.omg.java.cwm.objectmodel.core.Attribute;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -74,7 +61,9 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 
     protected int vectorsNumber = 0;
 
-    private int offsetVectorIndex = 0;
+	protected List<ParsingValues> parsingValues;
+
+	private int offsetVectorIndex = 0;
 
 	private transient AttributeAssignmentType attributeAssignmentType;
     
@@ -104,16 +93,14 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * @return the meta data
      * @exception MiningException could not retrieve meta data
      */
-    public ELogicalData getLogicalData() throws MiningException
-    {
+    public ELogicalData getLogicalData() throws MiningException {
     	if(attributeAssignmentType != null){
     		return userLogicalData;
     	}
     	return logicalData;
     }
 
-    public void setLogicalData(ELogicalData logicalData) throws MiningException
-    {
+    public void setLogicalData(ELogicalData logicalData) {
     	this.logicalData = logicalData;
     }
 
@@ -128,8 +115,6 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
     {
     	return attributeAssignmentSet;
     }
-
-
 
     /**
      * Return the current cursor position.
@@ -168,7 +153,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * @return number of vectors
      * @exception MiningException method reset not implemented
      */
-    public int getVectorsNumber() throws MiningException, IOException, CsvException {
+    public int getVectorsNumber() throws MiningException {
         if(vectorsNumber > 0)
         	return vectorsNumber;
 
@@ -205,14 +190,14 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public abstract void open() throws MiningException, FileNotFoundException;
+    public abstract void open() throws MiningException;
 
     /**
      * Close mining data stream.
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public abstract void close() throws MiningException, IOException;
+    public abstract void close() throws MiningException;
 
     /**
      * Recognize the input stream's meta data by analyzing the input stream.
@@ -220,7 +205,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * @return     the <code>MiningDataSpecification</code>
      * @exception  MiningException  if an error occurs
      */
-    public abstract EPhysicalData recognize() throws MiningException, IOException;
+    public abstract EPhysicalData recognize() throws MiningException;
 
     // -----------------------------------------------------------------------
     //  Methods of cursor positioning
@@ -231,7 +216,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      *
      * @exception MiningException if a mining source access error occurs
      */
-    public abstract void reset() throws MiningException, FileNotFoundException;
+    public abstract void reset() throws MiningException;
 
     /**
      * Moves the cursor down one row from its current position.
@@ -244,7 +229,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * <code>false</code> if there are no more rows
      * @exception MiningException if a mining source access error occurs
      */
-    public MiningVector next() throws MiningException, IOException, CsvException {
+    public MiningVector next() throws MiningException {
 		if(attributeAssignmentType == AttributeAssignmentType.DirectAttributeAssignment){
 			return directAssignmentNext();
 		}
@@ -255,7 +240,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		return readPhysicalRecord();
     }
 
-	public abstract MiningVector readPhysicalRecord() throws MiningException, IOException, CsvException;
+	public abstract MiningVector readPhysicalRecord() throws MiningException;
 	
     /**
      * Moves the cursor to the given row number in
@@ -277,7 +262,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * occurs, or the <code>MiningInputStream</code> type is forward only
      */
    // protected abstract MiningVector move( int position ) throws MiningException;
-	protected MiningVector move( int position ) throws MiningException, IOException, CsvException {
+	protected MiningVector move( int position ) throws MiningException {
 		if(attributeAssignmentType == null ||
 				attributeAssignmentType == AttributeAssignmentType.DirectAttributeAssignment){
 			return movePhysicalRecord(position);
@@ -285,7 +270,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		if(attributeAssignmentType == AttributeAssignmentType.ReversePivotAttributeAssignment){
 			cursorPosition = 0;
 			int reverseRecordPosition = 0;
-			MiningVector mv = null;
+			MiningVector mv;
 			
 			
 			reset();
@@ -306,10 +291,11 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		return null;
 	}
     
-    
+    protected abstract MiningVector movePhysicalRecord( int position ) throws MiningException;
 
-    protected abstract MiningVector movePhysicalRecord( int position ) throws MiningException, IOException, CsvException;
-
+	public void setParsingValues(List<ParsingValues> parsingValues) {
+		this.parsingValues = parsingValues;
+	}
 
     public int getOffsetVectorIndex() {
 		return offsetVectorIndex;
@@ -326,7 +312,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * @return    <code>MiningVector</code> at specified row
      * @exception MiningException if an error occurs
      */
-    public MiningVector getVector( int rowNumber ) throws MiningException, IOException, CsvException {
+    public MiningVector getVector( int rowNumber ) throws MiningException {
 
         return move( rowNumber );
     }
@@ -344,7 +330,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      * @exception  MiningException  if an error occurs
      * @see        #readVectors( MiningVector[], int, int )
      */
-    public int readVectors( MiningVector b[] ) throws MiningException, IOException, CsvException {
+    public int readVectors(MiningVector[] b) throws MiningException {
        return readVectors(b, 0, b.length);
     }
 
@@ -364,7 +350,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
      *             the stream has been reached
      * @exception  MiningException  if an error occurs
      */
-    public int readVectors( MiningVector[] b, int off, int len ) throws MiningException, IOException, CsvException {
+    public int readVectors( MiningVector[] b, int off, int len ) throws MiningException {
            int i = 0;
            if(b == null) throw new MiningException(MiningErrorCode.INVALID_ARGUMENT, "Array b can't be null." );
            if( ( off < 0 ) || ( off > b.length ) || ( len < 0 ) || ( ( off + len ) > b.length ) || ( ( off + len ) < 0 ) )
@@ -426,17 +412,17 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
     public String toString() {
 
       // Meta data:
-      String description = "";
+      StringBuilder description = new StringBuilder();
 
       try {
-        description = description + getPhysicalData() + "\n";
+        description.append(getPhysicalData()).append("\n");
       }
-      catch (MiningException | IOException ex) {
-        description = description + "no metadata" + "\n";
-      };
+      catch (MiningException ex) {
+        description.append("no metadata").append("\n");
+      }
 
-      // Data:
-      description = description + "data" + "\n";
+		// Data:
+      description.append("data").append("\n");
       // Try to reset stream:
       boolean wasOpen = isOpen();
       try {
@@ -445,37 +431,36 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
         else
           open();
       }
-      catch (MiningException | FileNotFoundException ex) {
-        description = description + "Warning: can't reset cursor. " +
-                      "Start reading at current position" + "\n";
-      };
-      int i = 0;
+      catch (MiningException  ex) {
+		  description.append("Warning: can't reset cursor. ").append("Start reading at current position").append("\n");
+	  }
+		int i = 0;
       // Read data:
       try {
     	  MiningVector mv = next();
     	  while( mv != null  ){
-    		  description = description + String.valueOf(i++) + ": " + mv + "\n";
+    		  description.append(i++).append(": ").append(mv).append("\n");
     		  mv = next();
     	  }
       }
       catch (Exception ex) {
-        description = description + "Error: can't read vector " + i;
-      };
+        description.append("Error: can't read vector ").append(i);
+      }
 
-      try {
+		try {
         if(!wasOpen)
           close();
       }
-      catch(MiningException | IOException ex) {
+      catch(MiningException ignored) {
       }
 
-      return description;
+      return description.toString();
     }
 
 	/**
 	 * @return the physicalData
 	 */
-	public EPhysicalData getPhysicalData() throws MiningException, IOException {
+	public EPhysicalData getPhysicalData() throws MiningException {
 	      if(physicalData == null)
 	    	  physicalData = recognize();
 
@@ -490,14 +475,20 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 	      System.err.println(this.getClass().toString() + " can't be cloned");
 	    }
 
-	    if(attributeAssignmentSet != null)
-	    	o.attributeAssignmentSet = (EAttributeAssignmentSet)attributeAssignmentSet.clone();
+	    if(attributeAssignmentSet != null) {
+			assert o != null;
+			o.attributeAssignmentSet = (EAttributeAssignmentSet)attributeAssignmentSet.clone();
+		}
 
-	    if(logicalData != null)
-	    	o.logicalData = (ELogicalData)logicalData.clone();
+	    if(logicalData != null) {
+			assert o != null;
+			o.logicalData = (ELogicalData)logicalData.clone();
+		}
 
-	    if(physicalData != null)
-	    	o.physicalData = (EPhysicalData)physicalData.clone();
+	    if(physicalData != null) {
+			assert o != null;
+			o.physicalData = (EPhysicalData)physicalData.clone();
+		}
 
 	    return o;
 	}
@@ -512,7 +503,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		if(logicalData != null){
 			userLogicalData.setName(logicalData.getName());
 		}
-		unusesAttributeIndexes = new ArrayList<Integer>(); //empty
+		unusesAttributeIndexes = new ArrayList<>(); //empty
 
     	if(attributeAssignmentType == AttributeAssignmentType.DirectAttributeAssignment){
 	    	int t = physicalData.getAttributeCount(); 
@@ -522,7 +513,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 				for(int j = 0; j < attributeAssignmentSet.getSize(); j++){
 					EDirectAttributeAssignment_e directAssignment = (EDirectAttributeAssignment_e) attributeAssignmentSet.getAttributeAssignment(j);
 	
-					if(isExist == false){
+					if(!isExist){
 						if((directAssignment.getAttribute().getName().equals(curPhysAtt.getName())) //identical phys
 								&&(directAssignment.getAttribute().type == curPhysAtt.type)){
 							isExist = true;
@@ -531,7 +522,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 						}
 					}
 				}
-				if(isExist == false){
+				if(!isExist){
 					unusesAttributeIndexes.add(i);
 				}
 			}
@@ -554,32 +545,22 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 			for(int i = 0; i < physicalData.getAttributeCount(); i++){
 				boolean isExist = false;
 				PhysicalAttribute curPhysAtt = physicalData.getAttribute(i);
-				for (Attribute phAtt : ((EReversePivotAttributeAssignment)attributeAssignmentSet.getAttributeAssignment(0)).getSelectorAttribute()) {	
-					if(isExist == false){
-						if((phAtt.getName().equals(curPhysAtt.getName())) &&(phAtt.type == curPhysAtt.type)){
-							isExist = true;
-							break;
-						}
+				for (Attribute phAtt : ((EReversePivotAttributeAssignment)attributeAssignmentSet.getAttributeAssignment(0)).getSelectorAttribute()) {
+					if((phAtt.getName().equals(curPhysAtt.getName())) &&(phAtt.type == curPhysAtt.type)){
+						isExist = true;
+						break;
 					}
-				}	
-				if(isExist == false){
+				}
+				if(!isExist){
 					unusesAttributeIndexes.add(i);
 				}
 			}
     	}
-    	else if(attributeAssignmentType == AttributeAssignmentType.SetAttributeAssignment){
-    		int t = physicalData.getAttributeCount(); 
-    		for(int j = 0; j < attributeAssignmentSet.getSize(); j++){
-    			ESetAttributeAssignment setAssignment = (ESetAttributeAssignment)attributeAssignmentSet.getAttributeAssignment(j);
-    			
-    		}
-    		
-    	}
 	}
 	
 	public Map<PhysicalAttribute, ELogicalAttribute> getMapAttributes() throws MiningException{
-		Map<PhysicalAttribute, ELogicalAttribute> mapAttributes = new HashMap<PhysicalAttribute, ELogicalAttribute>();
-		unusesAttributeIndexes = new ArrayList<Integer>(); //empty
+		Map<PhysicalAttribute, ELogicalAttribute> mapAttributes = new HashMap<>();
+		unusesAttributeIndexes = new ArrayList<>(); //empty
 		userLogicalData = new ELogicalData();
 		
 		AttributeValuesMapping valueMap = new AttributeValuesMapping();
@@ -601,7 +582,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		return mapAttributes;
 	}
 
-	private MiningVector directAssignmentNext() throws MiningException, IOException, CsvException {
+	private MiningVector directAssignmentNext() throws MiningException {
 		MiningVector cursorVector = readPhysicalRecord();
 		if(cursorVector == null){
 			System.out.println(" return null \n");
@@ -624,15 +605,19 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
  				if(userLogicalData.getAttribute(curIndexUserLogData).getAttributeType() == AttributeType.categorical){
  					if(isExistLogData){
  						ECategory eCategory = logicalData.getAttribute(t).getCategoricalProperties().getCategory((int) curValue);
-	                		if(eCategory == null)
-	                			userLogicalData.getAttribute(curIndexUserLogData).getCategoricalProperties().addCategory(eCategory.getName(), CategoryProperty.valid);
+	                		if(eCategory == null) {
+								assert false;
+								userLogicalData.getAttribute(curIndexUserLogData).getCategoricalProperties().addCategory(eCategory.getName(), CategoryProperty.valid);
+							}
 	                		else
 	                			userLogicalData.getAttribute(curIndexUserLogData).setCategoricalProperties(logicalData.getAttribute(t).getCategoricalProperties());
  					}
  					else{
  						ECategory eCategory = userLogicalData.getAttribute(curIndexUserLogData).getCategoricalProperties().getCategory((int) curValue);
-	                		if(eCategory == null)
-	                			userLogicalData.getAttribute(curIndexUserLogData).getCategoricalProperties().addCategory(eCategory.getName(), CategoryProperty.valid);
+	                		if(eCategory == null) {
+								assert false;
+								userLogicalData.getAttribute(curIndexUserLogData).getCategoricalProperties().addCategory(eCategory.getName(), CategoryProperty.valid);
+							}
  					}
  				}
  				else{ //to numeric
@@ -663,92 +648,89 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 	 }
 	
 	
-	private MiningVector reversePivotAssignmentNext() throws MiningException, IOException, CsvException {
+	private MiningVector reversePivotAssignmentNext() throws MiningException {
 		System.out.println("\n\nresult of NEXT() : \n");
 		boolean isEmptyRecord = true;
 		
 		if((instancePool.instances_row_indx >= instancePool.instances.size()) ||
-				(instancePool.instances_row_indx == -1)){
-			while(isEmptyRecord){
-				
+				(instancePool.instances_row_indx == -1)) {
+			while (isEmptyRecord) {
+
 				instancePool.instances.clear();
 				instancePool.instances_row_indx = -1;
-				
+
 				//read new vector;
 				MiningVector cursorVector = readPhysicalRecord();
-				if(cursorVector == null){
-		        	instancePool.instances.clear();
-		        	instancePool.instances_row_indx = -1;
-		        	instancePool.cur_row_indx = 0;
-		        	System.out.println("endoffile. clear instancePool.");
+				if (cursorVector == null) {
+					instancePool.instances.clear();
+					instancePool.instances_row_indx = -1;
+					instancePool.cur_row_indx = 0;
+					System.out.println("endoffile. clear instancePool.");
 					return null;
 				}
-	
+
 				//-----------
 				instancePool.instances_row_indx = 0;
-				for(int i = 0; i < cursorVector.values.length; i++){
-	                double dtoken = cursorVector.getValue(i);
-	                String token = null;
-	                ECategory eCategory = logicalData.getAttribute(i).getCategoricalProperties().getCategory((int) dtoken);
-	        		if(eCategory == null)
-	        			token = Double.toString(dtoken); //0 , 1 (from category)
-	        		else
-	        			token = eCategory.getName(); //true, false.... null...
-	                
-		            if(!unusesAttributeIndexes.contains(i)){ //attribute contains in selector attributes
-		            	double[] instance = new double[ userLogicalData.getAttributesNumber() ];
-		            	if(checkAttributeSelectionFunction(token, ((EReversePivotAttributeAssignment) attributeAssignmentSet.getAttributeAssignment(0)).getAttributeSelectionFunction())){//value - ok
-		            		//1) transactId self! without reader!
-		            		ELogicalAttribute ula = userLogicalData.getAttribute( 0 );
-		            		String tokenTransactId = String.valueOf(cursorPosition);
-	                		Integer indexCategory_transactid = userLogicalData.getAttribute(0).getCategoricalProperties().getIndex(tokenTransactId);
-			                if(indexCategory_transactid == null)
-			                	instance[0] = userLogicalData.getAttribute( 0 ).getCategoricalProperties().addCategory(tokenTransactId, CategoryProperty.valid);
-			                else
-			                	instance[0] = indexCategory_transactid.doubleValue();
-	                		
-		            		//2) reader -> data to categorical!
-			                PhysicalAttribute pha = physicalData.getAttribute( i );           
-			                String item_name_or_value = null;//la.getName();
-			                if( ((EReversePivotAttributeAssignment) attributeAssignmentSet.getAttributeAssignment(0)).getValueSelectionFunction() == ValueSelectionFunction.attribute){
-			                	item_name_or_value = pha.getName();
-			                }
-			                else if(((EReversePivotAttributeAssignment) attributeAssignmentSet.getAttributeAssignment(0)).getValueSelectionFunction() == ValueSelectionFunction.value){
-			                	item_name_or_value = token;
-			                }
-			                
-			            	Integer indexCategory_user = userLogicalData.getAttribute(1).getCategoricalProperties().getIndex(item_name_or_value);
-			                if(indexCategory_user == null)
-			                	instance[1] = userLogicalData.getAttribute(1).getCategoricalProperties().addCategory(item_name_or_value, CategoryProperty.valid);
-			                else
-			                	instance[1] = indexCategory_user.doubleValue();
-			                
-			                instancePool.instances.add(instance);
-			                instancePool.instances_row_indx++;
-			                isEmptyRecord = false;
-			                
-			            }
-	
-		            }
-	            }
-			    if(instancePool.instances.size() > 0){
-			        instancePool.instances_row_indx = 0;
-			        cursorVector = new MiningVector(instancePool.instances.get(0));
-			        cursorVector.setLogicalData( userLogicalData );
-			        instancePool.instances_row_indx ++;
-			        
-			        System.out.println("	Created vectors: ");
-			        for(int h = 0; h < instancePool.instances.size(); h++){
-			        	System.out.println("[ " + instancePool.instances.get(h)[0] + " , " + instancePool.instances.get(h)[1] + " ]");
-			        }
-			        System.out.println("	With logical data: " + userLogicalData.toString());
-			        System.out.println("	RETURN VECTOR: " + cursorVector.toString());
-			    
-			        return cursorVector;
-			    }
-			    else{
-			    	System.out.println("	There is no created vectors");
-			    }
+				for (int i = 0; i < cursorVector.values.length; i++) {
+					double dtoken = cursorVector.getValue(i);
+					String token;
+					ECategory eCategory = logicalData.getAttribute(i).getCategoricalProperties().getCategory((int) dtoken);
+					if (eCategory == null)
+						token = Double.toString(dtoken); //0 , 1 (from category)
+					else
+						token = eCategory.getName(); //true, false.... null...
+
+					if (!unusesAttributeIndexes.contains(i)) { //attribute contains in selector attributes
+						double[] instance = new double[userLogicalData.getAttributesNumber()];
+						if (checkAttributeSelectionFunction(token, ((EReversePivotAttributeAssignment) attributeAssignmentSet.getAttributeAssignment(0)).getAttributeSelectionFunction())) {//value - ok
+							//1) transactId self! without reader!
+							String tokenTransactId = String.valueOf(cursorPosition);
+							Integer indexCategory_transactid = userLogicalData.getAttribute(0).getCategoricalProperties().getIndex(tokenTransactId);
+							if (indexCategory_transactid == null)
+								instance[0] = userLogicalData.getAttribute(0).getCategoricalProperties().addCategory(tokenTransactId, CategoryProperty.valid);
+							else
+								instance[0] = indexCategory_transactid.doubleValue();
+
+							//2) reader -> data to categorical!
+							PhysicalAttribute pha = physicalData.getAttribute(i);
+							String item_name_or_value = null;//la.getName();
+							if (((EReversePivotAttributeAssignment) attributeAssignmentSet.getAttributeAssignment(0)).getValueSelectionFunction() == ValueSelectionFunction.attribute) {
+								item_name_or_value = pha.getName();
+							} else if (((EReversePivotAttributeAssignment) attributeAssignmentSet.getAttributeAssignment(0)).getValueSelectionFunction() == ValueSelectionFunction.value) {
+								item_name_or_value = token;
+							}
+
+							Integer indexCategory_user = userLogicalData.getAttribute(1).getCategoricalProperties().getIndex(item_name_or_value);
+							if (indexCategory_user == null)
+								instance[1] = userLogicalData.getAttribute(1).getCategoricalProperties().addCategory(item_name_or_value, CategoryProperty.valid);
+							else
+								instance[1] = indexCategory_user.doubleValue();
+
+							instancePool.instances.add(instance);
+							instancePool.instances_row_indx++;
+							isEmptyRecord = false;
+
+						}
+
+					}
+				}
+				if (instancePool.instances.size() > 0) {
+					instancePool.instances_row_indx = 0;
+					cursorVector = new MiningVector(instancePool.instances.get(0));
+					cursorVector.setLogicalData(userLogicalData);
+					instancePool.instances_row_indx++;
+
+					System.out.println("	Created vectors: ");
+					for (int h = 0; h < instancePool.instances.size(); h++) {
+						System.out.println("[ " + instancePool.instances.get(h)[0] + " , " + instancePool.instances.get(h)[1] + " ]");
+					}
+					System.out.println("	With logical data: " + userLogicalData.toString());
+					System.out.println("	RETURN VECTOR: " + cursorVector.toString());
+
+					return cursorVector;
+				} else {
+					System.out.println("	There is no created vectors");
+				}
 
 			}
 		}
@@ -781,7 +763,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		case isOne:
 			int t = 0;
 			try{
-                t = Integer.valueOf( token ).intValue();
+                t = Integer.parseInt(token);
             }
             catch(NumberFormatException e){
             	System.out.println("\n token type is not int: " + token);
@@ -794,7 +776,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 		case isZero:
 			int t2 = 1;
 			try{
-                t2 = Integer.valueOf( token ).intValue();
+                t2 = Integer.parseInt(token);
             }
             catch(NumberFormatException e){
             	System.out.println("\n token type is not int: " + token);

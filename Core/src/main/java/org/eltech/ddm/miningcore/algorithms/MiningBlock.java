@@ -33,7 +33,7 @@ public abstract class MiningBlock implements Cloneable, Serializable {
 	/**
 	 * Method execute step of algorithm
 	 */
-	public EMiningModel run(EMiningModel model) throws MiningException{
+	public EMiningModel run(EMiningModel model) throws MiningException {
 
 		this.notifyBeforeExecute();
 		EMiningModel result = this.execute(model);

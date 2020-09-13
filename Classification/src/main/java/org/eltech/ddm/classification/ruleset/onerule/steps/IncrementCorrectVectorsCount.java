@@ -17,13 +17,12 @@ import org.eltech.ddm.miningcore.miningmodel.LogicalAttributeElement;
  */
 public class IncrementCorrectVectorsCount extends DataMiningBlock {
 
-    private final ELogicalAttribute target;
     private final int indexTarget;
 
     public IncrementCorrectVectorsCount(EMiningFunctionSettings settings)
             throws MiningException {
         super(settings);
-        target = ((ClassificationFunctionSettings) settings).getTarget();
+        ELogicalAttribute target = ((ClassificationFunctionSettings) settings).getTarget();
         indexTarget = settings.getLogicalData().getAttributeIndex(target);
 
     }

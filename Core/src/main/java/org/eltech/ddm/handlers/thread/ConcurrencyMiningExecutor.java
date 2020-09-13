@@ -49,6 +49,8 @@ public class ConcurrencyMiningExecutor extends MiningExecutor implements Cloneab
 				e.printStackTrace();
 			}
 		});
+
+
 	}
 
 	@Override
