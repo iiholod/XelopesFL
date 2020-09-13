@@ -1,4 +1,4 @@
-package org.eltech.ddm.inputdata.file.MultiInputStream;
+package org.eltech.ddm.inputdata.multistreams;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
@@ -137,6 +137,16 @@ public class VerMultiStream extends MiningMultiStream {
         return miningVector;
     }
 
+    @Override
+    public MiningVector readPhysicalRecord()  {
+        try {
+            return next();
+        } catch (MiningException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * Returns a vector based on the specified index.
      * @param pos - index of the vector
@@ -167,6 +177,17 @@ public class VerMultiStream extends MiningMultiStream {
         miningVector.setLogicalData(logicalData);
         miningVector.setIndex(pos);
         return miningVector;
+    }
+
+    @Override
+    protected MiningVector movePhysicalRecord(int position)  {
+
+        try {
+            return getVector(position);
+        } catch (MiningException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -235,28 +256,8 @@ public class VerMultiStream extends MiningMultiStream {
      * @return HorMultiCsvStream
      */
     @Override
-    public MiningMultiStream getCopy() throws MiningException {
+    public MiningMultiStream deepCopy() throws MiningException {
         return new VerMultiStream(streams);
     }
 
-    @Override
-    public MiningVector readPhysicalRecord()  {
-        try {
-            return next();
-        } catch (MiningException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    protected MiningVector movePhysicalRecord(int position)  {
-
-        try {
-            return getVector(position);
-        } catch (MiningException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
 }

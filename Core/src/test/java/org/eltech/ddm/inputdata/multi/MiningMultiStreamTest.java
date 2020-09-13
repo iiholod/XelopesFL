@@ -1,15 +1,11 @@
-package org.eltech.ddm.inputdata.file.MiningMultiCsvStreamTest;
+package org.eltech.ddm.inputdata.multi;
 
-import com.opencsv.exceptions.CsvException;
-import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
-import org.eltech.ddm.inputdata.file.MultiInputStream.MiningMultiStream;
+import org.eltech.ddm.inputdata.multistreams.MiningMultiStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,7 +16,7 @@ import static org.junit.Assert.assertEquals;
  * @author Maxim Kolpashikov
  */
 
-abstract class MiningMultiCsvStreamTest {
+abstract class MiningMultiStreamTest {
     protected ELogicalData logicalData;
     protected EPhysicalData physicalData;
     protected MiningMultiStream multiCsvStream;

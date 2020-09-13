@@ -1,9 +1,8 @@
-package org.eltech.ddm.inputdata.file.MiningMultiCsvStreamTest;
+package org.eltech.ddm.inputdata.multi;
 
-import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
-import org.eltech.ddm.inputdata.file.MultiInputStream.HorMultiStream;
+import org.eltech.ddm.inputdata.multistreams.VerMultiStream;
 import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
@@ -11,11 +10,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static org.junit.Assert.assertEquals;
 
-public class HorMultiCsvStreamTest extends MiningMultiCsvStreamTest{
+public class VerMultiStreamTest extends MiningMultiStreamTest {
     @Before
     public void setup() throws MiningException {
 
@@ -24,11 +21,11 @@ public class HorMultiCsvStreamTest extends MiningMultiCsvStreamTest{
         settings.setHeaderAvailability(true);
 
         MiningInputStream[] streams = new MiningCsvStream[]{
-                new MiningCsvStream("../data/csv/iris_hor1.csv", settings),
-                new MiningCsvStream("../data/csv/iris_hor2.csv", settings),
-                new MiningCsvStream("../data/csv/iris_hor3.csv", settings)};
+                new MiningCsvStream("../data/csv/iris_ver1.csv", settings),
+                new MiningCsvStream("../data/csv/iris_ver2.csv", settings),
+                new MiningCsvStream("../data/csv/iris_ver3.csv", settings)};
 
-        setup(new HorMultiStream(streams));
+        setup(new VerMultiStream(streams));
     }
 
 
@@ -53,7 +50,7 @@ public class HorMultiCsvStreamTest extends MiningMultiCsvStreamTest{
     }
 
     @Test
-    public void physicalDataTest() {
+    public void physicalDataTest() throws MiningException {
         assertEquals("sepallength numerical", physicalData.getAttribute(0).toString());
         assertEquals("sepalwidth numerical", physicalData.getAttribute(1).toString());
         assertEquals("petallength numerical", physicalData.getAttribute(2).toString());
@@ -66,4 +63,3 @@ public class HorMultiCsvStreamTest extends MiningMultiCsvStreamTest{
         close();
     }
 }
-

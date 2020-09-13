@@ -1,12 +1,10 @@
-package org.eltech.ddm.inputdata.file.MiningCsvStreamTest;
+package org.eltech.ddm.inputdata.file.csv;
 
 import static org.junit.Assert.assertEquals;
 
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
-import org.eltech.ddm.inputdata.file.csv.MiningCsvStream;
-import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
 
 import java.io.IOException;
 import com.opencsv.exceptions.CsvException;

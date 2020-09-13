@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package org.eltech.ddm.inputdata;
 
-import com.opencsv.exceptions.CsvException;
 import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
@@ -30,8 +29,6 @@ import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.CategoryProper
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.ValueSelectionFunction;
 import org.omg.java.cwm.objectmodel.core.Attribute;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

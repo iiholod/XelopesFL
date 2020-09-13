@@ -1,4 +1,4 @@
-package org.eltech.ddm.inputdata.file.MultiInputStream;
+package org.eltech.ddm.inputdata.multistreams;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
@@ -52,16 +52,17 @@ public class HorMultiStream extends MiningMultiStream {
     }
 
     private void thisInit(MiningInputStream[] streams) {
-        this.activeStreamIndex = 0;
-        this.activeStream = streams[0];
-        this.parsingValues = new ArrayList();
+        activeStreamIndex = 0;
+        activeStream = streams[0];
     }
 
     private void superInit(MiningInputStream[] streams) throws MiningException {
+
         super.streams = streams;
-        super.vectorsNumber = calculateVecNumber();
-        super.logicalData = activeStream.getLogicalData();
-        super.physicalData = activeStream.getPhysicalData();
+        parsingValues = new ArrayList();
+        vectorsNumber = calculateVecNumber();
+        logicalData = activeStream.getLogicalData();
+        physicalData = activeStream.getPhysicalData();
     }
 
     /**
@@ -109,6 +110,16 @@ public class HorMultiStream extends MiningMultiStream {
         }
     }
 
+    @Override
+    public MiningVector readPhysicalRecord()  {
+        try {
+            return next();
+        } catch (MiningException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * Returns a vector based on the specified index.
      * @param pos - index of the vector
@@ -123,6 +134,17 @@ public class HorMultiStream extends MiningMultiStream {
         MiningVector vector = getVectorOfStream(pos);
         vector.setIndex(pos);
         return vector;
+    }
+
+    @Override
+    protected MiningVector movePhysicalRecord(int position)  {
+
+        try {
+            return getVector(position);
+        } catch (MiningException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -198,7 +220,7 @@ public class HorMultiStream extends MiningMultiStream {
         isOpen = false;
     }
 
-    /**
+     /**
      * Updates all streams.
      */
     @Override
@@ -212,33 +234,13 @@ public class HorMultiStream extends MiningMultiStream {
         }
     }
 
-    @Override
-    public MiningVector readPhysicalRecord()  {
-        try {
-            return next();
-        } catch (MiningException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    protected MiningVector movePhysicalRecord(int position)  {
-
-        try {
-            return getVector(position);
-        } catch (MiningException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
     /**
      * returns a copy of the current stream
      * @return HorMultiCsvStream
      */
     @Override
-    public MiningMultiStream getCopy() throws MiningException {
+    public MiningMultiStream deepCopy() throws MiningException {
         return new HorMultiStream(streams);
     }
+
 }
