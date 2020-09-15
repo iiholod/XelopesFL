@@ -30,15 +30,12 @@ public class MiningDBMetaDataTest {
         MiningDBStream miningDBStream = new MiningDBStream(url, user, password, tableName);
 Map<String, TaggedValue> a;
 
-        // Проверка по типам данных столбцов
         assertEquals ("float8",miningDBStream.getColumnsInfo().getOrDefault("sepallength", "0"));
         assertEquals ("float8",miningDBStream.getColumnsInfo().getOrDefault("sepalwidth", "0"));
         assertEquals ("float8",miningDBStream.getColumnsInfo().getOrDefault("petallength", "0"));
         assertEquals ("float8",miningDBStream.getColumnsInfo().getOrDefault("petalwidth", "0"));
         assertEquals ("varchar",miningDBStream.getColumnsInfo().getOrDefault("class", "0"));
 
-
-        // Проверка наименований столбцов
         assertEquals ("petalwidth",miningDBStream.getLogicalData().getAttribute(0).getName());
         assertEquals ("sepallength",miningDBStream.getLogicalData().getAttribute(1).getName());
         assertEquals ("sepalwidth",miningDBStream.getLogicalData().getAttribute(2).getName());

@@ -61,6 +61,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 
     protected int vectorsNumber = 0;
 
+    /** A list that converts a string to a double. */
 	protected List<ParsingValues> parsingValues;
 
 	private int offsetVectorIndex = 0;
@@ -79,10 +80,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
     /**
      * <code>MiningInputStream</code> constructor.
      */
-    public MiningInputStream()
-    {
-    	//offsetVectorIndex = 0;
-    }
+    public MiningInputStream() {}
 
     // -----------------------------------------------------------------------
     //  Getter and setter methods

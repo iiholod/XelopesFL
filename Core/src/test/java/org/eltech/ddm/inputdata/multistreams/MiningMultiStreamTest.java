@@ -5,6 +5,7 @@ import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
+import org.eltech.ddm.inputdata.multistreams.MiningMultiStream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,12 +19,12 @@ import static org.junit.Assert.assertEquals;
 abstract class MiningMultiStreamTest {
     protected ELogicalData logicalData;
     protected EPhysicalData physicalData;
-    protected MiningMultiStream multiCsvStream;
+    private MiningMultiStream multiStream;
 
     public void setup(MiningMultiStream stream) throws MiningException {
-        multiCsvStream = stream;
-        logicalData = multiCsvStream.getLogicalData();
-        physicalData = multiCsvStream.getPhysicalData();
+        multiStream = stream;
+        logicalData = multiStream.getLogicalData();
+        physicalData = multiStream.getPhysicalData();
     }
 
     abstract void logicalDataTest() throws MiningException;
@@ -43,10 +44,10 @@ abstract class MiningMultiStreamTest {
 
     protected void vecTest() throws MiningException {
         // number of mining vectors test
-        assertEquals(150, multiCsvStream.getVectorsNumber());
+        assertEquals(150, multiStream.getVectorsNumber());
 
         // values of the first vector Test (method 'next()')
-        MiningVector miningVector = multiCsvStream.next();
+        MiningVector miningVector = multiStream.next();
         assertEquals(0, miningVector.getIndex());
         assertEquals(5.1, miningVector.getValue(0), 0);
         assertEquals(3.5, miningVector.getValue(1), 0);
@@ -55,7 +56,7 @@ abstract class MiningMultiStreamTest {
         assertEquals(1.0, miningVector.getValue(4), 0);
 
         // values of the second vector Test (method 'next()')
-        miningVector = multiCsvStream.next();
+        miningVector = multiStream.next();
         assertEquals(1, miningVector.getIndex());
         assertEquals(4.9, miningVector.getValue(0), 0);
         assertEquals(3.0, miningVector.getValue(1), 0);
@@ -64,7 +65,7 @@ abstract class MiningMultiStreamTest {
         assertEquals(1.0, miningVector.getValue(4), 0);
 
         // values of the fiftieth vector Test by getVector() (method 'getVector()')
-        miningVector = multiCsvStream.getVector(50);
+        miningVector = multiStream.getVector(50);
         assertEquals(50, miningVector.getIndex());
         assertEquals(7.0, miningVector.getValue(0), 0);
         assertEquals(3.2, miningVector.getValue(1), 0);
@@ -73,7 +74,7 @@ abstract class MiningMultiStreamTest {
         assertEquals(2.0, miningVector.getValue(4), 0);
 
         // values of the last vector Test
-        miningVector = multiCsvStream.getVector(multiCsvStream.getVectorsNumber() - 1);
+        miningVector = multiStream.getVector(multiStream.getVectorsNumber() - 1);
         assertEquals(149, miningVector.getIndex());
         assertEquals(5.9, miningVector.getValue(0), 0);
         assertEquals(3.0, miningVector.getValue(1), 0);
@@ -83,7 +84,7 @@ abstract class MiningMultiStreamTest {
     }
 
     protected void close() throws MiningException {
-        multiCsvStream.close();
+        multiStream.close();
     }
 }
 
