@@ -1,5 +1,6 @@
 package org.eltech.ddm.inputdata.image;
 
+import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.inputdata.file.MiningFileStream;
 import org.eltech.ddm.miningcore.MiningException;
@@ -10,6 +11,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+/**
+ * Class for reading images from a directory and converting them to vectors.
+ * @author Maxim Kolpaschikov
+ */
 
 public class MiningImageStream extends MiningFileStream {
 
@@ -30,11 +36,11 @@ public class MiningImageStream extends MiningFileStream {
     }
 
     // -----------------------------------------------------------------------
-    // ?????????????????????????????????????
+    //  General stream methods
     // -----------------------------------------------------------------------
 
     /**
-     * Gets an array of files from a directory and ?????????????????????????????????????.
+     * Opens the stream.
      */
     @Override
     public void open() throws MiningException {
@@ -48,16 +54,33 @@ public class MiningImageStream extends MiningFileStream {
         open = true;
     }
 
+    /**
+     * Closes the stream.
+     */
     @Override
     public void close() {
 
         if(!open) return;
-        imageFiles = null;
+
         open = false;
+        imageFiles = null;
+        logicalData = null;
+        physicalData = null;
+        attributeAssignmentSet = null;
     }
 
     /**
-     * ?????????????????????????????????????
+     * Restarts the thread.
+     */
+    @Override
+    public void reset() throws MiningException {
+
+        resetCurrentPosition();
+        recognize();
+    }
+
+    /**
+     * Initializes metadata.
      * @return physical data
      */
     @Override
@@ -67,28 +90,6 @@ public class MiningImageStream extends MiningFileStream {
             initData();
         }
         return physicalData;
-    }
-
-    /**
-     * Initialization of meta data.
-     */
-    private void initData() throws MiningException {
-
-        logicalData = new ELogicalData();
-        physicalData = new EPhysicalData();
-        attributeAssignmentSet = new EAttributeAssignmentSet();
-
-        for (int i = 1; i <= imageFiles.length; i++) {
-
-            ELogicalAttribute la = new ELogicalAttribute("Image " + i, AttributeType.image);
-            PhysicalAttribute pa = new PhysicalAttribute("Image " + i, AttributeType.image, AttributeDataType.integerType);
-            EDirectAttributeAssignment da = new EDirectAttributeAssignment();
-            logicalData.addAttribute(la);
-            physicalData.addAttribute(pa);
-            da.addLogicalAttribute(la);
-            da.setAttribute(pa);
-            attributeAssignmentSet.addAssignment(da);
-        }
     }
 
     /**
@@ -126,8 +127,34 @@ public class MiningImageStream extends MiningFileStream {
         return vector;
     }
 
+    // -----------------------------------------------------------------------
+    //  Helper methods
+    // -----------------------------------------------------------------------
+
     /**
-     * ?????????????????????????????????????
+     * Initialization of meta data.
+     */
+    private void initData() throws MiningException {
+
+        logicalData = new ELogicalData();
+        physicalData = new EPhysicalData();
+        attributeAssignmentSet = new EAttributeAssignmentSet();
+
+        for (int i = 1; i <= imageFiles.length; i++) {
+
+            ELogicalAttribute la = new ELogicalAttribute("Image " + i, AttributeType.image);
+            PhysicalAttribute pa = new PhysicalAttribute("Image " + i, AttributeType.image, AttributeDataType.integerType);
+            EDirectAttributeAssignment da = new EDirectAttributeAssignment();
+            logicalData.addAttribute(la);
+            physicalData.addAttribute(pa);
+            da.addLogicalAttribute(la);
+            da.setAttribute(pa);
+            attributeAssignmentSet.addAssignment(da);
+        }
+    }
+
+    /**
+     * Returns an image by index.
      * @param position - number of image
      * @return image
      */
@@ -141,7 +168,7 @@ public class MiningImageStream extends MiningFileStream {
     }
 
     /**
-     * ?????????????????????????????????????
+     * Returns an array of pixel values.
      * @param img - image
      * @return array of pixels
      */
@@ -160,6 +187,9 @@ public class MiningImageStream extends MiningFileStream {
         return pixelsVec;
     }
 
+    /**
+     * Returns the number of images in the stream.
+     */
     public int getImageNumber() {
         return imageFiles.length;
     }
