@@ -27,8 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package org.eltech.ddm.inputdata.file;
 
-import com.opencsv.exceptions.CsvException;
-import com.opencsv.exceptions.CsvValidationException;
 import org.eltech.ddm.inputdata.MiningSparseVector;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.miningcore.MiningDataException;
@@ -75,7 +73,7 @@ public class MiningArffStream extends MiningFileStream
      */
     public MiningArffStream( String dataFileName, ELogicalData logicalData ) throws MiningException {
         super( dataFileName, logicalData );
-        fileName = dataFileName;
+        path = dataFileName;
         if( logicalData == null )
         {
         	physicalData = recognize();
@@ -93,7 +91,7 @@ public class MiningArffStream extends MiningFileStream
      */
     public MiningArffStream( String dataFileName ) throws MiningException {
         super( dataFileName );
-        fileName = dataFileName;
+        path = dataFileName;
         physicalData = recognize();
         physicalData.setURI(dataFileName);
         open();
@@ -376,7 +374,7 @@ public class MiningArffStream extends MiningFileStream
           }
           catch( Exception ex)
           {
-            throw new MiningDataException( "Can't close ARFF stream from file: "+fileName );
+            throw new MiningDataException( "Can't close ARFF stream from file: "+ path);
           }
         }
 

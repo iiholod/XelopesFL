@@ -4,9 +4,9 @@ import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.PivotAttribute
 
 public class EPivotAttributeAssignment extends PivotAttributeAssignment{
 	public EPivotAttributeAssignment(){		
-	};
-	
-	public AttributeAssignmentType getAttributeAssignmentType(){
+	}
+
+    public AttributeAssignmentType getAttributeAssignmentType(){
 		return AttributeAssignmentType.PivotAttributeAssignment;
 	}
 }

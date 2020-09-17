@@ -74,8 +74,8 @@ public class StringUtils
         int index;
         StringBuffer newStringBuffer;
         // replace each of the following characters with the backquoted version
-        char   charsFind[] =    {'\\',   '\'',  '\t',  '"',    '%'};
-        String charsReplace[] = {"\\\\", "\\'", "\\t", "\\\"", "\\%"};
+        char[] charsFind =    {'\\',   '\'',  '\t',  '"',    '%'};
+        String[] charsReplace = {"\\\\", "\\'", "\\t", "\\\"", "\\%"};
         for(int i = 0; i < charsFind.length; i++)
         {
             if (string.indexOf(charsFind[i]) != -1 )
@@ -85,7 +85,7 @@ public class StringUtils
                 {
                     if (index > 0)
                     {
-                        newStringBuffer.append(string.substring(0, index));
+                        newStringBuffer.append(string, 0, index);
                     }
                     newStringBuffer.append(charsReplace[i]);
                     if((index + 1) < string.length())
@@ -119,7 +119,7 @@ public class StringUtils
         {
             if(index > 0)
             {
-                newStringBuffer.append(string.substring(0, index));
+                newStringBuffer.append(string, 0, index);
             }
             newStringBuffer.append('\\');
             newStringBuffer.append('n');
@@ -140,7 +140,7 @@ public class StringUtils
         {
             if(index > 0)
             {
-                newStringBuffer.append(string.substring(0, index));
+                newStringBuffer.append(string, 0, index);
             }
             newStringBuffer.append('\\');
             newStringBuffer.append('r');

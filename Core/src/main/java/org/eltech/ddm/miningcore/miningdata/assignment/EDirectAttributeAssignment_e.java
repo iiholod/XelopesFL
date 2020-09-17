@@ -6,9 +6,9 @@ import org.omg.java.cwm.objectmodel.core.Attribute;
 public class EDirectAttributeAssignment_e extends DirectAttributeAssignment{
 	public EDirectAttributeAssignment_e() {
 		//assignmentType = AttributeAssignmentType.DirectAttributeAssignment;
-	};
-	
-	public AttributeAssignmentType getAttributeAssignmentType(){
+	}
+
+    public AttributeAssignmentType getAttributeAssignmentType(){
 		return AttributeAssignmentType.DirectAttributeAssignment;
 	}
 	

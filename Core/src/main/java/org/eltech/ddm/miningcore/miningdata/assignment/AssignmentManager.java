@@ -14,8 +14,8 @@ import java.util.Map.Entry;
 
 public class AssignmentManager {
 	
-	private AttributeAssignmentType attributeAssignmentType;
-	private EAttributeAssignmentSet attributeAssignmentSet;
+	private final AttributeAssignmentType attributeAssignmentType;
+	private final EAttributeAssignmentSet attributeAssignmentSet;
 	private AttributeAssignment attributeAssignment;
 	
 //	private EDirectAttributeAssignment_e directAttributeAssignment;
@@ -76,7 +76,7 @@ public class AssignmentManager {
 			attributeAssignmentSet.removeAllAssignments();
 			ArrayList<Attribute> selectorAttributeWithoutPhysical = new ArrayList<Attribute>();
 			for (PhysicalAttribute physicalAttribute : selectorAttributes) {
-				selectorAttributeWithoutPhysical.add((Attribute)physicalAttribute);
+				selectorAttributeWithoutPhysical.add(physicalAttribute);
 			}
 			((EReversePivotAttributeAssignment)attributeAssignment).setSelectorAttribute(selectorAttributeWithoutPhysical);
 			((EReversePivotAttributeAssignment)attributeAssignment).setValueSelectionFunction(valueSelectionFunction);
@@ -112,7 +112,7 @@ public class AssignmentManager {
 				setAttributeAssignment.addLogicalAttribute(setSetting.logicalAttribute);
 				ArrayList<Attribute> memberAttribute = new ArrayList<Attribute>();
 				for (PhysicalAttribute physicalAttribute : setSetting.e_physicalData) {
-					memberAttribute.add((Attribute)physicalAttribute);
+					memberAttribute.add(physicalAttribute);
 				}
 				setAttributeAssignment.setMemberAttribute(memberAttribute);
 				attributeAssignmentSet.setAssignment(setAttributeAssignment);

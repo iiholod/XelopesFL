@@ -30,7 +30,7 @@ public class ConcurrentCSVExecutionEnvironment extends ExecutionEnvironment {
 
     private int threadNumber = 1;
     private static final int START_POSITION = 0;
-    private String mainDataFile;
+    private final String mainDataFile;
     private static List<MiningCsvStream> streams = new ArrayList<>();
 
     /**

@@ -18,11 +18,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package org.eltech.ddm.inputdata.file;
 
-import com.opencsv.exceptions.CsvException;
-import com.opencsv.exceptions.CsvValidationException;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
-import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningDataException;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
@@ -30,7 +27,6 @@ import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
 
 import java.io.*;
-import java.util.List;
 
 /**
  * Mining input stream class for files.
@@ -43,7 +39,7 @@ public abstract class MiningFileStream extends MiningInputStream {
     //  Variables definitions
     // -----------------------------------------------------------------------
     /** File name. */
-    protected String fileName;
+    protected String path;
 
     /** File reader object. */
     protected transient Reader reader;
@@ -67,7 +63,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      */
     public MiningFileStream(String file, ELogicalData logicalData) {
         this();
-        this.fileName = file;
+        this.path = file;
         this.logicalData = logicalData;
         this.reader = null;
     }
@@ -84,14 +80,13 @@ public abstract class MiningFileStream extends MiningInputStream {
         this(file, null);
     }
 
-
     /**
      * Returns file name.
      *
      * @return file name
      */
-    public String getFileName() {
-        return fileName;
+    public String getPath() {
+        return path;
     }
 
     // -----------------------------------------------------------------------
@@ -105,13 +100,13 @@ public abstract class MiningFileStream extends MiningInputStream {
      */
     public void open() throws MiningException {
         try {
-            reader = new BufferedReader(new FileReader(this.fileName));
+            reader = new BufferedReader(new FileReader(this.path));
             this.open = true;
         } catch (IOException ex) {
             this.reader = null;
             this.physicalData = null;
             this.open = false;
-            throw new MiningDataException("Can't read from the file: " + this.fileName);
+            throw new MiningDataException("Can't read from the file: " + this.path);
         }
 
         reset();
@@ -130,7 +125,7 @@ public abstract class MiningFileStream extends MiningInputStream {
         try {
             reader.close();
         } catch (IOException ex) {
-            throw new MiningDataException("Can't close reader from the file: " + fileName);
+            throw new MiningDataException("Can't close reader from the file: " + path);
         } catch (NullPointerException ex) { // stream is still/already closed
         }
         reader = null;
@@ -143,7 +138,7 @@ public abstract class MiningFileStream extends MiningInputStream {
      */
     protected Reader getReader() {
         try {
-            return new BufferedReader(new FileReader(this.fileName));
+            return new BufferedReader(new FileReader(this.path));
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
             return null;
@@ -176,16 +171,14 @@ public abstract class MiningFileStream extends MiningInputStream {
 
         try {
             if (reader != null) reader.close();
-            reader = new BufferedReader(new FileReader(this.fileName));
+            reader = new BufferedReader(new FileReader(this.path));
             this.open = true;
             cursorPosition = -1;
         } catch (IOException ex) {
-//            this.open = false;
-//            throw new MiningException( ex.getMessage() );
             this.reader = null;
             this.physicalData = null;
             this.open = false;
-            throw new MiningDataException("Can't read from the file: " + this.fileName);
+            throw new MiningDataException("Can't read from the file: " + this.path);
         }
     }
 
@@ -222,13 +215,13 @@ public abstract class MiningFileStream extends MiningInputStream {
      * @return string representation of mining file stream
      */
     public String toString() {
-        return fileName + "/n" + super.toString();
+        return path + "/n" + super.toString();
     }
 
 
     public Object clone() {
         MiningFileStream o = (MiningFileStream) super.clone();
-        o.fileName = fileName;
+        o.path = path;
 
         if (isOpen()) {
             try {
@@ -239,9 +232,6 @@ public abstract class MiningFileStream extends MiningInputStream {
             }
         }
 
-
         return o;
     }
-
-
 }

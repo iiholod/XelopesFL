@@ -56,16 +56,16 @@ public class Subsystem extends Classifier
    // -----------------------------------------------------------------------
    
    public void setImportedElement( Collection input) {   
-   };
-   
-   public Collection getImportedElement() {
+   }
+
+    public Collection getImportedElement() {
 	   return null;
-   };
-   
-   public void addImportedElement(ModelElement input) {
-   };
-   
-   public void removeImportedElement(ModelElement input) {
-   };
+   }
+
+    public void addImportedElement(ModelElement input) {
+   }
+
+    public void removeImportedElement(ModelElement input) {
+   }
 
 }

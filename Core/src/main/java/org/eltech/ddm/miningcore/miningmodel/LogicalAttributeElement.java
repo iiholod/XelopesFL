@@ -15,7 +15,7 @@ public class LogicalAttributeElement extends MiningModelElement {
 
     private ELogicalAttribute attribute;
 
-    private int index;
+    private final int index;
 
     LogicalAttributeElement(int index, String id, ELogicalAttribute attribute) {
         super(id);

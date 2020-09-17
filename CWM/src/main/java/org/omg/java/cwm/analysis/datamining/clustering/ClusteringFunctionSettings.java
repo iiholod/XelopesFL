@@ -23,7 +23,7 @@ public class ClusteringFunctionSettings extends MiningFunctionSettings {
 	 * This attribute specifies the minimum number of records (cases) that must be present in a
 	 * cluster to establish a cluster. The default value is 1.
 	 */
-	private int minClusterSize = 1;
+	private final int minClusterSize = 1;
 	
 	/**
 	 * This specifies the type of the aggregation function.

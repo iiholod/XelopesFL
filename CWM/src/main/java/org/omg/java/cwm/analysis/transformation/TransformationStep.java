@@ -51,11 +51,11 @@ public class TransformationStep extends ModelElement
 {
    public Namespace activity;
 //   public Constraint precedence;
-   public Constraint precedence[]; // manually corrected by M. Thess, 26.12.2003
+   public Constraint[] precedence; // manually corrected by M. Thess, 26.12.2003
 //   public Dependency precedingStep;
-   public Dependency precedingStep[]; // manually corrected by M. Thess, 26.12.2003
+   public Dependency[] precedingStep; // manually corrected by M. Thess, 26.12.2003
 //   public Dependency succeedingStep;
-   public Dependency succeedingStep[]; // manually corrected by M. Thess, 26.12.2003
+   public Dependency[] succeedingStep; // manually corrected by M. Thess, 26.12.2003
    public TransformationTask task;
 //   public WarehouseStep warehouseStep[];
 //   public StepExecution execution[];
@@ -70,7 +70,7 @@ public class TransformationStep extends ModelElement
    }
 
    public void setActivity(Namespace activity) {
-     this.activity = (Namespace) activity;
+     this.activity = activity;
    }
 
    public Collection getPrecedence() {
@@ -94,7 +94,7 @@ public class TransformationStep extends ModelElement
      Constraint[] oldData = precedence;
      precedence = new Constraint[size+1];
      if (size > 0) System.arraycopy(oldData, 0, precedence, 0, size);
-     precedence[size] = (Constraint) input;
+     precedence[size] = input;
    }
 
    public void removePrecedence(Constraint input) {
@@ -141,7 +141,7 @@ public class TransformationStep extends ModelElement
      Dependency[] oldData = precedingStep;
      precedingStep = new Dependency[size+1];
      if (size > 0) System.arraycopy(oldData, 0, precedingStep, 0, size);
-     precedingStep[size] = (Dependency) input;
+     precedingStep[size] = input;
    }
 
    public void removePrecedingStep(Dependency input) {
@@ -188,7 +188,7 @@ public class TransformationStep extends ModelElement
      Dependency[] oldData = succeedingStep;
      succeedingStep = new Dependency[size+1];
      if (size > 0) System.arraycopy(oldData, 0, succeedingStep, 0, size);
-     succeedingStep[size] = (Dependency) input;
+     succeedingStep[size] = input;
    }
 
    public void removeSucceedingStep(Dependency input) {
@@ -219,6 +219,6 @@ public class TransformationStep extends ModelElement
    }
 
    public void setTask(TransformationTask task) {
-     this.task = (TransformationTask) task;
+     this.task = task;
    }
 }

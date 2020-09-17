@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class DefBooleanConvert extends FieldDBConvert {
     //список значений
-    private List<Integer> values = new ArrayList<>();
+    private final List<Integer> values = new ArrayList<>();
 
     @Override
     public void setTableName(String tableName) {

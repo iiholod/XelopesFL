@@ -4,7 +4,6 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.inputdata.file.MiningFileStream;
@@ -33,7 +32,6 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
     /**
      * Default constructor with configuration provider. If configuration is {@code null}
      * the the default one will be used instead;
-     *
      * @param file - relative path to the data file
      */
     public MiningCsvStream(String file) {
@@ -46,7 +44,6 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
     /**
      * Default constructor with configuration provider. If configuration is {@code null}
      * the the default one will be used instead;
-     *
      * @param file - relative path to the data file
      * @param settings - parser setting to apply
      * @throws MiningException - in case of failure
@@ -62,7 +59,6 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
     /**
      * Default constructor with configuration provider. If configuration is {@code null}
      * the the default one will be used instead;
-     *
      * @param file     - relative path to the data file
      * @param settings - parser setting to apply
      */
@@ -143,6 +139,10 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
         return "1";
     }
 
+    /**
+     * Checks whether the number is a string.
+     * @param value - number
+     */
     private boolean isDigit(String value) {
         try {
             Double.parseDouble(value);
@@ -213,7 +213,9 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
         return physicalData;
     }
 
-
+    /**
+     * Initializing a stream.
+     */
     private void initData() throws MiningException {
         logicalData = new ELogicalData();
         physicalData = new EPhysicalData();
@@ -226,6 +228,9 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
         }
     }
 
+    /**
+     * Initializing a stream that works with a file with a context.
+     */
     private void initWithContext() throws MiningException {
         String[] headers = getContext();
         for (String attrName : headers) {
@@ -242,6 +247,9 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
         }
     }
 
+    /**
+     * Initializing a stream that works with a file without a context.
+     */
     private void initWithoutContext() throws MiningException {
 
         int attributeNumber;
@@ -291,17 +299,26 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
         return mv;
     }
 
+    /**
+     * Creates a copy of the stream.
+     */
     @Override
     public MiningFileStream deepCopy() {
-        MiningCsvStream stream = new MiningCsvStream(this.fileName, this.settings, logicalData, physicalData);
-        stream.setVectorsNumber(this.vectorsNumber);
+        MiningCsvStream stream = new MiningCsvStream(this.path, this.settings, logicalData, physicalData);
+        stream.setVectorsNumber(vectorsNumber);
         return stream;
     }
 
+    /**
+     * Changes the number of vectors.
+     */
     private void setVectorsNumber(int number) {
-        this.vectorsNumber = number;
+        vectorsNumber = number;
     }
 
+    /**
+     * Converts a stream to a string.
+     */
     @Override
     public String toString() {
         return "MiningCsvStream{" +
@@ -309,30 +326,16 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
                 '}';
     }
 
-    @Override
-    public int getVectorsNumber() throws MiningException {
-        int cursorPos = getCurrentPosition();
-
-        reset();
-        int vecNumber;
-        try {
-            vecNumber = parser.readAll().size();
-        } catch (IOException | CsvException ex) {
-            ex.printStackTrace();
-            vecNumber = 0;
-        }
-        reset();
-
-        for(int i = 0; i<cursorPos; i++)
-            next();
-
-        return vecNumber;
-    }
-
+    /**
+     * Returns the settings of the parsing (context is 'true', separator is ',').
+     */
     public static CsvParsingSettings getDefaultSettings() {
         return new CsvParsingSettings();
     }
 
+    /**
+     * Creates a csv-parser.
+     */
     private CSVReader getCsvParser() {
         CSVParser csvParser = new CSVParserBuilder().withSeparator(settings.getSeparator()).build();
 
@@ -342,6 +345,9 @@ public class MiningCsvStream extends MiningFileStream implements CloneableStream
                 .build();
     }
 
+    /**
+     * Returns the file context.
+     */
     private String[] getContext() {
         CSVParser csvParser = new CSVParserBuilder().withSeparator(settings.getSeparator()).build();
 

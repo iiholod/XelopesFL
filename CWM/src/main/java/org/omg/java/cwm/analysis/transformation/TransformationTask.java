@@ -43,10 +43,10 @@ import java.util.Iterator;
  */
 public class TransformationTask //extends Component
 {
-   public TransformationStep step[];
-   public TransformationTask originalTask[];
-   public TransformationTask inverseTask[];
-   public Transformation transformation[];
+   public TransformationStep[] step;
+   public TransformationTask[] originalTask;
+   public TransformationTask[] inverseTask;
+   public Transformation[] transformation;
 
    public TransformationTask()
    {
@@ -74,7 +74,7 @@ public class TransformationTask //extends Component
      TransformationTask[] oldData = inverseTask;
      inverseTask = new TransformationTask[size+1];
      if (size > 0) System.arraycopy(oldData, 0, inverseTask, 0, size);
-     inverseTask[size] = (TransformationTask) input;
+     inverseTask[size] = input;
    }
 
    public void removeInverseTask(TransformationTask input) {
@@ -121,7 +121,7 @@ public class TransformationTask //extends Component
      TransformationTask[] oldData = originalTask;
      originalTask = new TransformationTask[size+1];
      if (size > 0) System.arraycopy(oldData, 0, originalTask, 0, size);
-     originalTask[size] = (TransformationTask) input;
+     originalTask[size] = input;
    }
 
    public void removeOriginalTask(TransformationTask input) {
@@ -168,7 +168,7 @@ public class TransformationTask //extends Component
      Transformation[] oldData = transformation;
      transformation = new Transformation[size+1];
      if (size > 0) System.arraycopy(oldData, 0, transformation, 0, size);
-     transformation[size] = (Transformation) input;
+     transformation[size] = input;
    }
 
    public void removeTransformation(Transformation input) {

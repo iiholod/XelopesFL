@@ -58,8 +58,8 @@ public class ConcurrencyMiningExecutor extends MiningExecutor implements Cloneab
 	 * Waiting finish of thread execution
 	 */
 	public EMiningModel getModel() {
-			while (!future.isDone()){};
-			return resultModel;
+			while (!future.isDone()){}
+		return resultModel;
 	}
 
 

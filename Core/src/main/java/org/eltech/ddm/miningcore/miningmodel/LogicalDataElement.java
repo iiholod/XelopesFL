@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class LogicalDataElement extends MiningModelElement {
 
-    private ELogicalData logicalData;
+    private final ELogicalData logicalData;
 
     LogicalDataElement(String id, ELogicalData logicalData) {
         super(id);

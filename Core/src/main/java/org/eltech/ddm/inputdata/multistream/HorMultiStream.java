@@ -1,4 +1,4 @@
-package org.eltech.ddm.inputdata.multistreams;
+package org.eltech.ddm.inputdata.multistream;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
@@ -89,7 +89,8 @@ public class HorMultiStream extends MiningMultiStream {
      * @return MiningVector
      */
     @Override
-    public MiningVector next() throws MiningException {
+    public MiningVector readPhysicalRecord() throws MiningException {
+
         open();
 
         try {
@@ -110,41 +111,20 @@ public class HorMultiStream extends MiningMultiStream {
         }
     }
 
-    @Override
-    public MiningVector readPhysicalRecord()  {
-        try {
-            return next();
-        } catch (MiningException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
     /**
      * Returns a vector based on the specified index.
-     * @param pos - index of the vector
+     * @param position - index of the vector
      * @return MiningVector
      */
     @Override
-    public MiningVector getVector(int pos) throws MiningException {
+    protected MiningVector movePhysicalRecord(int position) throws MiningException {
 
         open();
-        if (pos < 0) throw new OutOfMemoryError("Invalid index.");
+        if (position < 0) throw new OutOfMemoryError("Invalid index.");
 
-        MiningVector vector = getVectorOfStream(pos);
-        vector.setIndex(pos);
+        MiningVector vector = getVectorOfStream(position);
+        vector.setIndex(position);
         return vector;
-    }
-
-    @Override
-    protected MiningVector movePhysicalRecord(int position)  {
-
-        try {
-            return getVector(position);
-        } catch (MiningException ex) {
-            ex.printStackTrace();
-            return null;
-        }
     }
 
     /**

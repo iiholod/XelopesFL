@@ -16,7 +16,7 @@ import java.util.List;
 public class ConcurrencyExecutionEnvironment extends ExecutionEnvironment {
 
     private int numberThreads = 1;
-    private MiningInputStream data;
+    private final MiningInputStream data;
 
     public ConcurrencyExecutionEnvironment(MiningInputStream data) throws MiningException {
         this.numberThreads = 1;

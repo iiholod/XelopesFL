@@ -63,11 +63,11 @@ public class Transformation extends Namespace
    public org.omg.java.cwm.objectmodel.core.Boolean isPrimary;
 
 //   public Dependency use;
-   public Dependency use[]; // manually corrected by M. Thess, 26.12.2003
+   public Dependency[] use; // manually corrected by M. Thess, 26.12.2003
 
-   public DataObjectSet source[];
-   public DataObjectSet target[];
-   public TransformationTask task[];
+   public DataObjectSet[] source;
+   public DataObjectSet[] target;
+   public TransformationTask[] task;
 
    public Transformation()
    {
@@ -88,7 +88,7 @@ public class Transformation extends Namespace
    }
 
    public void setFunction(ProcedureExpression function) {
-     this.function = (ProcedureExpression) function;
+     this.function = function;
    }
 
    public java.lang.Boolean getIsPrimary() {
@@ -130,7 +130,7 @@ public class Transformation extends Namespace
      DataObjectSet[] oldData = source;
      source = new DataObjectSet[size+1];
      if (size > 0) System.arraycopy(oldData, 0, source, 0, size);
-     source[size] = (DataObjectSet) input;
+     source[size] = input;
    }
 
    public void removeSource(DataObjectSet input) {
@@ -177,7 +177,7 @@ public class Transformation extends Namespace
      DataObjectSet[] oldData = target;
      target = new DataObjectSet[size+1];
      if (size > 0) System.arraycopy(oldData, 0, target, 0, size);
-     target[size] = (DataObjectSet) input;
+     target[size] = input;
    }
 
    public void removeTarget(DataObjectSet input) {
@@ -224,7 +224,7 @@ public class Transformation extends Namespace
      Dependency[] oldData = use;
      use = new Dependency[size+1];
      if (size > 0) System.arraycopy(oldData, 0, use, 0, size);
-     use[size] = (Dependency) input;
+     use[size] = input;
    }
 
    public void removeUse(Dependency input){

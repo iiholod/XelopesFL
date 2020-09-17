@@ -2,7 +2,7 @@ package org.eltech.ddm.miningcore.miningmodel;
 
 public interface PmmlSerializable {
 
-  public void readPmml();
+  void readPmml();
 
-  public void writePmml();
+  void writePmml();
 }

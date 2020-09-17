@@ -87,7 +87,7 @@ public abstract class ModelElement extends Element implements Cloneable, Seriali
     Dependency[] oldData = clientDependency;
     clientDependency = new Dependency[size+1];
     if (size > 0) System.arraycopy(oldData, 0, clientDependency, 0, size);
-    clientDependency[size] = (Dependency) input;
+    clientDependency[size] = input;
   }
 
   public void removeClientDependency( Dependency input) {
@@ -132,7 +132,7 @@ public abstract class ModelElement extends Element implements Cloneable, Seriali
     Constraint[] oldData = constraint;
     constraint = new Constraint[size+1];
     if (size > 0) System.arraycopy(oldData, 0, constraint, 0, size);
-    constraint[size] = (Constraint) input;
+    constraint[size] = input;
   }
 
   public void removeConstraint(Constraint input)  {
@@ -177,7 +177,7 @@ public abstract class ModelElement extends Element implements Cloneable, Seriali
     Package[] oldData = importer;
     importer = new Package[size+1];
     if (size > 0) System.arraycopy(oldData, 0, importer, 0, size);
-    importer[size] = (Package) input;
+    importer[size] = input;
   }
 
   public void removeImporter(Package input) {
@@ -210,7 +210,7 @@ public abstract class ModelElement extends Element implements Cloneable, Seriali
 
   public void setNamespace(Namespace namespace) {
 
-    this.namespace = (Namespace) namespace;
+    this.namespace = namespace;
   }
   
   public Object clone() {

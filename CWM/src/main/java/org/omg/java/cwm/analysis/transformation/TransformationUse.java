@@ -47,10 +47,10 @@ public class TransformationUse extends Dependency
    public org.omg.java.cwm.objectmodel.core.String type;
 
 //   public ModelElement transformation;
-   public ModelElement transformation[]; // manually corrected by M. Thess, 26.12.2003
+   public ModelElement[] transformation; // manually corrected by M. Thess, 26.12.2003
 
 //   public ModelElement operation;
-   public ModelElement operation[]; // manually corrected by M. Thess, 26.12.2003
+   public ModelElement[] operation; // manually corrected by M. Thess, 26.12.2003
 
    public TransformationUse()
    {
@@ -78,7 +78,7 @@ public class TransformationUse extends Dependency
      ModelElement[] oldData = operation;
      operation = new ModelElement[size+1];
      if (size > 0) System.arraycopy(oldData, 0, operation, 0, size);
-     operation[size] = (ModelElement) input;
+     operation[size] = input;
    }
 
    public void removeOperation(ModelElement input) {
@@ -125,7 +125,7 @@ public class TransformationUse extends Dependency
      ModelElement[] oldData = transformation;
      transformation = new ModelElement[size+1];
      if (size > 0) System.arraycopy(oldData, 0, transformation, 0, size);
-     transformation[size] = (ModelElement) input;
+     transformation[size] = input;
    }
 
    public void removeTransformation(ModelElement input) {

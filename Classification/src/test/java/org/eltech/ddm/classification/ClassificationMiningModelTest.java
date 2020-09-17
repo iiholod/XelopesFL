@@ -85,8 +85,8 @@ public class ClassificationMiningModelTest {
                     if (! predTarCat.equals( tarCat) )
                             wrong = wrong + 1;
                     vector = inputData.next();
-            };
-            double rate = (100.0 - ((double) wrong / i)*100.0);
+            }
+			double rate = (100.0 - (wrong / i)*100.0);
             System.out.println("\n classification rate = " +  rate);
 
             return rate;

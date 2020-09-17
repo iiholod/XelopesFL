@@ -10,8 +10,8 @@ import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningFunctionSettings;
 import org.eltech.ddm.miningcore.miningmodel.EMiningModel;
 
 public class OneRuleCountAlgorithm extends MiningAlgorithm {
-	private int indexTargetAttr;
-	private int[] indexTargetValues;
+	private final int indexTargetAttr;
+	private final int[] indexTargetValues;
 
 	public OneRuleCountAlgorithm(EMiningFunctionSettings miningSettings)
 			throws MiningException {

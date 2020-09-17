@@ -17,5 +17,6 @@ public enum AttributeType {
 	categorical,
 	numerical,
 	ordinal,
+	image,
 	notSpecified
 }

@@ -1,4 +1,4 @@
-package org.eltech.ddm.inputdata.multistreams;
+package org.eltech.ddm.inputdata.multistream;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.file.csv.ParsingValues;

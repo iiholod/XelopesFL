@@ -164,9 +164,9 @@ public class MiningTreeNode
       int nchild = getChildCount();
       for (int i = 0; i < getChildCount(); i++) {
         nchild = nchild + getChildAt(i).getTotalNumberOfChildren();
-      };
+      }
 
-      return nchild;
+        return nchild;
     }
 
     /**

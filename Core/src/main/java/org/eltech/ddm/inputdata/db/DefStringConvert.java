@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DefStringConvert extends FieldDBConvert {
-    private Map<String, Integer> categoriesIndices = new HashMap<>();
+    private final Map<String, Integer> categoriesIndices = new HashMap<>();
 
     //процент уникальных значений от общего числа записей
     private float percentValueUnique = 0.05f;

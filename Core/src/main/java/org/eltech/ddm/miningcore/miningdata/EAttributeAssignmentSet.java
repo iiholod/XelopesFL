@@ -44,7 +44,7 @@ public class EAttributeAssignmentSet extends AttributeAssignmentSet implements C
 
 	public AttributeAssignment getAttributeAssignment(int index)
 	{
-		return (AttributeAssignment)assignment.get(index);
+		return assignment.get(index);
 	}
 
 	public int getSize()

@@ -7,7 +7,7 @@ import org.eltech.ddm.miningcore.MiningException;
  * Created by Ivan on 20.11.2016.
  */
 public class MiningModelElementRule {
-    private final MiningModelElementPredicate predicates[];
+    private final MiningModelElementPredicate[] predicates;
 
     public MiningModelElementRule(MiningModelElementPredicate... predicates) {
         this.predicates = predicates;

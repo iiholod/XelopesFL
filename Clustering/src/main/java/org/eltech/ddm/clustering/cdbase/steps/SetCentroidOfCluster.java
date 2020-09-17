@@ -16,7 +16,7 @@ public class SetCentroidOfCluster extends MiningBlock {
 
 	public SetCentroidOfCluster(EMiningFunctionSettings settings) throws MiningException {
 		super(settings);
-		eps = ((KMeansAlgorithmSettings)((EMiningFunctionSettings)settings).getAlgorithmSettings()).getEps();
+		eps = ((KMeansAlgorithmSettings) settings.getAlgorithmSettings()).getEps();
 
 	}
 

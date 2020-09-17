@@ -42,7 +42,7 @@ public abstract class EMiningModel extends MiningModel implements Cloneable  // 
     private Map<String, Integer> currents;
 
     // Number of  mining vectors in input mining stream
-    private int numberVectors = 0;
+    private final int numberVectors = 0;
 
     // Added features for JDMAPI
     /**
@@ -53,7 +53,7 @@ public abstract class EMiningModel extends MiningModel implements Cloneable  // 
     /**
      * Time in seconds that was taken to build the model
      */
-    private Integer buildDuration = null;
+    private final Integer buildDuration = null;
 
     /**
      * Major version of JDM by which the model was built.

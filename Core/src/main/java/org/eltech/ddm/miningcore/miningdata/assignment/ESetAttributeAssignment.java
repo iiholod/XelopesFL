@@ -10,9 +10,9 @@ public class ESetAttributeAssignment extends SetAttributeAssignment_e{
 	
 	public ESetAttributeAssignment() {
 		memberAttribute = new ArrayList<Attribute>();
-	};
-	
-	public AttributeAssignmentType getAttributeAssignmentType(){
+	}
+
+    public AttributeAssignmentType getAttributeAssignmentType(){
 		return AttributeAssignmentType.SetAttributeAssignment;
 	}
 	

@@ -1,4 +1,4 @@
-package org.eltech.ddm.inputdata.multistreams;
+package org.eltech.ddm.inputdata.multistream;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
@@ -109,7 +109,7 @@ public class VerMultiStream extends MiningMultiStream {
      * @return MiningVector
      */
     @Override
-    public MiningVector next() throws MiningException {
+    public MiningVector readPhysicalRecord() throws MiningException {
 
         open();
         int pos = -1;
@@ -137,32 +137,22 @@ public class VerMultiStream extends MiningMultiStream {
         return miningVector;
     }
 
-    @Override
-    public MiningVector readPhysicalRecord()  {
-        try {
-            return next();
-        } catch (MiningException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
     /**
      * Returns a vector based on the specified index.
-     * @param pos - index of the vector
+     * @param position - index of the vector
      * @return MiningVector
      */
     @Override
-    public MiningVector getVector(int pos) throws MiningException {
+    protected MiningVector movePhysicalRecord(int position) throws MiningException {
 
         open();
-        if (pos < 0) throw new OutOfMemoryError("Invalid index.");
+        if (position < 0) throw new OutOfMemoryError("Invalid index.");
 
         int valuesNumber = 0;
         List<double[]> values = new ArrayList<>();
         try {
             for (MiningInputStream stream: streams) {
-                MiningVector mv = stream.getVector(pos);
+                MiningVector mv = stream.getVector(position);
                 double[] vectorValues = mv.getValues();
 
                 valuesNumber += vectorValues.length;
@@ -175,19 +165,8 @@ public class VerMultiStream extends MiningMultiStream {
         double[] allValues = collectValues(values, valuesNumber);
         MiningVector miningVector =  new MiningVector(allValues);
         miningVector.setLogicalData(logicalData);
-        miningVector.setIndex(pos);
+        miningVector.setIndex(position);
         return miningVector;
-    }
-
-    @Override
-    protected MiningVector movePhysicalRecord(int position)  {
-
-        try {
-            return getVector(position);
-        } catch (MiningException ex) {
-            ex.printStackTrace();
-            return null;
-        }
     }
 
     /**

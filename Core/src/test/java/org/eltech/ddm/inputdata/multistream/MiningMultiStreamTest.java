@@ -1,11 +1,10 @@
-package org.eltech.ddm.inputdata.multistreams;
+package org.eltech.ddm.inputdata.multistream;
 
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
-import org.eltech.ddm.inputdata.multistreams.MiningMultiStream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 abstract class MiningMultiStreamTest {
     protected ELogicalData logicalData;
     protected EPhysicalData physicalData;
-    private MiningMultiStream multiStream;
+    MiningMultiStream multiStream;
 
     public void setup(MiningMultiStream stream) throws MiningException {
         multiStream = stream;

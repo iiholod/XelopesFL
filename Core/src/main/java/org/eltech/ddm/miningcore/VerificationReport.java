@@ -3,9 +3,9 @@ package org.eltech.ddm.miningcore;
 public class VerificationReport //implements javax.datamining.VerificationReport 
 {
 
-	private String reportText;
+	private final String reportText;
 	
-	private  ReportType reportType;
+	private final ReportType reportType;
 	
 	public VerificationReport(ReportType type, String text){
 		reportText = text;

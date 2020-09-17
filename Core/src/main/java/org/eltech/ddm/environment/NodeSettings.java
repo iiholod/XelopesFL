@@ -7,9 +7,9 @@ import org.eltech.ddm.inputdata.MiningInputStream;
  */
 public class NodeSettings {
 
-    private String host;
-    private int port;
-    private int executorsPerNode;
+    private final String host;
+    private final int port;
+    private final int executorsPerNode;
     private MiningInputStream data;
 
     public NodeSettings(String host, int port, int executorsPerNode){

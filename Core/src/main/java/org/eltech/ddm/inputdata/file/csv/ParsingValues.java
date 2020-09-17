@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParsingValues {
-    private String attributeName;
-    private List<String> values = new ArrayList<>();
+    private final String attributeName;
+    private final List<String> values = new ArrayList<>();
 
     public ParsingValues(String attributeName) {
         this.attributeName = attributeName;

@@ -16,18 +16,18 @@ import java.util.Map;
  */
 public class ConnectionPool {
     //Строка подключения драйвера для СУБД MySQL
-    private static String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
     //Строка подключения драйвера для СУБД Oracle
-    private static String ORACLE_DRIVER = "oracle.jdbc.OracleDriver";
+    private static final String ORACLE_DRIVER = "oracle.jdbc.OracleDriver";
     //Строка подключения драйвера для СУБД Microsoft
-    private static String MICROSOFT_DRIVER = "com.microsoft.jdbc.sqlserver.SQLServerDriver";
+    private static final String MICROSOFT_DRIVER = "com.microsoft.jdbc.sqlserver.SQLServerDriver";
     //Строка подключения драйвера для СУБД PostgreSQL
-    private static String POSTGRESQL_DRIVER = "org.postgresql.Driver";
+    private static final String POSTGRESQL_DRIVER = "org.postgresql.Driver";
 
     //Объект, содержщаий строки подключения к БД и их список доступных соединений
-    private Map<String, List<Connection>> allConnections;
+    private final Map<String, List<Connection>> allConnections;
     //Список занятых соединений
-    private List<Connection> usedConnections;
+    private final List<Connection> usedConnections;
 
     /**
      * Конструктор, инициализация списков
