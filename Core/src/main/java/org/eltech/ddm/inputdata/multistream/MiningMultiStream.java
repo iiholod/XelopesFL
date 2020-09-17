@@ -12,7 +12,7 @@ import java.util.List;
  * MiningMultiStream class.
  * A class that allows you to read multiple files 'vertically' or 'horizontally'.
  *
- * @author Maxim Kolpashikov
+ * @author Maxim Kolpaschikov
  */
 
 public abstract class MiningMultiStream extends MiningInputStream {

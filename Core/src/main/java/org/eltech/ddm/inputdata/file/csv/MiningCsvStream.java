@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+/**
+ * Class for reading csv files.
+ * @author Maxim Kolpaschikov
+ */
 public class MiningCsvStream extends MiningFileStream implements CloneableStream {
 
     /*

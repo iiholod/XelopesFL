@@ -10,9 +10,8 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Tested MiningMultiCsvStream class.
- * A class containing tests for checking the health of methods of the MiningMultiCsvStream class for csv-files.
- *
- * @author Maxim Kolpashikov
+ * A class containing tests for checking the health of methods of the MiningMultiStream class.
+ * @author Maxim Kolpasсhikov
  */
 
 abstract class MiningMultiStreamTest {

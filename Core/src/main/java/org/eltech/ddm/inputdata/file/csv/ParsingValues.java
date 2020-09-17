@@ -3,6 +3,9 @@ package org.eltech.ddm.inputdata.file.csv;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Maxim Kolpaschikov
+ */
 public class ParsingValues {
     private final String attributeName;
     private final List<String> values = new ArrayList<>();

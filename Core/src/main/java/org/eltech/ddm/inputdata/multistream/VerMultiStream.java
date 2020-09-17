@@ -15,7 +15,7 @@ import java.util.List;
  * VerMultiStream class.
  * A class that allows you to read multiple files 'vertically'.
  *
- * @author Maxim Kolpashikov
+ * @author Maxim Kolpaschikov
  */
 
 public class VerMultiStream extends MiningMultiStream {

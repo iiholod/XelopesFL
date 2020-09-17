@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * HorMultiStream class.
  * A class that allows you to read multiple files 'horizontally'.
  *
- * @author Maxim Kolpashikov
+ * @author Maxim Kolpaschikov
  */
 
 public class HorMultiStream extends MiningMultiStream {

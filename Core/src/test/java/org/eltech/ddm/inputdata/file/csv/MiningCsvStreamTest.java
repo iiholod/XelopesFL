@@ -15,7 +15,7 @@ import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
  * Tested MiningCsvStream class.
  * A class containing tests for checking the health of methods of the MiningCsvStream class for csv-files.
  *
- * @author Maxim Kolpashikov
+ * @author Maxim Kolpasсhikov
  */
 
 abstract class MiningCsvStreamTest {
