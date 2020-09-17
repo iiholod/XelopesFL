@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Tested HorMultiStream class.
  * A class containing tests for checking the health of methods of the HorMultiStream class.
- * @author Maxim Kolpasсhikov
+ * @author Maxim Kolpaschikov
  */
 public class HorMultiStreamTest extends MiningMultiStreamTest {
     @Before

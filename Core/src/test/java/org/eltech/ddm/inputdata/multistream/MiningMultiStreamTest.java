@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Tested MiningMultiCsvStream class.
  * A class containing tests for checking the health of methods of the MiningMultiStream class.
- * @author Maxim Kolpasсhikov
+ * @author Maxim Kolpaschikov
  */
 
 abstract class MiningMultiStreamTest {

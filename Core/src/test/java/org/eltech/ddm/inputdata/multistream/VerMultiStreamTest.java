@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Tested VerMultiStream class.
  * A class containing tests for checking the health of methods of the VerMultiStream class.
- * @author Maxim Kolpasсhikov
+ * @author Maxim Kolpaschikov
  */
 public class VerMultiStreamTest extends MiningMultiStreamTest {
     @Before

@@ -19,7 +19,7 @@ import org.eltech.ddm.miningcore.miningdata.EDirectAttributeAssignment;
  * A class containing tests for checking the efficiency
  *      of methods of the MiningCsvStream class for csv-files with a header.
  *
- * @author Maxim Kolpasсhikov
+ * @author Maxim Kolpaschikov
  */
 
 public class CsvStreamWithHeadersTest extends MiningCsvStreamTest {
