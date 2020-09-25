@@ -71,7 +71,7 @@ public class CsvStreamWithHeadersTest extends MiningCsvStreamTest {
     }
 
     @After
-    public void closeStream() throws IOException {
+    public void closeStream() throws  MiningException {
         close();
     }
 }

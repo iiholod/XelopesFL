@@ -24,29 +24,28 @@ public class ClassificationMiningModelTest {
 	// ==== Methods for data attributes Weather Nominal ===============
 	protected void setInputData4WeatherNominal() throws MiningException, IOException, CsvException {
 		// Load input data
-		inputData = new MiningArffStream("..\\data\\arff\\weather-nominal.arff");
+		inputData = new MiningArffStream("..\\data\\arff\\vowel.arff");
 	}
 	
 	protected void setMiningSettings4WeatherNominal(EMiningAlgorithmSettings algorithmSettings) throws MiningException, IOException, CsvException {
 		ELogicalData logicalData = inputData.getLogicalData();
-		ELogicalAttribute targetAttribute = logicalData.getAttribute("play");
+		ELogicalAttribute targetAttribute = logicalData.getAttribute("feld8");
 		
 		//Create settings for classification
 		miningSettings = new ClassificationFunctionSettings(logicalData);
 		miningSettings.setTarget(targetAttribute);
 		miningSettings.setAlgorithmSettings(algorithmSettings);
-   		miningSettings.verify();
-		
 	}
 
 	// ==== Methods for data attributes Iris Nominal ===============
 	protected void setInputData4Iris() throws MiningException, IOException, CsvException {
+
 		// Load input data
 		inputData = new MiningCsvStream("..\\data\\csv\\iris.csv");
-		inputData.open();
 	}
 
-	protected void setMiningSettings4Iris(EMiningAlgorithmSettings algorithmSettings) throws MiningException, IOException, CsvException {
+	protected void setMiningSettings4Iris(EMiningAlgorithmSettings algorithmSettings) throws MiningException {
+
 		ELogicalData logicalData = inputData.getLogicalData();
 		ELogicalAttribute targetAttribute = logicalData.getAttribute("iris-class");
 
@@ -54,8 +53,6 @@ public class ClassificationMiningModelTest {
 		miningSettings = new ClassificationFunctionSettings(logicalData);
 		miningSettings.setTarget(targetAttribute);
 		miningSettings.setAlgorithmSettings(algorithmSettings);
-		miningSettings.verify();
-
 	}
 
 	

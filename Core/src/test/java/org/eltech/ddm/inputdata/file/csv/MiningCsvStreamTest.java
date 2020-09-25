@@ -80,7 +80,7 @@ abstract class MiningCsvStreamTest {
         assertEquals(3.0, miningVector.getValue(4), 0);
     }
 
-    protected void close() throws IOException {
+    protected void close() throws MiningException {
         csvStream.close();
     }
 }
