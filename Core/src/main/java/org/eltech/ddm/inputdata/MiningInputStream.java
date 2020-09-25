@@ -124,10 +124,6 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
         return cursorPosition;
     }
 
-    protected void resetCurrentPosition() {
-    	cursorPosition = -1;
-	}
-
     /**
      * Returns true if stream is open.
      *

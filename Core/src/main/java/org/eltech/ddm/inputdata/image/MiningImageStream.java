@@ -3,6 +3,8 @@ package org.eltech.ddm.inputdata.image;
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
 import org.eltech.ddm.inputdata.file.MiningFileStream;
+import org.eltech.ddm.miningcore.MiningDataException;
+import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.*;
 import org.omg.java.cwm.analysis.datamining.miningcore.miningdata.AttributeType;
@@ -30,9 +32,9 @@ public class MiningImageStream extends MiningFileStream {
      * Accepts a directory path.
      * @param dir - path to directory
      */
-    public MiningImageStream(String dir) {
+    public MiningImageStream(String dir) throws MiningException {
         super(dir);
-        open = false;
+        open();
     }
 
     // -----------------------------------------------------------------------
@@ -47,36 +49,42 @@ public class MiningImageStream extends MiningFileStream {
 
         if(open) return;
 
-        File dir = new File(path);
-        imageFiles = dir.listFiles(File::isFile);
-
-        recognize();
         open = true;
+        imageFiles = getImageFiles();
+        recognize();
     }
 
     /**
-     * Closes the stream.
-     */
-    @Override
-    public void close() {
-
-        if(!open) return;
-
-        open = false;
-        imageFiles = null;
-        logicalData = null;
-        physicalData = null;
-        attributeAssignmentSet = null;
-    }
-
-    /**
-     * Restarts the thread.
+     * Places the cursor before first row.
+     * This is done by closing and reopening the image reader.
      */
     @Override
     public void reset() throws MiningException {
 
-        resetCurrentPosition();
-        recognize();
+        if (!open)
+            throw new MiningException(MiningErrorCode.INVALID_INPUT_DATA, "Can't reset closed stream. Call open()");
+
+        cursorPosition = -1;
+        imageFiles = getImageFiles();
+    }
+
+    /**
+     * Returns an array of images.
+     */
+    private File[] getImageFiles() {
+
+        File dir = new File(path);
+        return dir.listFiles(File::isFile);
+    }
+
+    @Override
+    public void close() throws MiningDataException {
+
+        if (!this.isOpen())
+            throw new MiningDataException("Stream is already closed");
+
+        open = false;
+        imageFiles = null;
     }
 
     /**
@@ -86,8 +94,9 @@ public class MiningImageStream extends MiningFileStream {
     @Override
     public EPhysicalData recognize() throws MiningException {
 
-        if (logicalData == null && physicalData == null) {
+        if (logicalData == null && physicalData == null && attributeAssignmentSet == null) {
             initData();
+            return physicalData;
         }
         return physicalData;
     }
@@ -143,7 +152,7 @@ public class MiningImageStream extends MiningFileStream {
         for (int i = 1; i <= imageFiles.length; i++) {
 
             ELogicalAttribute la = new ELogicalAttribute("Image " + i, AttributeType.image);
-            PhysicalAttribute pa = new PhysicalAttribute("Image " + i, AttributeType.image, AttributeDataType.integerType);
+            PhysicalAttribute pa = new PhysicalAttribute("Image " + i, AttributeType.image, AttributeDataType.doubleType);
             EDirectAttributeAssignment da = new EDirectAttributeAssignment();
             logicalData.addAttribute(la);
             physicalData.addAttribute(pa);
@@ -190,7 +199,8 @@ public class MiningImageStream extends MiningFileStream {
     /**
      * Returns the number of images in the stream.
      */
-    public int getImageNumber() {
+    @Override
+    public int getVectorsNumber() {
         return imageFiles.length;
     }
 }

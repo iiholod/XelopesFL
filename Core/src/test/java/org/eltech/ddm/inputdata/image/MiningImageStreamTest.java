@@ -42,7 +42,7 @@ public class MiningImageStreamTest {
     @Test
     public void printVectorsTest() throws MiningException {
 
-        for(int i = 0; i < stream.getImageNumber(); i++) {
+        for(int i = 0; i < stream.getVectorsNumber(); i++) {
             System.out.println(Arrays.toString(stream.next().getValues()));
         }
     }
@@ -53,7 +53,7 @@ public class MiningImageStreamTest {
     @Test
     public void nextTest() throws MiningException {
 
-        for(int i = 0; i < stream.getImageNumber(); i++) {
+        for(int i = 0; i < stream.getVectorsNumber(); i++) {
             BufferedImage image = getImage(i);
             double[] vector = stream.next().getValues();
             assertVectorAndRGB(image, vector);
@@ -66,7 +66,7 @@ public class MiningImageStreamTest {
     @Test
     public void getVectorTest() throws MiningException {
 
-        for(int i = 0; i < stream.getImageNumber(); i++) {
+        for(int i = 0; i < stream.getVectorsNumber(); i++) {
             BufferedImage image = getImage(i);
             double[] vector = stream.getVector(i).getValues();
             assertVectorAndRGB(image, vector);
@@ -129,7 +129,7 @@ public class MiningImageStreamTest {
      * Closes the stream.
      */
     @After
-    public void close() {
+    public void close() throws MiningException {
         stream.close();
     }
 }
