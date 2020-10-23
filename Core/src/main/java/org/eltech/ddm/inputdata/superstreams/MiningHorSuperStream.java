@@ -1,4 +1,4 @@
-package org.eltech.ddm.inputdata.multistream;
+package org.eltech.ddm.inputdata.superstreams;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
@@ -6,7 +6,6 @@ import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 
 import java.io.InvalidObjectException;
-import java.util.ArrayList;
 
 /**
  * HorMultiStream class.
@@ -15,7 +14,7 @@ import java.util.ArrayList;
  * @author Maxim Kolpaschikov
  */
 
-public class HorMultiStream extends MiningMultiStream {
+public class MiningHorSuperStream extends MiningSuperStream {
 
     private int activeStreamIndex;
     private MiningInputStream activeStream;
@@ -29,19 +28,24 @@ public class HorMultiStream extends MiningMultiStream {
      * At this stage, the logical data of the csv-files that must match is checked.
      * @param streams - array of streams
      */
-    public HorMultiStream(MiningInputStream[] streams) throws MiningException {
+    public MiningHorSuperStream(MiningInputStream[] streams) throws MiningException {
         if (streams == null) throw  new NullPointerException("The stream array is empty.");
-        init(streams);
+        super.streams = streams;
+        init();
+        open();
     }
 
     /**
      * Initializes the class with input data, if the logical data is correct.
-     * @param streams - array of streams
      */
-    private void init(MiningInputStream[] streams) throws MiningException {
+    private void init() throws MiningException {
         if (logicalDataChecked(streams)) {
-            thisInit(streams);
-            superInit(streams);
+            activeStreamIndex = 0;
+            activeStream = streams[0];
+            vectorsNumber = calculateVecNumber();
+            logicalData = activeStream.getLogicalData();
+            physicalData = activeStream.getPhysicalData();
+            attributeAssignmentSet = activeStream.getAttributeAssignmentSet();
         } else {
             try {
                 throw new InvalidObjectException("Logical data does not match.");
@@ -49,20 +53,6 @@ public class HorMultiStream extends MiningMultiStream {
                 ex.printStackTrace();
             }
         }
-    }
-
-    private void thisInit(MiningInputStream[] streams) {
-        activeStreamIndex = 0;
-        activeStream = streams[0];
-    }
-
-    private void superInit(MiningInputStream[] streams) throws MiningException {
-
-        super.streams = streams;
-        parsingValues = new ArrayList();
-        vectorsNumber = calculateVecNumber();
-        logicalData = activeStream.getLogicalData();
-        physicalData = activeStream.getPhysicalData();
     }
 
     /**
@@ -86,44 +76,43 @@ public class HorMultiStream extends MiningMultiStream {
     /**
      * Returns the current vector and moves the cursor to the next one.
      * When the file ends, the cursor is moved to the next stream.
-     * @return MiningVector
      */
     @Override
     public MiningVector readPhysicalRecord() throws MiningException {
 
         open();
 
-        try {
-            MiningVector vector = activeStream.next();
-            vector.setIndex(getVectorPos(vector.getIndex()));
-            return vector;
-        } catch (Exception e) {
+        MiningVector vector = activeStream.next();
+        if (vector == null) {
             if (activeStreamIndex == streams.length - 1)
-                throw new NullPointerException("Files run out.");
+                return null;
 
-            activeStreamIndex++;
-            activeStream = streams[activeStreamIndex];
+            activeStream = streams[++activeStreamIndex];
             activeStream.reset();
-
-            MiningVector vector = activeStream.next();
-            vector.setIndex(getVectorPos(vector.getIndex()));
-            return vector;
+            vector = activeStream.next();
         }
+
+        vector.setIndex(++cursorPosition);
+        vector.setLogicalData(logicalData);
+        return vector;
     }
 
     /**
      * Returns a vector based on the specified index.
      * @param position - index of the vector
-     * @return MiningVector
      */
     @Override
     protected MiningVector movePhysicalRecord(int position) throws MiningException {
 
-        open();
         if (position < 0) throw new OutOfMemoryError("Invalid index.");
+        open();
 
         MiningVector vector = getVectorOfStream(position);
+        if (vector == null) return null;
+
+        cursorPosition = position;
         vector.setIndex(position);
+        vector.setLogicalData(logicalData);
         return vector;
     }
 
@@ -145,35 +134,12 @@ public class HorMultiStream extends MiningMultiStream {
                 return activeStream.getVector(pos - prevValue);
             }
         }
-        throw new OutOfMemoryError("Invalid index.");
-    }
-
-    private int getVectorPos(int posOfStream) throws MiningException {
-
-        int vectorsNumber = 0;
-        for (int i = 0; i < activeStreamIndex; i++) {
-            vectorsNumber += streams[i].getVectorsNumber();
-        }
-        return vectorsNumber + posOfStream;
+        return null;
     }
 
     // -----------------------------------------------------------------------
     //  Methods for changing the stream state
     // -----------------------------------------------------------------------
-
-    /**
-     * Opens the stream.
-     */
-    @Override
-    public void open() throws MiningException {
-        if (isOpen) return;
-
-        isOpen = true;
-        for (MiningInputStream stream : streams) {
-            stream.open();
-            stream.setParsingValues(parsingValues);
-        }
-    }
 
     /**
      * Counts the number of vectors.
@@ -187,19 +153,6 @@ public class HorMultiStream extends MiningMultiStream {
         return number;
     }
 
-    /**
-     * Closes the stream.
-     */
-    @Override
-    public void close() throws MiningException {
-        if (!isOpen) return;
-
-        for (MiningInputStream stream : streams) {
-            stream.close();
-        }
-        isOpen = false;
-    }
-
      /**
      * Updates all streams.
      */
@@ -207,6 +160,7 @@ public class HorMultiStream extends MiningMultiStream {
     public void reset() throws MiningException {
         open();
 
+        cursorPosition = -1;
         activeStreamIndex = 0;
         activeStream = streams[0];
         for (MiningInputStream stream : streams) {
@@ -219,8 +173,8 @@ public class HorMultiStream extends MiningMultiStream {
      * @return HorMultiCsvStream
      */
     @Override
-    public MiningMultiStream deepCopy() throws MiningException {
-        return new HorMultiStream(streams);
+    public MiningSuperStream deepCopy() throws MiningException {
+        return new MiningHorSuperStream(streams);
     }
 
 }

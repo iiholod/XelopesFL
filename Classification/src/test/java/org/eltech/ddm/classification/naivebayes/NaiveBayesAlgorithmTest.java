@@ -49,7 +49,7 @@ public class NaiveBayesAlgorithmTest extends NaiveBayesModelTest {
 
 	}
 
-	@Test
+/*	@Test
 	public void test4Iris() {
 		try {
 
@@ -67,7 +67,7 @@ public class NaiveBayesAlgorithmTest extends NaiveBayesModelTest {
 			fail();
 		}
 
-	}
+	}*/
 
 	private EMiningBuildTask createBuildTask() throws MiningException {
 		MiningAlgorithm algorithm = new NaiveBayesAlgorithm(miningSettings);

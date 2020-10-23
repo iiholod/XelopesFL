@@ -6,16 +6,17 @@ import java.util.List;
 /**
  * @author Maxim Kolpaschikov
  */
-public class ParsingValues {
-    private final String attributeName;
+public class CategoricalValue {
+
+    private final String value;
     private final List<String> values = new ArrayList<>();
 
-    public ParsingValues(String attributeName) {
-        this.attributeName = attributeName;
+    public CategoricalValue(String attributeName) {
+        this.value = attributeName;
     }
 
-    public ParsingValues(String attributeName, String value) {
-        this.attributeName = attributeName;
+    public CategoricalValue(String attributeName, String value) {
+        this.value = attributeName;
         values.add(value);
     }
 
@@ -35,7 +36,7 @@ public class ParsingValues {
         return values.size();
     }
 
-    public String getAttributeName() {
-        return attributeName;
+    public String getValue() {
+        return value;
     }
 }

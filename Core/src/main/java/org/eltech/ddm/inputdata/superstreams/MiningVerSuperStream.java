@@ -1,4 +1,4 @@
-package org.eltech.ddm.inputdata.multistream;
+package org.eltech.ddm.inputdata.superstreams;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.MiningVector;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author Maxim Kolpaschikov
  */
 
-public class VerMultiStream extends MiningMultiStream {
+public class MiningVerSuperStream extends MiningSuperStream {
 
     // -----------------------------------------------------------------------
     //  Constructor
@@ -29,27 +29,26 @@ public class VerMultiStream extends MiningMultiStream {
      * At this stage, the logical data of the csv-files that must match is checked.
      * @param streams - array of streams
      */
-    public VerMultiStream(MiningInputStream[] streams) throws MiningException {
+    public MiningVerSuperStream(MiningInputStream[] streams) throws MiningException {
         if (streams == null) throw  new NullPointerException("The stream array is empty.");
-        init(streams);
+        super.streams = streams;
+        init();
+        open();
     }
 
     /**
      * Initializes the class with input data, if the logical data is correct.
-     * @param streams - array of streams
      */
-    private void init(MiningInputStream[] streams) throws MiningException {
+    private void init() throws MiningException {
         if (vectorsNumberChecked(streams)) {
-            super.streams = streams;
-            super.logicalData = collectLogicalData();
+            logicalData = collectLogicalData();
             super.physicalData = collectPhysicalData();
             super.vectorsNumber = streams[0].getVectorsNumber();
-            this.parsingValues = new ArrayList();
         } else {
             try {
                 throw new InvalidObjectException("There are different number of vectors in the files.");
             } catch (InvalidObjectException ex) {
-                ex.printStackTrace();
+                // auto-generated block
             }
         }
     }
@@ -112,60 +111,52 @@ public class VerMultiStream extends MiningMultiStream {
     public MiningVector readPhysicalRecord() throws MiningException {
 
         open();
-        int pos = -1;
-        int valuesNumber = 0;
+        int vecLength = 0;
         List<double[]> values = new ArrayList<>();
 
         try {
             for (MiningInputStream stream : streams) {
-
-                MiningVector mv = stream.next();
-                if (pos == -1) pos = mv.getIndex();
-                double[] vectorValues = mv.getValues();
-
-                valuesNumber += vectorValues.length;
-                values.add(vectorValues);
+                double[] val = stream.next().getValues();
+                values.add(val);
+                vecLength += val.length;
             }
         } catch (Exception e) {
-            throw new OutOfMemoryError("Vectors are out.");
+            return null;
         }
 
-        double[] allValues = collectValues(values, valuesNumber);
-        MiningVector miningVector = new MiningVector(allValues);
+        MiningVector miningVector = new MiningVector(collectValues(values, vecLength));
+        miningVector.setIndex(++cursorPosition);
         miningVector.setLogicalData(logicalData);
-        miningVector.setIndex(pos);
         return miningVector;
     }
 
     /**
      * Returns a vector based on the specified index.
-     * @param position - index of the vector
+     * @param pos - index of the vector
      * @return MiningVector
      */
     @Override
-    protected MiningVector movePhysicalRecord(int position) throws MiningException {
+    protected MiningVector movePhysicalRecord(int pos) throws MiningException {
 
         open();
-        if (position < 0) throw new OutOfMemoryError("Invalid index.");
+        if (pos < 0) throw new OutOfMemoryError("Invalid index.");
 
-        int valuesNumber = 0;
+        int vecLength = 0;
         List<double[]> values = new ArrayList<>();
         try {
-            for (MiningInputStream stream: streams) {
-                MiningVector mv = stream.getVector(position);
-                double[] vectorValues = mv.getValues();
-
-                valuesNumber += vectorValues.length;
-                values.add(vectorValues);
+            for (MiningInputStream stream : streams) {
+                double[] val = stream.getVector(pos).getValues();
+                values.add(val);
+                vecLength += val.length;
             }
         } catch (Exception e) {
-            throw new OutOfMemoryError("Invalid index.");
+           return null;
         }
 
-        double[] allValues = collectValues(values, valuesNumber);
-        MiningVector miningVector =  new MiningVector(allValues);
+        MiningVector miningVector = new MiningVector(collectValues(values, vecLength));
+        cursorPosition = pos;
+        miningVector.setIndex(cursorPosition);
         miningVector.setLogicalData(logicalData);
-        miningVector.setIndex(position);
         return miningVector;
     }
 
@@ -176,47 +167,19 @@ public class VerMultiStream extends MiningMultiStream {
      * @return an array with all the values
      */
     private double[] collectValues(List<double[]> values, int valuesNumber) {
+
         int i = 0;
-        double[] allValues = new double[valuesNumber];
+        double[] valuesArr = new double[valuesNumber];
         for (double[] val : values) {
-            for (double v : val) {
-                allValues[i] = v;
-                i++;
-            }
+            for (double v : val)
+                valuesArr[i++] = v;
         }
-        return allValues;
+        return valuesArr;
     }
 
     // -----------------------------------------------------------------------
     //  Methods for changing the stream state
     // -----------------------------------------------------------------------
-
-    /**
-     * Opens the stream.
-     */
-    @Override
-    public void open() throws MiningException {
-        if (isOpen) return;
-
-        isOpen = true;
-        for (MiningInputStream stream : streams) {
-            stream.open();
-            stream.setParsingValues(parsingValues);
-        }
-    }
-
-    /**
-     * Closes the stream.
-     */
-    @Override
-    public void close() throws MiningException {
-        if (!isOpen) return;
-
-        for (MiningInputStream stream : streams) {
-            stream.close();
-        }
-        isOpen = false;
-    }
 
     /**
      * Updates all streams.
@@ -235,8 +198,8 @@ public class VerMultiStream extends MiningMultiStream {
      * @return HorMultiCsvStream
      */
     @Override
-    public MiningMultiStream deepCopy() throws MiningException {
-        return new VerMultiStream(streams);
+    public MiningSuperStream deepCopy() throws MiningException {
+        return new MiningVerSuperStream(streams);
     }
 
 }

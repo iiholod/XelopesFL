@@ -22,9 +22,9 @@ public class NaiveBayesModelTest extends ClassificationMiningModelTest {
 		assertEquals(3, ((NaiveBayesModel)model).getInputTargetValueCount(0, 0, 1).getCount());// outlook = sunny => play = no
 	}
 
-	public void verifyModel4Iris() throws Exception {
+/*	public void verifyModel4Iris() throws Exception {
 		// Verify builded model
 		System.out.println(model);
-	}
+	}*/
 
 }

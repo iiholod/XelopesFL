@@ -24,12 +24,12 @@ public class ClassificationMiningModelTest {
 	// ==== Methods for data attributes Weather Nominal ===============
 	protected void setInputData4WeatherNominal() throws MiningException, IOException, CsvException {
 		// Load input data
-		inputData = new MiningArffStream("..\\data\\arff\\vowel.arff");
+		inputData = new MiningArffStream("..\\data\\arff\\weather-nominal.arff");
 	}
 	
 	protected void setMiningSettings4WeatherNominal(EMiningAlgorithmSettings algorithmSettings) throws MiningException, IOException, CsvException {
 		ELogicalData logicalData = inputData.getLogicalData();
-		ELogicalAttribute targetAttribute = logicalData.getAttribute("feld8");
+		ELogicalAttribute targetAttribute = logicalData.getAttribute("play");
 		
 		//Create settings for classification
 		miningSettings = new ClassificationFunctionSettings(logicalData);

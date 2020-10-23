@@ -1,4 +1,4 @@
-package org.eltech.ddm.inputdata.multistream;
+package org.eltech.ddm.inputdata.superstreams;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
  * A class containing tests for checking the health of methods of the VerMultiStream class.
  * @author Maxim Kolpaschikov
  */
-public class VerMultiStreamTest extends MiningMultiStreamTest {
+public class MiningVerSuperStreamTest extends MiningSuperStreamTest {
     @Before
     public void setup() throws MiningException {
 
@@ -29,7 +29,7 @@ public class VerMultiStreamTest extends MiningMultiStreamTest {
                 new MiningCsvStream("../data/csv/iris_ver2.csv", settings),
                 new MiningCsvStream("../data/csv/iris_ver3.csv", settings)};
 
-        setup(new VerMultiStream(streams));
+        setup(new MiningVerSuperStream(streams));
     }
 
 
