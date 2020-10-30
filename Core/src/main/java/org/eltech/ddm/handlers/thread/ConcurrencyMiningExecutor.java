@@ -34,10 +34,10 @@ public class ConcurrencyMiningExecutor extends MiningExecutor implements Cloneab
 		this.service = service;
 	}
 
-	@Override
 	/**
 	 * Start thread
 	 */
+	@Override
 	public void start (final EMiningModel model) throws MiningException {
 		if (block == null)
 			throw new ParallelExecutionException("The executor has not a mining block");
@@ -53,10 +53,10 @@ public class ConcurrencyMiningExecutor extends MiningExecutor implements Cloneab
 
 	}
 
-	@Override
 	/**
 	 * Waiting finish of thread execution
 	 */
+	@Override
 	public EMiningModel getModel() {
 			while (!future.isDone()){}
 		return resultModel;
