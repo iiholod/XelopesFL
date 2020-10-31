@@ -41,7 +41,7 @@ public abstract class ExecutionEnvironment<T extends MiningExecutor, F extends M
             if (block instanceof MiningParallel) {
                 MiningParallel mp = (MiningParallel) block;
                 executor.addParallelBlock(mp);
-                MiningBlock blocks[] = mp.getBlocks();
+                MiningBlock[] blocks = mp.getBlocks();
                 for (MiningBlock bl : blocks) {
                     List<MiningExecutor> execs = createExecutors(bl);
                     for (MiningExecutor exec : execs) {

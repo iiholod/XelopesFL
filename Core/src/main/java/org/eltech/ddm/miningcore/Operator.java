@@ -14,7 +14,7 @@ public enum Operator {
     IS_IN,
     IS_NOT_IN,
     IS_MISSING,		// Attribute value is missing value.
-    IS_NOT_MISSING;	// Attribute value is not missing value.
+    IS_NOT_MISSING    // Attribute value is not missing value.
 
 
 

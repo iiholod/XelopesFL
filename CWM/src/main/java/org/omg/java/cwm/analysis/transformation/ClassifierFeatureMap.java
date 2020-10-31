@@ -57,8 +57,8 @@ public class ClassifierFeatureMap extends ModelElement
     */
    public org.omg.java.cwm.objectmodel.core.Boolean classifierToFeature;
    public ClassifierMap classifierMap;
-   public Classifier classifier[];
-   public Feature feature[];
+   public Classifier[] classifier;
+   public Feature[] feature;
 
    public ClassifierFeatureMap()
    {
@@ -70,7 +70,7 @@ public class ClassifierFeatureMap extends ModelElement
    }
 
    public void setFunction(ProcedureExpression function) {
-     this.function = (ProcedureExpression) function;
+     this.function = function;
    }
 
    public java.lang.String getFunctionDescription() {
@@ -106,7 +106,7 @@ public class ClassifierFeatureMap extends ModelElement
    }
 
    public void setClassifierMap(ClassifierMap classifierMap) {
-     this.classifierMap = (ClassifierMap) classifierMap;
+     this.classifierMap = classifierMap;
    }
 
    public Collection getClassifier() {
@@ -130,7 +130,7 @@ public class ClassifierFeatureMap extends ModelElement
      Classifier[] oldData = classifier;
      classifier = new Classifier[size+1];
      if (size > 0) System.arraycopy(oldData, 0, classifier, 0, size);
-     classifier[size] = (Classifier) input;
+     classifier[size] = input;
    }
 
    public void removeClassifier(Classifier input) {
@@ -177,7 +177,7 @@ public class ClassifierFeatureMap extends ModelElement
      Feature[] oldData = feature;
      feature = new Feature[size+1];
      if (size > 0) System.arraycopy(oldData, 0, feature, 0, size);
-     feature[size] = (Feature) input;
+     feature[size] = input;
    }
 
    public void removeFeature( Feature input) {

@@ -153,13 +153,10 @@ public class SimplePredicate extends Predicate implements Cloneable{
   @Override
 	public boolean equals(Object arg) {
 	  SimplePredicate predicate = (SimplePredicate)arg;
-	  if(this.attribute.equals(predicate.attribute) &&
-	    this.value== predicate.value &&
-	    (this.op == predicate.op))
-	    return true;
-
-	  return false;
-	}
+      return this.attribute.equals(predicate.attribute) &&
+              this.value == predicate.value &&
+              (this.op == predicate.op);
+  }
 
   @Override
 	public int hashCode() {
@@ -177,10 +174,7 @@ public class SimplePredicate extends Predicate implements Cloneable{
 		for(int i=0; i<miningVector.getLogicalData().getAttributesNumber(); i++){
 			ELogicalAttribute attr = miningVector.getLogicalData().getAttribute(i);
 			if(attr.getName().equals(attribute)){
-				if(miningVector.getValueCategory(i).getValue().equals(value))
-					return true;
-				else
-					return false;
+                return miningVector.getValueCategory(i).getValue().equals(value);
 			}
 		}
 

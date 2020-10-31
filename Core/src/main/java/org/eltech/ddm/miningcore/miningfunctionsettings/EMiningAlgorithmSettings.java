@@ -26,7 +26,7 @@ import java.io.Serializable;
 public class EMiningAlgorithmSettings extends MiningAlgorithmSettings implements Serializable
 //javax.datamining.base.AlgorithmSettings
 {
-	private static String algorithmsFileName = "config/algorithms.xml"; // ?
+	private static final String algorithmsFileName = "config/algorithms.xml"; // ?
 
 	private String algorithm;
 
@@ -96,7 +96,7 @@ public class EMiningAlgorithmSettings extends MiningAlgorithmSettings implements
 //					.append(this.inputAttribute[i].getName()).append("=")
 //					.append(this.inputAttribute[i].getValue()).append(" ")));
 //		}
-		s = String.valueOf(String.valueOf(s)).concat(")");
+		s = String.valueOf(s).concat(")");
 		return s;
 	}
 

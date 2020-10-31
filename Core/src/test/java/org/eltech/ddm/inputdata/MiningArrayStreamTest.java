@@ -150,8 +150,8 @@ public class MiningArrayStreamTest {
 	      }
 	      catch (Exception ex) {
 	        ex.printStackTrace();
-	      };
+	      }
 
-	}
+    }
 
 }

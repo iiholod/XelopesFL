@@ -183,7 +183,7 @@ double[][] values = {
     public void vectorTest() throws MiningException, InterruptedException, IOException, CsvException {
         MiningDBStream miningDBStream = new MiningDBStream(url, user, password, tableName);
         int i,j;
-        boolean fra[] = new boolean[150];
+        boolean[] fra = new boolean[150];
         double mbStream, valuesStream;
         /*
         *   Проверка полученых значений

@@ -35,18 +35,17 @@ public class ClassificationMiningModelTest {
 		miningSettings = new ClassificationFunctionSettings(logicalData);
 		miningSettings.setTarget(targetAttribute);
 		miningSettings.setAlgorithmSettings(algorithmSettings);
-   		miningSettings.verify();
-		
 	}
 
 	// ==== Methods for data attributes Iris Nominal ===============
 	protected void setInputData4Iris() throws MiningException, IOException, CsvException {
+
 		// Load input data
 		inputData = new MiningCsvStream("..\\data\\csv\\iris.csv");
-		inputData.open();
 	}
 
-	protected void setMiningSettings4Iris(EMiningAlgorithmSettings algorithmSettings) throws MiningException, IOException, CsvException {
+	protected void setMiningSettings4Iris(EMiningAlgorithmSettings algorithmSettings) throws MiningException {
+
 		ELogicalData logicalData = inputData.getLogicalData();
 		ELogicalAttribute targetAttribute = logicalData.getAttribute("iris-class");
 
@@ -54,8 +53,6 @@ public class ClassificationMiningModelTest {
 		miningSettings = new ClassificationFunctionSettings(logicalData);
 		miningSettings.setTarget(targetAttribute);
 		miningSettings.setAlgorithmSettings(algorithmSettings);
-		miningSettings.verify();
-
 	}
 
 	
@@ -85,8 +82,8 @@ public class ClassificationMiningModelTest {
                     if (! predTarCat.equals( tarCat) )
                             wrong = wrong + 1;
                     vector = inputData.next();
-            };
-            double rate = (100.0 - ((double) wrong / i)*100.0);
+            }
+			double rate = (100.0 - (wrong / i)*100.0);
             System.out.println("\n classification rate = " +  rate);
 
             return rate;

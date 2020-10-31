@@ -14,5 +14,5 @@ public enum EventType {
 	BeforeSplit,
 	AfterSplit,
 	BeforeJoin,
-	AfterJoin;
+	AfterJoin
 }

@@ -355,7 +355,7 @@ public class MiningVector implements   Serializable //Cloneable, extends com.pru
         for (int i = 0; i < values.length; i++) {
 
             if (logicalData == null) {
-              description = description + Double.toString(values[i]) + ",";
+              description = description + values[i] + ",";
               continue;
             }
             try {
@@ -371,7 +371,7 @@ public class MiningVector implements   Serializable //Cloneable, extends com.pru
 	            }
 	            else
 	            {
-	              description = description + Double.toString(values[i])+",";
+	              description = description + values[i] +",";
 	            }
 			} catch (MiningException e) {
 				// TODO Auto-generated catch block
@@ -391,8 +391,7 @@ public class MiningVector implements   Serializable //Cloneable, extends com.pru
     		return false;
 
     	if((logicalData == null) || (miningVector.logicalData == null)){
-    		if(logicalData != miningVector.logicalData)
-    			return false;
+            return logicalData == miningVector.logicalData;
     	}
     	else{
     		int countAttribute = logicalData.getAttributesNumber();

@@ -219,7 +219,7 @@ public class EMiningBuildTask extends MiningBuildTask // implements BuildTask
 		
 		if(executionEnvironment == null)
 			return false;
-		
+
 
 		if (miningAlgorithm == null)
 			return false;
@@ -233,10 +233,15 @@ public class EMiningBuildTask extends MiningBuildTask // implements BuildTask
 		
 		verify();
 
+		// deploy Algo to FLNode (+InputStream)
 		executionEnvironment.deploy(miningAlgorithm);
 
+		// algorithm initializes the model at the node
+		// model and data are transferred to the WorkersPool
 		resultModel = miningAlgorithm.initModel();
-		
+
+		// executors are created based on the data in the pool
+		// creating children (nodes) in the federation
 		resultModel = executionEnvironment.runAlgorithm((EMiningModel) resultModel);
 		
 		return resultModel;

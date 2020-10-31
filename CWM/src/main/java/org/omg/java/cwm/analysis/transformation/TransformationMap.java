@@ -39,7 +39,7 @@ import java.util.Iterator;
 public class TransformationMap extends Transformation
 {
 //   public ModelElement classifierMap;
-   public ModelElement classifierMap[];  // manually corrected by M. Thess, 25.12.2003
+   public ModelElement[] classifierMap;  // manually corrected by M. Thess, 25.12.2003
 
    public TransformationMap()
    {
@@ -67,7 +67,7 @@ public class TransformationMap extends Transformation
      ModelElement[] oldData = classifierMap;
      classifierMap = new ModelElement[size+1];
      if (size > 0) System.arraycopy(oldData, 0, classifierMap, 0, size);
-     classifierMap[size] = (ModelElement) input;
+     classifierMap[size] = input;
    }
 
    public void removeClassifierMap(ModelElement input) {

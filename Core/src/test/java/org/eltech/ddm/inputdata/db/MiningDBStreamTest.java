@@ -25,7 +25,6 @@ public class MiningDBStreamTest {
     @Test
     public void connectionTest() throws MiningException {
         MiningDBStream miningDBStream = new MiningDBStream(url, user, password, tableName);
-        // Проверка на колличество столбцов
         assertEquals  (5,miningDBStream.getLogicalData().getAttributesNumber());
     }
 }

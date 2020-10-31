@@ -157,8 +157,8 @@ public class ELogicalData extends LogicalData implements Cloneable
       String description = "relation: " + relName + "\n";
       int n = feature.size();
       for( int i = 0; i < n; i++ ) {
-          MiningAttribute attribute = (MiningAttribute)feature.get( i );
-          description = description + String.valueOf(i) + "." + attribute + "\n";
+          MiningAttribute attribute = feature.get( i );
+          description = description + i + "." + attribute + "\n";
       }
 
       return description;

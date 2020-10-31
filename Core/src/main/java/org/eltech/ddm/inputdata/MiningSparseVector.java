@@ -65,7 +65,7 @@ public class MiningSparseVector extends MiningVector
 
       // Vector is already of sparse type:
       if (vector instanceof MiningSparseVector) {
-        this.values  = ((MiningSparseVector) vector).values;
+        this.values  = vector.values;
         this.indexes = ((MiningSparseVector) vector).indexes;
       }
       // Vector is just of mining vector type:
@@ -80,15 +80,15 @@ public class MiningSparseVector extends MiningVector
             tempValues[vals]  = vector.getValue(i);
             tempIndexes[vals] = i;
             vals = vals + 1;
-          };
-        };
+          }
+        }
 
-        // Copy values to sparse vector:
+          // Copy values to sparse vector:
         values  = new double[vals];
         indexes = new int[vals];
         System.arraycopy(tempValues , 0, values,  0, vals);
         System.arraycopy(tempIndexes, 0, indexes, 0, vals);
-      };
+      }
     }
 
     /**

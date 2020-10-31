@@ -17,9 +17,9 @@ public class EDirectAttributeAssignment extends DirectAttributeAssignment {
 
 
 	public EDirectAttributeAssignment() {
-	};
+	}
 
-	public void setAttribute(Attribute new_value) {
+    public void setAttribute(Attribute new_value) {
 		attribute = new_value;
 	}
 

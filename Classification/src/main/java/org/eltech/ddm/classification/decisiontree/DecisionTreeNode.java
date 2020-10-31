@@ -157,10 +157,7 @@ public class DecisionTreeNode extends MiningTreeNode implements IClassifier
      */
     public boolean hasDistribution() {
 
-      if (distribution == null || distribution.length == 0)
-        return false;
-      else
-        return true;
+        return distribution != null && distribution.length != 0;
     }
 
     /**
@@ -231,10 +228,7 @@ public class DecisionTreeNode extends MiningTreeNode implements IClassifier
      */
     public boolean hasRecordCount() {
 
-      if ( !hasDistribution() && recordCount == -1)
-        return false;
-      else
-        return true;
+        return hasDistribution() || recordCount != -1;
     }
 
     /**
@@ -403,7 +397,7 @@ public class DecisionTreeNode extends MiningTreeNode implements IClassifier
       String sScore;
       if (target instanceof ELogicalAttribute)
       {
-        ECategory category = ((ELogicalAttribute)target).getCategoricalProperties().getCategory( (int) score);
+        ECategory category = target.getCategoricalProperties().getCategory( (int) score);
         if (category == null)
           sScore = "missing";
         else if (category.getValue() != null)

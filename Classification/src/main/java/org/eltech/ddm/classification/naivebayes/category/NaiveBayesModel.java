@@ -63,9 +63,9 @@ public class NaiveBayesModel extends ClassificationMiningModel implements Clonea
 	public void initModel() throws MiningException {
 
 		MiningModelElement attrs = getElement(INDEX_ATTRIBUTE_SET);
-		LogicalAttributeElement tlattr = (LogicalAttributeElement)attrs.getElement(indexTarget);
-		for(int i = 0; i < attrs.size(); i++) { // loop for attributes
-			LogicalAttributeElement lattr = (LogicalAttributeElement)attrs.getElement(i);
+		LogicalAttributeElement tlattr = (LogicalAttributeElement) attrs.getElement(indexTarget);
+		for (int i = 0; i < attrs.size(); i++) { // loop for attributes
+			LogicalAttributeElement lattr = (LogicalAttributeElement) attrs.getElement(i);
 			String attrName = lattr.getID();
 			MiningModelElement attrElem = new MiningModelElement(attrName) {
 				@Override
@@ -74,45 +74,42 @@ public class NaiveBayesModel extends ClassificationMiningModel implements Clonea
 				}
 
 				@Override
-				public void merge(List<MiningModelElement> elements) {}
+				public void merge(List<MiningModelElement> elements) {
+				}
 			};
 			addElement(index(BAYES_INPUT), attrElem);
 
-			try {
-				for (int j = 0; j < lattr.size(); j++) { // loop for value of independet attribute
-					LogicalAttributeValueElement lattrv = (LogicalAttributeValueElement) lattr.getElement(j);
-					String catName = lattrv.getValue().getName();
-					MiningModelElement attrValElem = new MiningModelElement(catName) {
-						@Override
-						protected String propertiesToString() {
-							return "";
-						}
-
-						@Override
-						public void merge(List<MiningModelElement> elements) {
-						}
-					};
-
-					addElement(index(BAYES_INPUT, i), attrValElem);
-
-					for (int t = 0; t < tlattr.size(); t++) { // loop for value of target attribute
-						LogicalAttributeValueElement tlattrv = (LogicalAttributeValueElement) tlattr.getElement(t);
-						String catTrName = tlattrv.getValue().getName();
-						TargetValueCount tvc = new TargetValueCount(attrName + "=" + catName + ";" + catTrName);
-						addElement(index(BAYES_INPUT, i, j), tvc);
+			for (int j = 0; j < lattr.size(); j++) { // loop for value of independet attribute
+				LogicalAttributeValueElement lattrv = (LogicalAttributeValueElement) lattr.getElement(j);
+				String catName = lattrv.getValue().getName();
+				MiningModelElement attrValElem = new MiningModelElement(catName) {
+					@Override
+					protected String propertiesToString() {
+						return "";
 					}
+
+					@Override
+					public void merge(List<MiningModelElement> elements) {
+					}
+				};
+
+				addElement(index(BAYES_INPUT, i), attrValElem);
+
+				for (int t = 0; t < tlattr.size(); t++) { // loop for value of target attribute
+					LogicalAttributeValueElement tlattrv = (LogicalAttributeValueElement) tlattr.getElement(t);
+					String catTrName = tlattrv.getValue().getName();
+					TargetValueCount tvc = new TargetValueCount(attrName + "=" + catName + ";" + catTrName);
+					addElement(index(BAYES_INPUT, i, j), tvc);
 				}
-			} catch (Exception ignored) {}
+			}
 		}
 
-		try {
-			for (int t = 0; t < tlattr.size(); t++) { // loop for value of target attribute
-				LogicalAttributeValueElement tlattrv = (LogicalAttributeValueElement) tlattr.getElement(t);
-				String catTrName = tlattrv.getValue().getName();
-				TargetValueCount tvc = new TargetValueCount(catTrName);
-				addElement(index(BAYES_OUTPUT), tvc);
-			}
-		} catch (Exception ignored) {}
+		for (int t = 0; t < tlattr.size(); t++) { // loop for value of target attribute
+			LogicalAttributeValueElement tlattrv = (LogicalAttributeValueElement) tlattr.getElement(t);
+			String catTrName = tlattrv.getValue().getName();
+			TargetValueCount tvc = new TargetValueCount(catTrName);
+			addElement(index(BAYES_OUTPUT), tvc);
+		}
 	}
 
 	@Override

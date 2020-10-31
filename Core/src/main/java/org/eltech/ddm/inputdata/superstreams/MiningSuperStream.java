@@ -1,24 +1,18 @@
-package org.eltech.ddm.inputdata.multistreams;
+package org.eltech.ddm.inputdata.superstreams;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
-import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.ELogicalData;
 import org.eltech.ddm.miningcore.miningdata.EPhysicalData;
-
-import java.util.List;
 
 /**
  * MiningMultiStream class.
  * A class that allows you to read multiple files 'vertically' or 'horizontally'.
  *
- * @author Maxim Kolpashikov
+ * @author Maxim Kolpaschikov
  */
 
-public abstract class MiningMultiStream extends MiningInputStream {
-
-    protected boolean isOpen = false;
-    protected List<ParsingValues> parsingValues;
+public abstract class MiningSuperStream extends MiningInputStream {
 
     protected MiningInputStream[] streams;
 
@@ -26,10 +20,41 @@ public abstract class MiningMultiStream extends MiningInputStream {
     //  Abstract methods
     // -----------------------------------------------------------------------
 
-    public abstract MiningMultiStream deepCopy() throws MiningException;
+    public abstract MiningSuperStream deepCopy() throws MiningException;
 
     // -----------------------------------------------------------------------
-    //  Get methods
+    //  Override methods
+    // -----------------------------------------------------------------------
+
+    /**
+     * Opens the stream.
+     */
+    @Override
+    public void open() throws MiningException {
+        if (open) return;
+        open = true;
+        for (MiningInputStream stream : streams) {
+            stream.open();
+            stream.setLogicalData(logicalData);
+            stream.setPhysicalData(physicalData);
+            stream.setAttributeAssignmentSet(attributeAssignmentSet);
+        }
+    }
+
+    /**
+     * Closes the stream.
+     */
+    @Override
+    public void close() throws MiningException {
+        if (!open) return;
+        open = false;
+        for (MiningInputStream stream : streams) {
+            stream.close();
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    //  Getters
     // -----------------------------------------------------------------------
 
     /**

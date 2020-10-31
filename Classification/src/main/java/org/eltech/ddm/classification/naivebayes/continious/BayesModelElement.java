@@ -11,7 +11,7 @@ public class BayesModelElement extends MiningModelElement {
 
     protected final Map<Double, double[][]> model = new HashMap<>();
     private final Map<Double, Integer> classLengths = new HashMap<>();
-    private Set<Double> classValues = new LinkedHashSet<>();
+    private final Set<Double> classValues = new LinkedHashSet<>();
     private int length;
     private int attrCount;
     private DataDistribution dist;

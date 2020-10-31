@@ -49,7 +49,7 @@ public class TransformationActivity extends Subsystem
     */
    public org.omg.java.cwm.objectmodel.core.String creationDate;
 //   public ModelElement step;
-   public ModelElement step[]; // manually corrected by M. Thess, 26.12.2003
+   public ModelElement[] step; // manually corrected by M. Thess, 26.12.2003
 //   public WarehouseActivity warehouseActivity[];
 //   public ActivityExecution execution[];
 
@@ -89,7 +89,7 @@ public class TransformationActivity extends Subsystem
      ModelElement[] oldData = step;
      step = new ModelElement[size+1];
      if (size > 0) System.arraycopy(oldData, 0, step, 0, size);
-     step[size] = (ModelElement) input;
+     step[size] = input;
    }
 
    public void removeStep(ModelElement input) {

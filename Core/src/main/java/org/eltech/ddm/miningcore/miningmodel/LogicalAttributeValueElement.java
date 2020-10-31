@@ -12,7 +12,7 @@ public class LogicalAttributeValueElement extends MiningModelElement {
 
     private ECategory value;
 
-    private int index;
+    private final int index;
 
     LogicalAttributeValueElement(int index, String id, ECategory value){
         super(id);

@@ -18,7 +18,7 @@ import java.io.IOException;
  * A class containing tests for checking the efficiency
  *      of methods of the MiningCsvStream class for csv-files without a header.
  *
- * @author Maxim Kolpashikov
+ * @author Maxim Kolpaschikov
  */
 
 public class CsvStreamWithoutHeadersTest extends MiningCsvStreamTest {
@@ -70,7 +70,7 @@ public class CsvStreamWithoutHeadersTest extends MiningCsvStreamTest {
     }
 
     @After
-    public void closeStream() throws IOException {
+    public void closeStream() throws MiningException {
         close();
     }
 }

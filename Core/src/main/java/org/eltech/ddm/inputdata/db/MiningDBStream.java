@@ -180,9 +180,7 @@ public class MiningDBStream extends MiningInputStream {
 
         if (allSettings != null) {
             for (Map.Entry<String, FieldDBConvert> entry : allSettings.entrySet()) {
-                if (columnsInfo.containsKey(entry.getKey())) {
-                    columnsInfo.remove(entry.getKey());
-                }
+                columnsInfo.remove(entry.getKey());
             }
         }
 

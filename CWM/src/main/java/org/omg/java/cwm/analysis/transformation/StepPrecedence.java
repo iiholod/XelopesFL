@@ -41,9 +41,9 @@ import java.util.Iterator;
 public class StepPrecedence extends Dependency
 {
 //   public ModelElement precedingStep;
-   public ModelElement precedingStep[]; // manually corrected by M. Thess, 26.12.2003
+   public ModelElement[] precedingStep; // manually corrected by M. Thess, 26.12.2003
 //   public ModelElement succeedingStep;
-   public ModelElement succeedingStep[]; // manually corrected by M. Thess, 26.12.2003
+   public ModelElement[] succeedingStep; // manually corrected by M. Thess, 26.12.2003
 
    public StepPrecedence() {
    }
@@ -69,7 +69,7 @@ public class StepPrecedence extends Dependency
      ModelElement[] oldData = precedingStep;
      precedingStep = new ModelElement[size+1];
      if (size > 0) System.arraycopy(oldData, 0, precedingStep, 0, size);
-     precedingStep[size] = (ModelElement) input;
+     precedingStep[size] = input;
    }
 
    public void removePrecedingStep(ModelElement input) {
@@ -116,7 +116,7 @@ public class StepPrecedence extends Dependency
      ModelElement[] oldData = succeedingStep;
      succeedingStep = new ModelElement[size+1];
      if (size > 0) System.arraycopy(oldData, 0, succeedingStep, 0, size);
-     succeedingStep[size] = (ModelElement) input;
+     succeedingStep[size] = input;
    }
 
    public void removeSucceedingStep(ModelElement input) {

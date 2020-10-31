@@ -8,6 +8,7 @@ import org.eltech.ddm.miningcore.algorithms.MiningAlgorithm;
 import org.eltech.ddm.miningcore.miningfunctionsettings.EMiningAlgorithmSettings;
 import org.eltech.ddm.miningcore.miningtask.EMiningBuildTask;
 import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
@@ -28,7 +29,7 @@ public class NaiveBayesAlgorithmTest extends NaiveBayesModelTest {
 	}
 
 
-	@org.junit.Test
+	@Test
 	public void test4WeatherNominal() {
 		try {
 
@@ -48,7 +49,7 @@ public class NaiveBayesAlgorithmTest extends NaiveBayesModelTest {
 
 	}
 
-	@org.junit.Test
+/*	@Test
 	public void test4Iris() {
 		try {
 
@@ -66,7 +67,7 @@ public class NaiveBayesAlgorithmTest extends NaiveBayesModelTest {
 			fail();
 		}
 
-	}
+	}*/
 
 	private EMiningBuildTask createBuildTask() throws MiningException {
 		MiningAlgorithm algorithm = new NaiveBayesAlgorithm(miningSettings);

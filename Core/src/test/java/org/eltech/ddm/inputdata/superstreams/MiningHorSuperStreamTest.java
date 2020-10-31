@@ -1,4 +1,4 @@
-package org.eltech.ddm.inputdata.multistreams;
+package org.eltech.ddm.inputdata.superstreams;
 
 import org.eltech.ddm.inputdata.MiningInputStream;
 import org.eltech.ddm.inputdata.file.csv.CsvParsingSettings;
@@ -11,7 +11,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class HorMultiStreamTest extends MiningMultiStreamTest {
+/**
+ * Tested HorMultiStream class.
+ * A class containing tests for checking the health of methods of the HorMultiStream class.
+ * @author Maxim Kolpaschikov
+ */
+public class MiningHorSuperStreamTest extends MiningSuperStreamTest {
     @Before
     public void setup() throws MiningException {
 
@@ -24,7 +29,7 @@ public class HorMultiStreamTest extends MiningMultiStreamTest {
                 new MiningCsvStream("../data/csv/iris_hor2.csv", settings),
                 new MiningCsvStream("../data/csv/iris_hor3.csv", settings)};
 
-        setup(new HorMultiStream(streams));
+        setup(new MiningHorSuperStream(streams));
     }
 
 

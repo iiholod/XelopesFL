@@ -18,7 +18,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 package org.eltech.ddm.inputdata;
 
-import org.eltech.ddm.inputdata.file.csv.ParsingValues;
 import org.eltech.ddm.miningcore.MiningErrorCode;
 import org.eltech.ddm.miningcore.MiningException;
 import org.eltech.ddm.miningcore.miningdata.*;
@@ -32,7 +31,6 @@ import org.omg.java.cwm.objectmodel.core.Attribute;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -61,8 +59,6 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 
     protected int vectorsNumber = 0;
 
-	protected List<ParsingValues> parsingValues;
-
 	private int offsetVectorIndex = 0;
 
 	private transient AttributeAssignmentType attributeAssignmentType;
@@ -79,10 +75,7 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
     /**
      * <code>MiningInputStream</code> constructor.
      */
-    public MiningInputStream()
-    {
-    	//offsetVectorIndex = 0;
-    }
+    public MiningInputStream() {}
 
     // -----------------------------------------------------------------------
     //  Getter and setter methods
@@ -103,6 +96,12 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
     public void setLogicalData(ELogicalData logicalData) {
     	this.logicalData = logicalData;
     }
+	public void setPhysicalData(EPhysicalData physicalData) {
+		this.physicalData = physicalData;
+	}
+	public void setAttributeAssignmentSet(EAttributeAssignmentSet assignmentSet) {
+		this.attributeAssignmentSet = assignmentSet;
+	}
 
 
     /**
@@ -125,10 +124,6 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
     {
         return cursorPosition;
     }
-
-    protected void resetCurrentPosition() {
-    	cursorPosition = -1;
-	}
 
     /**
      * Returns true if stream is open.
@@ -292,10 +287,6 @@ public abstract class MiningInputStream implements Cloneable, Serializable //ext
 	}
     
     protected abstract MiningVector movePhysicalRecord( int position ) throws MiningException;
-
-	public void setParsingValues(List<ParsingValues> parsingValues) {
-		this.parsingValues = parsingValues;
-	}
 
     public int getOffsetVectorIndex() {
 		return offsetVectorIndex;

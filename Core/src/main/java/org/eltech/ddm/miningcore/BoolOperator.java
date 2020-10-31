@@ -7,5 +7,5 @@ package org.eltech.ddm.miningcore;
 public enum BoolOperator {
     AND,
     OR,
-    XOR;
+    XOR
 }

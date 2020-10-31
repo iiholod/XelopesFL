@@ -38,9 +38,9 @@ import java.util.Iterator;
  */
 public class DataObjectSet extends ModelElement
 {
-   public Transformation sourceTransformation[];
-   public Transformation targetTransformation[];
-   public ModelElement element[];
+   public Transformation[] sourceTransformation;
+   public Transformation[] targetTransformation;
+   public ModelElement[] element;
 
    public DataObjectSet()
    {
@@ -68,7 +68,7 @@ public class DataObjectSet extends ModelElement
      ModelElement[] oldData = element;
      element = new ModelElement[size+1];
      if (size > 0) System.arraycopy(oldData, 0, element, 0, size);
-     element[size] = (ModelElement) input;
+     element[size] = input;
    }
 
    public void removeElement( ModelElement input) {
@@ -115,7 +115,7 @@ public class DataObjectSet extends ModelElement
      Transformation[] oldData = sourceTransformation;
      sourceTransformation = new Transformation[size+1];
      if (size > 0) System.arraycopy(oldData, 0, sourceTransformation, 0, size);
-     sourceTransformation[size] = (Transformation) input;
+     sourceTransformation[size] = input;
    }
 
    public void removeSourceTransformation( Transformation input) {
@@ -162,7 +162,7 @@ public class DataObjectSet extends ModelElement
      Transformation[] oldData = targetTransformation;
      targetTransformation = new Transformation[size+1];
      if (size > 0) System.arraycopy(oldData, 0, targetTransformation, 0, size);
-     targetTransformation[size] = (Transformation) input;
+     targetTransformation[size] = input;
    }
 
    public void removeTargetTransformation( Transformation input) {

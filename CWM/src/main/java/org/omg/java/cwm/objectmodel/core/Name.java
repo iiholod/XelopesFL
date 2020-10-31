@@ -36,7 +36,7 @@ public class Name implements Cloneable, Serializable {
 	   }
 
 	   public java.lang.String toString() {
-	     return string.toString();
+	     return string;
 	   }
 	   
 	   public Object clone() {

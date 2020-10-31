@@ -52,10 +52,10 @@ public class ClassifierMap extends Namespace
     */
    public org.omg.java.cwm.objectmodel.core.String functionDescription;
    public Namespace transformationMap;
-   public FeatureMap featureMap[];
-   public ClassifierFeatureMap cfMap[];
-   public Classifier source[];
-   public Classifier target[];
+   public FeatureMap[] featureMap;
+   public ClassifierFeatureMap[] cfMap;
+   public Classifier[] source;
+   public Classifier[] target;
 
    public ClassifierMap()
    {
@@ -67,7 +67,7 @@ public class ClassifierMap extends Namespace
    }
 
    public void setFunction(ProcedureExpression function) {
-     this.function = (ProcedureExpression) function;
+     this.function = function;
    }
 
    public java.lang.String getFunctionDescription() {
@@ -101,7 +101,7 @@ public class ClassifierMap extends Namespace
      ClassifierFeatureMap[] oldData = cfMap;
      cfMap = new ClassifierFeatureMap[size+1];
      if (size > 0) System.arraycopy(oldData, 0, cfMap, 0, size);
-     cfMap[size] = (ClassifierFeatureMap) input;
+     cfMap[size] = input;
    }
 
    public void removeCfMap( ClassifierFeatureMap input) {
@@ -148,7 +148,7 @@ public class ClassifierMap extends Namespace
      FeatureMap[] oldData = featureMap;
      featureMap = new FeatureMap[size+1];
      if (size > 0) System.arraycopy(oldData, 0, featureMap, 0, size);
-     featureMap[size] = (FeatureMap) input;
+     featureMap[size] = input;
    }
 
    public void removeFeatureMap( FeatureMap input) {
@@ -195,7 +195,7 @@ public class ClassifierMap extends Namespace
      Classifier[] oldData = source;
      source = new Classifier[size+1];
      if (size > 0) System.arraycopy(oldData, 0, source, 0, size);
-     source[size] = (Classifier) input;
+     source[size] = input;
    }
 
    public void removeSource( Classifier input) {
@@ -242,7 +242,7 @@ public class ClassifierMap extends Namespace
      Classifier[] oldData = target;
      target = new Classifier[size+1];
      if (size > 0) System.arraycopy(oldData, 0, target, 0, size);
-     target[size] = (Classifier) input;
+     target[size] = input;
    }
 
    public void removeTarget( Classifier input) {
@@ -273,6 +273,6 @@ public class ClassifierMap extends Namespace
    }
 
    public void setTransformationMap(Namespace transformationMap) {
-     this.transformationMap = (Namespace) transformationMap;
+     this.transformationMap = transformationMap;
    }
 }

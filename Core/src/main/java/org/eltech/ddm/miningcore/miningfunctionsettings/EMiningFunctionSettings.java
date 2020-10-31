@@ -107,7 +107,7 @@ public abstract class EMiningFunctionSettings extends MiningFunctionSettings imp
 				for(int j = 0; j < attrUsage.getAttributeNumber(); j++)
 					collection.add(attrUsage.getLogicalAttribute(j));
 			}
-		} ;
+		}
 		return collection;
 	}
 

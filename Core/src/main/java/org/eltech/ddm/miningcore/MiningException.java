@@ -7,7 +7,7 @@ package org.eltech.ddm.miningcore;
  */
 public class MiningException extends Exception//JDMException
 {
-   private static String[] errorMessage =
+   private static final String[] errorMessage =
 		{"",	//INVALID_ARGUMENT
 		 "",		//INVALID_DATA_TYPE
 		 "",		// INVALID_OBJECT_TYPE
@@ -18,7 +18,7 @@ public class MiningException extends Exception//JDMException
 		 "Parallel execution error." //PARALLEL_EXECUTION_ERROR
 		};
 
-	private MiningErrorCode code;
+	private final MiningErrorCode code;
 
 
     public MiningException( MiningErrorCode code)
